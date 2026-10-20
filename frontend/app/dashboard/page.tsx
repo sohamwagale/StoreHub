@@ -108,7 +108,7 @@ export default function UserDashboardPage() {
             <span>My Profile</span>
           </Link>
           <Link
-            href="/"
+            href="/stores"
             className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/20 transition-all"
           >
             <span>Rate More Stores</span>
@@ -243,23 +243,13 @@ export default function UserDashboardPage() {
                   </div>
 
                   {/* Action Footer */}
-                  <div className="p-5 pt-0 flex items-center gap-2">
-                    {storeId && (
-                      <Link
-                        href={`/stores/${storeId}`}
-                        className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1.5 transition"
-                      >
-                        <span>Store Details</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
-                      </Link>
-                    )}
-
+                  <div className="p-5 pt-0">
                     <button
                       onClick={() => handleOpenEdit(item)}
-                      className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60 flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60 flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
-                      <span>Update</span>
+                      <span>Update Rating</span>
                     </button>
                   </div>
                 </div>
