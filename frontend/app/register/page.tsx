@@ -24,14 +24,14 @@ export default function RegisterPage() {
   const hasLength = password.length >= 8 && password.length <= 16;
   const hasUppercase = /[A-Z]/.test(password);
   const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
-  const isNameValid = name.trim().length >= 20 && name.trim().length <= 60;
+  const isNameValid = name.trim().length >= 5 && name.trim().length <= 60;
   const isAddressValid = address.trim().length > 0 && address.trim().length <= 400;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!isNameValid) {
-      setError('Full name must be between 20 and 60 characters long.');
+      setError('Full name must be between 5 and 60 characters long.');
       return;
     }
 
@@ -142,7 +142,7 @@ export default function RegisterPage() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                Full Name <span className="text-zinc-400 font-normal">(20–60 characters)</span>
+                Full Name <span className="text-zinc-400 font-normal">(5–60 characters)</span>
               </label>
               <span
                 className={`text-[11px] ${

@@ -163,7 +163,7 @@ shop-rating-platform/
 ```typescript
 {
   _id: ObjectId,
-  name: string,         // 20–60 characters
+  name: string,         // 5–60 characters
   email: string,        // unique, lowercase, trimmed
   address: string,      // max 400 characters
   passwordHash: string, // bcrypt hash

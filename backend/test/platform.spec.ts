@@ -95,11 +95,11 @@ describe('Store Rating Platform API Tests', () => {
       expect(res.status).toBe(409);
     });
 
-    it('should reject name shorter than 20 characters', async () => {
+    it('should reject name shorter than 5 characters', async () => {
       const res = await request(app.getHttpServer())
         .post('/auth/register')
         .send({
-          name: 'Short Name', // 10 chars
+          name: 'Alex', // 4 chars
           email: 'short@example.com',
           address: '123 Test St',
           password: 'Password@123',

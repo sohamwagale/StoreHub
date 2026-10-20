@@ -14,7 +14,7 @@ import { UserRole } from '../../common/interfaces/user-role.enum.js';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @Length(20, 60, { message: 'Name must be between 20 and 60 characters' })
+  @Length(5, 60, { message: 'Name must be between 5 and 60 characters' })
   name: string;
 
   @IsEmail({}, { message: 'Please provide a valid email address' })
