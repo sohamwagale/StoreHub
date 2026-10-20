@@ -60,7 +60,7 @@ export default function RegisterPage() {
       });
 
       if (user.role === 'OWNER') {
-        router.push('/owner');
+        router.push('/owner/onboarding');
       } else {
         router.push('/dashboard');
       }

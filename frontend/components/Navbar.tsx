@@ -32,26 +32,15 @@ export default function Navbar() {
           {/* Navigation Links */}
           <nav className="flex items-center gap-2 sm:gap-4">
             <Link
-              href="/"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === '/'
-                  ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30'
-                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-              }`}
-            >
-              Stores
-            </Link>
-
-            <Link
-              href="/discover"
+              href="/stores"
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                pathname === '/discover'
-                  ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30'
+                pathname.startsWith('/stores')
+                  ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 font-semibold'
                   : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
               }`}
             >
               <Compass className="w-4 h-4 text-amber-500" />
-              <span>Discover</span>
+              <span>Explore Stores</span>
             </Link>
 
             {user?.role === 'USER' && (

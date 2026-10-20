@@ -150,14 +150,23 @@ export default function OwnerDashboardPage() {
           </p>
         </div>
 
-        <button
-          onClick={fetchDashboard}
-          disabled={isLoading}
-          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-indigo-500' : ''}`} />
-          <span>Refresh Data</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/owner/onboarding"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition"
+          >
+            <span>+ Add Store</span>
+          </Link>
+
+          <button
+            onClick={fetchDashboard}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-indigo-500' : ''}`} />
+            <span>Refresh Data</span>
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -179,16 +188,24 @@ export default function OwnerDashboardPage() {
           <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
         </div>
       ) : stores.length === 0 ? (
-        <div className="text-center py-16 px-4 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-500 mb-3">
-            <StoreIcon className="w-7 h-7" />
+        <div className="text-center py-16 px-4 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 max-w-xl mx-auto space-y-4">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+            <StoreIcon className="w-8 h-8" />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
-            No stores registered under your owner account
-          </h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1">
-            Stores assigned to your owner ID will automatically appear here with full customer review records.
-          </p>
+          <div>
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+              No store registered yet
+            </h3>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1">
+              Complete your store profile onboarding to set your coordinates, address, and photos so customers can find and rate you.
+            </p>
+          </div>
+          <Link
+            href="/owner/onboarding"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition transform active:scale-95"
+          >
+            <span>Complete Store Onboarding →</span>
+          </Link>
         </div>
       ) : (
         <div className="space-y-8">

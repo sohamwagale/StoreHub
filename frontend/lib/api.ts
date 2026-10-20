@@ -147,6 +147,20 @@ class ApiClient {
         body: JSON.stringify({ photos }),
       });
     },
+
+    create: (payload: {
+      name: string;
+      address: string;
+      category: string;
+      latitude?: number;
+      longitude?: number;
+      photos?: string[];
+    }): Promise<Store> => {
+      return this.request<Store>('/stores', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+    },
   };
 
   // Rating Endpoints

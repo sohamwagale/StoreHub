@@ -10,7 +10,6 @@ import {
   Mail,
   MapPin,
   Calendar,
-  ShieldCheck,
   Star,
   Loader2,
   ExternalLink,
@@ -108,29 +107,17 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Details Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8">
+        <div className="pt-8">
           <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-              Account Security
+              Physical Location & Address
             </span>
-            <div className="flex items-center gap-2 mt-2 text-sm font-bold text-zinc-900 dark:text-white">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span>JWT Protected & Bcrypt Encrypted</span>
+            <div className="mt-2 text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-amber-500 shrink-0" />
+              <span>{user.address}</span>
             </div>
             <p className="text-[11px] text-zinc-500 mt-1">
-              Your password hash and sensitive session tokens are securely handled.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-              Physical Location
-            </span>
-            <div className="mt-2 text-sm font-bold text-zinc-900 dark:text-white">
-              {user.address}
-            </div>
-            <p className="text-[11px] text-zinc-500 mt-1">
-              Used for matching verified local store visits.
+              Used for matching verified local store visits and ratings.
             </p>
           </div>
         </div>
