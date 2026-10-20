@@ -36,6 +36,24 @@ export class Store {
   })
   category: string;
 
+  @Prop({
+    type: Number,
+    default: 40.7128,
+  })
+  latitude: number;
+
+  @Prop({
+    type: Number,
+    default: -74.0060,
+  })
+  longitude: number;
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  photos: string[];
+
   createdAt?: Date;
   updatedAt?: Date;
 }

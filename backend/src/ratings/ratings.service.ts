@@ -46,6 +46,7 @@ export class RatingsService {
         userId: new Types.ObjectId(userId),
         rating: createRatingDto.rating,
         review: createRatingDto.review ? createRatingDto.review.trim() : '',
+        photos: createRatingDto.photos || [],
       });
 
       const saved = await newRating.save();
@@ -56,6 +57,7 @@ export class RatingsService {
         userId: saved.userId.toString(),
         rating: saved.rating,
         review: saved.review || '',
+        photos: saved.photos || [],
         createdAt: saved.createdAt,
         updatedAt: saved.updatedAt,
       };
@@ -97,6 +99,9 @@ export class RatingsService {
     if (updateRatingDto.review !== undefined) {
       existing.review = updateRatingDto.review.trim();
     }
+    if (updateRatingDto.photos !== undefined) {
+      existing.photos = updateRatingDto.photos;
+    }
     const saved = await existing.save();
 
     return {
@@ -106,6 +111,7 @@ export class RatingsService {
       userId: saved.userId.toString(),
       rating: saved.rating,
       review: saved.review || '',
+      photos: saved.photos || [],
       createdAt: saved.createdAt,
       updatedAt: saved.updatedAt,
     };
@@ -128,6 +134,7 @@ export class RatingsService {
       _id: r._id.toString(),
       rating: r.rating,
       review: r.review || '',
+      photos: r.photos || [],
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       user: {
@@ -148,7 +155,7 @@ export class RatingsService {
     });
 
     if (!rating) {
-      return { rating: null, review: '' };
+      return { rating: null, review: '', photos: [] };
     }
 
     return {
@@ -158,6 +165,7 @@ export class RatingsService {
       userId: rating.userId.toString(),
       rating: rating.rating,
       review: rating.review || '',
+      photos: rating.photos || [],
       createdAt: rating.createdAt,
       updatedAt: rating.updatedAt,
     };
@@ -166,7 +174,7 @@ export class RatingsService {
   async getMyRatings(userId: string) {
     const ratings = await this.ratingModel
       .find({ userId: new Types.ObjectId(userId) })
-      .populate('storeId', 'name address category')
+      .populate('storeId', 'name address category photos')
       .sort({ updatedAt: -1 })
       .lean()
       .exec();
@@ -176,6 +184,7 @@ export class RatingsService {
       _id: r._id.toString(),
       rating: r.rating,
       review: r.review || '',
+      photos: r.photos || [],
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       store: r.storeId
@@ -184,6 +193,7 @@ export class RatingsService {
             name: r.storeId.name,
             address: r.storeId.address,
             category: r.storeId.category || 'General',
+            photos: r.storeId.photos || [],
           }
         : null,
     }));

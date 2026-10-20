@@ -6,6 +6,7 @@ import {
   MyRating,
   StoreReview,
   OwnerDashboardResponse,
+  StoreGallery,
   ApiError,
 } from '@/types';
 
@@ -26,10 +27,14 @@ class ApiClient {
     const token = this.getToken();
 
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
       Accept: 'application/json',
       ...((options.headers as Record<string, string>) || {}),
     };
+
+    // Only set application/json if body is not FormData
+    if (!(options.body instanceof FormData) && !headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
@@ -131,30 +136,78 @@ class ApiClient {
     getReviews: (storeId: string): Promise<StoreReview[]> => {
       return this.request<StoreReview[]>(`/stores/${storeId}/reviews`);
     },
+
+    getGallery: (storeId: string): Promise<StoreGallery> => {
+      return this.request<StoreGallery>(`/stores/${storeId}/gallery`);
+    },
+
+    addPhotos: (storeId: string, photos: string[]): Promise<any> => {
+      return this.request(`/stores/${storeId}/photos`, {
+        method: 'POST',
+        body: JSON.stringify({ photos }),
+      });
+    },
   };
 
   // Rating Endpoints
   ratings = {
-    submit: (storeId: string, rating: number, review?: string): Promise<Rating> => {
+    submit: (
+      storeId: string,
+      rating: number,
+      review?: string,
+      photos?: string[],
+    ): Promise<Rating> => {
       return this.request<Rating>(`/stores/${storeId}/ratings`, {
         method: 'POST',
-        body: JSON.stringify({ rating, review }),
+        body: JSON.stringify({ rating, review, photos }),
       });
     },
 
-    update: (storeId: string, rating: number, review?: string): Promise<Rating> => {
+    update: (
+      storeId: string,
+      rating: number,
+      review?: string,
+      photos?: string[],
+    ): Promise<Rating> => {
       return this.request<Rating>(`/stores/${storeId}/ratings`, {
         method: 'PATCH',
-        body: JSON.stringify({ rating, review }),
+        body: JSON.stringify({ rating, review, photos }),
       });
     },
 
-    getMyRatingForStore: (storeId: string): Promise<{ rating: number | null; review?: string }> => {
-      return this.request<{ rating: number | null; review?: string }>(`/stores/${storeId}/ratings/me`);
+    getMyRatingForStore: (
+      storeId: string,
+    ): Promise<{ rating: number | null; review?: string; photos?: string[] }> => {
+      return this.request<{ rating: number | null; review?: string; photos?: string[] }>(
+        `/stores/${storeId}/ratings/me`,
+      );
     },
 
     getMyRatings: (): Promise<MyRating[]> => {
       return this.request<MyRating[]>('/ratings/my-ratings');
+    },
+  };
+
+  // Upload Endpoints
+  uploads = {
+    uploadFiles: async (
+      files: File[],
+    ): Promise<{ urls: string[]; url: string; count: number }> => {
+      const formData = new FormData();
+      files.forEach((f) => formData.append('files', f));
+      return this.request<{ urls: string[]; url: string; count: number }>('/uploads', {
+        method: 'POST',
+        body: formData,
+      });
+    },
+
+    uploadSingle: async (file: File): Promise<{ url: string; urls: string[] }> => {
+      const formData = new FormData();
+      formData.append('file', file);
+      return this.request<{ url: string; urls: string[] }>('/uploads/single', {
+        method: 'POST',
+        body: formData,
+      });
     },
   };
 

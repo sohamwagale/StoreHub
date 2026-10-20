@@ -41,6 +41,22 @@ export class StoresController {
     return this.storesService.findById(id, currentUserId);
   }
 
+  @Get(':id/gallery')
+  async getGallery(@Param('id') id: string) {
+    return this.storesService.getStoreGallery(id);
+  }
+
+  @Post(':id/photos')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async addPhotos(
+    @Param('id') id: string,
+    @Body('photos') photos: string[],
+  ) {
+    const list = Array.isArray(photos) ? photos : [photos];
+    return this.storesService.addPhotos(id, list);
+  }
+
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.OWNER)

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Store } from '@/types';
 import { api } from '@/lib/api';
@@ -25,7 +26,21 @@ import {
   Loader2,
   AlertCircle,
   RefreshCw,
+  Map as MapIcon,
+  MapPin,
 } from 'lucide-react';
+
+const StoreMap = dynamic(() => import('@/components/StoreMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[540px] rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 animate-pulse">
+      <div className="flex items-center gap-2">
+        <MapPin className="w-5 h-5 text-amber-500 animate-bounce" />
+        <span className="text-sm font-semibold">Loading discovery map...</span>
+      </div>
+    </div>
+  ),
+});
 
 const CATEGORIES = [
   { id: 'All', label: 'All Categories', icon: LayoutGrid },
@@ -43,6 +58,8 @@ export default function DiscoverPage() {
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [sortMode, setSortMode] = useState<'rating' | 'reviews'>('rating');
+  const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+  const [selectedMapStoreId, setSelectedMapStoreId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -109,19 +126,24 @@ export default function DiscoverPage() {
     setIsReviewsModalOpen(true);
   };
 
+  const handleLocateOnMap = (store: Store) => {
+    setSelectedMapStoreId(store.id);
+    setViewMode('map');
+  };
+
   return (
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Discovery Hero */}
       <div className="text-center max-w-3xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-950/60 dark:to-orange-950/60 text-amber-900 dark:text-amber-200 text-xs font-bold mb-3 border border-amber-200 dark:border-amber-800 shadow-sm">
           <Compass className="w-4 h-4 text-amber-600 animate-pulse" />
-          <span>Curated Recommendations & Top Picks</span>
+          <span>Curated Recommendations & GPS Map Discovery</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
           Discover Places Highly Rated by Shoppers
         </h1>
         <p className="mt-3 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-          Looking for where to visit next? Explore stores sorted by verified community satisfaction, highest average star ratings, and real customer reviews.
+          Looking for where to visit next? Explore stores sorted by verified community satisfaction, highest average star ratings, customer photos, and real GPS locations.
         </p>
       </div>
 
@@ -175,7 +197,7 @@ export default function DiscoverPage() {
         </div>
       )}
 
-      {/* Discovery Controls: Sort and Category Tabs */}
+      {/* Discovery Controls: Sort, View Switcher and Category Tabs */}
       <div className="space-y-4 mb-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
           {/* Sort Switcher */}
@@ -204,8 +226,35 @@ export default function DiscoverPage() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-zinc-500">
-            <span>Showing {discoveredStores.length} recommendations</span>
+          {/* View Mode & Count */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900'
+                }`}
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Cards</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('map')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  viewMode === 'map'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900'
+                }`}
+              >
+                <MapIcon className="w-3.5 h-3.5" />
+                <span>Map View</span>
+              </button>
+            </div>
+
             <button
               onClick={fetchStores}
               className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400"
@@ -268,6 +317,17 @@ export default function DiscoverPage() {
             Show All Categories
           </button>
         </div>
+      ) : viewMode === 'map' ? (
+        <div className="space-y-4">
+          <StoreMap
+            stores={discoveredStores}
+            selectedStoreId={selectedMapStoreId}
+            onSelectStore={(st) => setSelectedMapStoreId(st.id)}
+            onOpenRating={handleOpenRateModal}
+            onOpenReviews={handleOpenReviewsModal}
+            heightClass="h-[600px]"
+          />
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {discoveredStores.map((store, index) => (
@@ -284,6 +344,7 @@ export default function DiscoverPage() {
                 store={store}
                 onRate={handleOpenRateModal}
                 onViewReviews={handleOpenReviewsModal}
+                onLocateOnMap={handleLocateOnMap}
                 currentUserRole={user?.role}
                 isAuthenticated={!!user}
                 onLoginPrompt={() => router.push('/login')}

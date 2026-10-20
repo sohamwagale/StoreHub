@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Store } from '@/types';
 import { api } from '@/lib/api';
@@ -20,7 +21,23 @@ import {
   Laptop,
   Coffee,
   LayoutGrid,
+  Map as MapIcon,
+  Columns,
+  MapPin,
 } from 'lucide-react';
+
+// Dynamically import StoreMap to ensure no SSR WebGL issues
+const StoreMap = dynamic(() => import('@/components/StoreMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[540px] rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 animate-pulse">
+      <div className="flex items-center gap-2">
+        <MapPin className="w-5 h-5 text-amber-500 animate-bounce" />
+        <span className="text-sm font-semibold">Loading interactive GPS map...</span>
+      </div>
+    </div>
+  ),
+});
 
 const CATEGORIES = [
   { id: 'All', label: 'All Stores', icon: LayoutGrid },
@@ -40,6 +57,10 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // View Mode: 'grid' | 'split' | 'map'
+  const [viewMode, setViewMode] = useState<'grid' | 'split' | 'map'>('grid');
+  const [selectedMapStoreId, setSelectedMapStoreId] = useState<string | null>(null);
 
   // Rating Modal state
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
@@ -80,6 +101,18 @@ export default function HomePage() {
     setIsReviewsModalOpen(true);
   };
 
+  const handleLocateOnMap = (store: Store) => {
+    setSelectedMapStoreId(store.id);
+    if (viewMode === 'grid') {
+      setViewMode('split');
+    }
+    // Smooth scroll to map area if on small screens
+    const mapEl = document.getElementById('store-map-view');
+    if (mapEl) {
+      mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   const handleLoginPrompt = () => {
     router.push('/login');
   };
@@ -94,13 +127,13 @@ export default function HomePage() {
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-100/80 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 text-xs font-semibold mb-4 border border-amber-200 dark:border-amber-800/60 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>Real Opinions • Categorized Directory • Transparent Ratings</span>
+          <span>Interactive Maps • Photos • Verified Ratings • Categories</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
-          Find top-rated stores & share your honest reviews.
+          Locate shops on map & share your honest reviews.
         </h1>
         <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-          Explore stores across popular categories like Groceries, Shopping Malls, Fashion Apparel, and Tech. Submit your verified 1–5 star ratings anytime.
+          Explore stores across popular categories, check their real GPS coordinates on our interactive MapLibre map, upload photos, and read verified ratings.
         </p>
 
         {/* Search Bar */}
@@ -152,7 +185,7 @@ export default function HomePage() {
 
       {/* Main Content Area */}
       <div>
-        <div className="flex items-center justify-between mb-6 pb-2 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <StoreIcon className="w-5 h-5 text-amber-500" />
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
@@ -167,15 +200,62 @@ export default function HomePage() {
             </span>
           </div>
 
-          <button
-            onClick={() => fetchStores(searchQuery, selectedCategory)}
-            disabled={isLoading}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
-            title="Refresh store listing"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-amber-500' : ''}`} />
-            <span className="hidden sm:inline">Refresh</span>
-          </button>
+          <div className="flex items-center gap-3 self-end sm:self-auto">
+            {/* View Mode Switcher */}
+            <div className="flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900'
+                }`}
+                title="Cards Grid View"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Grid</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('split')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  viewMode === 'split'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900'
+                }`}
+                title="Split Map & List View"
+              >
+                <Columns className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Split</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('map')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  viewMode === 'map'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900'
+                }`}
+                title="Full Map View"
+              >
+                <MapIcon className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Map</span>
+              </button>
+            </div>
+
+            <button
+              onClick={() => fetchStores(searchQuery, selectedCategory)}
+              disabled={isLoading}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
+              title="Refresh store listing"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-amber-500' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+          </div>
         </div>
 
         {/* Error Notification */}
@@ -195,12 +275,14 @@ export default function HomePage() {
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <div
                 key={n}
-                className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200/60 dark:border-zinc-800 animate-pulse space-y-4"
+                className="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-200/60 dark:border-zinc-800 animate-pulse space-y-4"
               >
-                <div className="h-6 bg-zinc-200 dark:bg-zinc-800 rounded-md w-3/4" />
-                <div className="h-4 bg-zinc-100 dark:bg-zinc-800/60 rounded-md w-1/2" />
-                <div className="h-16 bg-zinc-100 dark:bg-zinc-800/40 rounded-xl" />
-                <div className="h-10 bg-zinc-200 dark:bg-zinc-800 rounded-xl" />
+                <div className="h-40 bg-zinc-200 dark:bg-zinc-800" />
+                <div className="p-5 space-y-3">
+                  <div className="h-6 bg-zinc-200 dark:bg-zinc-800 rounded-md w-3/4" />
+                  <div className="h-4 bg-zinc-100 dark:bg-zinc-800/60 rounded-md w-1/2" />
+                  <div className="h-14 bg-zinc-100 dark:bg-zinc-800/40 rounded-xl" />
+                </div>
               </div>
             ))}
           </div>
@@ -236,8 +318,91 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Store Grid */}
-        {!isLoading && stores.length > 0 && (
+        {/* View Mode: FULL MAP */}
+        {!isLoading && stores.length > 0 && viewMode === 'map' && (
+          <div id="store-map-view" className="space-y-4">
+            <StoreMap
+              stores={stores}
+              selectedStoreId={selectedMapStoreId}
+              onSelectStore={(st) => setSelectedMapStoreId(st.id)}
+              onOpenRating={handleOpenRateModal}
+              onOpenReviews={handleOpenReviewsModal}
+              heightClass="h-[620px]"
+            />
+            {/* Horizontal quick preview list below full map */}
+            <div className="flex items-center gap-3 overflow-x-auto py-2 scrollbar-thin">
+              {stores.map((st) => (
+                <div
+                  key={st.id}
+                  onClick={() => setSelectedMapStoreId(st.id)}
+                  className={`w-72 shrink-0 p-3 rounded-2xl border cursor-pointer transition ${
+                    selectedMapStoreId === st.id
+                      ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 shadow-md ring-2 ring-amber-400/40'
+                      : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                      {st.category || 'Shop'}
+                    </span>
+                    <span className="text-xs font-bold text-amber-500 ml-auto">
+                      ★ {st.averageRating !== null ? st.averageRating.toFixed(1) : 'New'}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-xs text-zinc-900 dark:text-white line-clamp-1">
+                    {st.name}
+                  </h4>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-1">
+                    {st.address}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* View Mode: SPLIT MAP & LIST */}
+        {!isLoading && stores.length > 0 && viewMode === 'split' && (
+          <div id="store-map-view" className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left Column: Stores Cards */}
+            <div className="lg:col-span-5 space-y-4 max-h-[750px] overflow-y-auto pr-1 scrollbar-thin">
+              {stores.map((store) => (
+                <div
+                  key={store.id}
+                  onClick={() => setSelectedMapStoreId(store.id)}
+                  className={`rounded-2xl transition-all ${
+                    selectedMapStoreId === store.id ? 'ring-2 ring-amber-500 ring-offset-2' : ''
+                  }`}
+                >
+                  <StoreCard
+                    store={store}
+                    onRate={handleOpenRateModal}
+                    onViewReviews={handleOpenReviewsModal}
+                    onLocateOnMap={handleLocateOnMap}
+                    currentUserRole={user?.role}
+                    isAuthenticated={!!user}
+                    onLoginPrompt={handleLoginPrompt}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Right Column: Sticky Interactive Map */}
+            <div className="lg:col-span-7 sticky top-24">
+              <StoreMap
+                stores={stores}
+                selectedStoreId={selectedMapStoreId}
+                onSelectStore={(st) => setSelectedMapStoreId(st.id)}
+                onOpenRating={handleOpenRateModal}
+                onOpenReviews={handleOpenReviewsModal}
+                heightClass="h-[750px]"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* View Mode: GRID */}
+        {!isLoading && stores.length > 0 && viewMode === 'grid' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stores.map((store) => (
               <StoreCard
@@ -245,6 +410,7 @@ export default function HomePage() {
                 store={store}
                 onRate={handleOpenRateModal}
                 onViewReviews={handleOpenReviewsModal}
+                onLocateOnMap={handleLocateOnMap}
                 currentUserRole={user?.role}
                 isAuthenticated={!!user}
                 onLoginPrompt={handleLoginPrompt}
@@ -262,7 +428,7 @@ export default function HomePage() {
         onSuccess={handleRatingSuccess}
       />
 
-      {/* Community Reviews Modal */}
+      {/* Community Reviews & Gallery Modal */}
       <ReviewsModal
         store={selectedReviewStore}
         isOpen={isReviewsModalOpen}

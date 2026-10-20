@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateStoreDto {
   @IsString()
@@ -15,4 +23,17 @@ export class CreateStoreDto {
   @IsString()
   @IsNotEmpty({ message: 'Store category is required' })
   category?: string;
+
+  @IsOptional()
+  @IsNumber({}, { message: 'Latitude must be a valid number' })
+  latitude?: number;
+
+  @IsOptional()
+  @IsNumber({}, { message: 'Longitude must be a valid number' })
+  longitude?: number;
+
+  @IsOptional()
+  @IsArray({ message: 'Photos must be an array of image URLs' })
+  @IsString({ each: true, message: 'Each photo must be a valid string URL' })
+  photos?: string[];
 }

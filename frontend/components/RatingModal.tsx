@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Store } from '@/types';
 import StarRating from './StarRating';
-import { X, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, Loader2, Camera, Upload, Trash2, Plus } from 'lucide-react';
 import { api } from '@/lib/api';
 
 interface RatingModalProps {
@@ -21,6 +21,9 @@ export default function RatingModal({
 }: RatingModalProps) {
   const [selectedRating, setSelectedRating] = useState<number>(5);
   const [reviewText, setReviewText] = useState<string>('');
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [photoUrlInput, setPhotoUrlInput] = useState<string>('');
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -30,24 +33,58 @@ export default function RatingModal({
       setSelectedRating(store.userRating || 5);
       setError(null);
       setSuccessMessage(null);
+      setPhotoUrlInput('');
 
-      // Fetch user's previous review text if available
+      // Fetch user's previous review text and photos if available
       api.ratings
         .getMyRatingForStore(store.id)
         .then((data) => {
-          if (data && data.review) {
-            setReviewText(data.review);
+          if (data) {
+            setReviewText(data.review || '');
+            setPhotos(data.photos || []);
           } else {
             setReviewText('');
+            setPhotos([]);
           }
         })
-        .catch(() => setReviewText(''));
+        .catch(() => {
+          setReviewText('');
+          setPhotos([]);
+        });
     }
   }, [store, isOpen]);
 
   if (!isOpen || !store) return null;
 
   const isUpdating = store.userRating !== null && store.userRating !== undefined;
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    setError(null);
+    try {
+      const fileList = Array.from(files);
+      const res = await api.uploads.uploadFiles(fileList);
+      setPhotos((prev) => [...prev, ...res.urls]);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to upload photo');
+    } finally {
+      setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleAddPhotoUrl = () => {
+    if (!photoUrlInput.trim()) return;
+    setPhotos((prev) => [...prev, photoUrlInput.trim()]);
+    setPhotoUrlInput('');
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,11 +99,11 @@ export default function RatingModal({
 
     try {
       if (isUpdating) {
-        await api.ratings.update(store.id, selectedRating, reviewText);
-        setSuccessMessage('Your rating and review have been updated successfully!');
+        await api.ratings.update(store.id, selectedRating, reviewText, photos);
+        setSuccessMessage('Your rating, review, and photos have been updated successfully!');
       } else {
-        await api.ratings.submit(store.id, selectedRating, reviewText);
-        setSuccessMessage('Thank you! Your rating and review have been submitted.');
+        await api.ratings.submit(store.id, selectedRating, reviewText, photos);
+        setSuccessMessage('Thank you! Your rating, review, and photos have been submitted.');
       }
 
       setTimeout(() => {
@@ -175,11 +212,82 @@ export default function RatingModal({
             />
           </div>
 
+          {/* Photos Upload & Attachment Section */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                <Camera className="w-3.5 h-3.5 text-amber-500" />
+                <span>Shop Photos</span>
+                <span className="text-zinc-400 font-normal">({photos.length})</span>
+              </label>
+              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 transition">
+                <Upload className="w-3 h-3" />
+                <span>Upload Photos</span>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/png,image/jpeg,image/webp,image/jpg"
+                  onChange={handleFileSelect}
+                  disabled={isUploading || isSubmitting}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {/* Photo Previews */}
+            {photos.length > 0 && (
+              <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-thin">
+                {photos.map((url, idx) => (
+                  <div
+                    key={idx}
+                    className="relative group w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700 bg-zinc-100"
+                  >
+                    <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePhoto(idx)}
+                      title="Remove photo"
+                      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                    >
+                      <Trash2 className="w-4 h-4 text-rose-400" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {isUploading && (
+              <div className="flex items-center gap-2 p-2 bg-amber-50/60 dark:bg-amber-950/30 rounded-xl text-amber-700 dark:text-amber-300 text-xs">
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Uploading photos...</span>
+              </div>
+            )}
+
+            {/* Direct URL input fallback */}
+            <div className="flex items-center gap-2">
+              <input
+                type="url"
+                value={photoUrlInput}
+                onChange={(e) => setPhotoUrlInput(e.target.value)}
+                placeholder="Or paste an image URL (https://...)"
+                className="flex-1 px-3 py-1.5 text-xs rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              />
+              <button
+                type="button"
+                onClick={handleAddPhotoUrl}
+                disabled={!photoUrlInput.trim()}
+                className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 disabled:opacity-40 transition"
+              >
+                Add URL
+              </button>
+            </div>
+          </div>
+
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isUploading}
               className="px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
             >
               Cancel

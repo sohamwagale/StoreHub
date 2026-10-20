@@ -23,6 +23,9 @@ export class StoresService {
       name: createStoreDto.name.trim(),
       address: createStoreDto.address.trim(),
       category: createStoreDto.category ? createStoreDto.category.trim() : 'General',
+      latitude: createStoreDto.latitude ?? 40.7128,
+      longitude: createStoreDto.longitude ?? -74.0060,
+      photos: createStoreDto.photos || [],
       ownerId: new Types.ObjectId(ownerId),
     });
     return store.save();
@@ -92,6 +95,9 @@ export class StoresService {
         name: store.name,
         address: store.address,
         category: (store as any).category || 'General',
+        latitude: (store as any).latitude ?? 40.7128,
+        longitude: (store as any).longitude ?? -74.0060,
+        photos: (store as any).photos || [],
         ownerId: store.ownerId.toString(),
         averageRating: stats ? stats.averageRating : null,
         totalRatings: stats ? stats.totalRatings : 0,
@@ -148,6 +154,9 @@ export class StoresService {
       name: store.name,
       address: store.address,
       category: (store as any).category || 'General',
+      latitude: (store as any).latitude ?? 40.7128,
+      longitude: (store as any).longitude ?? -74.0060,
+      photos: (store as any).photos || [],
       ownerId: store.ownerId.toString(),
       averageRating: stats ? Math.round(stats.averageRating * 10) / 10 : null,
       totalRatings: stats ? stats.totalRatings : 0,
@@ -222,6 +231,9 @@ export class StoresService {
           name: store.name,
           address: store.address,
           category: (store as any).category || 'General',
+          latitude: (store as any).latitude ?? 40.7128,
+          longitude: (store as any).longitude ?? -74.0060,
+          photos: (store as any).photos || [],
           averageRating:
             storeStats.averageRating !== null
               ? Math.round(storeStats.averageRating * 10) / 10
@@ -238,6 +250,77 @@ export class StoresService {
       stores: storeResults,
       // Provide primary store summary directly as required by spec:
       primaryStore: storeResults[0] ?? null,
+    };
+  }
+
+  async addPhotos(storeId: string, photos: string[]): Promise<StoreDocument> {
+    if (!Types.ObjectId.isValid(storeId)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const store = await this.storeModel.findById(storeId).exec();
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const validPhotos = photos.map((p) => p.trim()).filter(Boolean);
+    if (!store.photos) {
+      store.photos = [];
+    }
+    store.photos.push(...validPhotos);
+    return store.save();
+  }
+
+  async getStoreGallery(storeId: string) {
+    if (!Types.ObjectId.isValid(storeId)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const store = await this.storeModel.findById(storeId).lean().exec();
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const ratingsWithPhotos = await this.ratingModel
+      .find({
+        storeId: new Types.ObjectId(storeId),
+        photos: { $exists: true, $not: { $size: 0 } },
+      })
+      .populate('userId', 'name')
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec();
+
+    const customerPhotos: Array<{
+      url: string;
+      userName: string;
+      rating: number;
+      review: string;
+      createdAt: Date;
+    }> = [];
+
+    ratingsWithPhotos.forEach((r: any) => {
+      if (Array.isArray(r.photos)) {
+        r.photos.forEach((photoUrl: string) => {
+          if (photoUrl) {
+            customerPhotos.push({
+              url: photoUrl,
+              userName: r.userId?.name || 'Verified Customer',
+              rating: r.rating,
+              review: r.review || '',
+              createdAt: r.createdAt,
+            });
+          }
+        });
+      }
+    });
+
+    return {
+      storeId,
+      storeName: store.name,
+      ownerPhotos: store.photos || [],
+      customerPhotos,
+      totalPhotos: (store.photos ? store.photos.length : 0) + customerPhotos.length,
     };
   }
 

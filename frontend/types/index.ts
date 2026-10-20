@@ -17,6 +17,9 @@ export interface Store {
   name: string;
   address: string;
   category?: string;
+  latitude?: number;
+  longitude?: number;
+  photos?: string[];
   ownerId: string;
   averageRating: number | null;
   totalRatings: number;
@@ -32,6 +35,7 @@ export interface Rating {
   userId: string;
   rating: number;
   review?: string;
+  photos?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -41,6 +45,7 @@ export interface MyRating {
   _id?: string;
   rating: number;
   review?: string;
+  photos?: string[];
   createdAt: string;
   updatedAt: string;
   store: {
@@ -48,6 +53,7 @@ export interface MyRating {
     name: string;
     address: string;
     category?: string;
+    photos?: string[];
   } | null;
 }
 
@@ -56,6 +62,7 @@ export interface StoreReview {
   _id?: string;
   rating: number;
   review: string;
+  photos?: string[];
   createdAt: string;
   updatedAt?: string;
   user: {
@@ -76,12 +83,31 @@ export interface OwnerRatingEntry {
   };
 }
 
+export interface CustomerPhoto {
+  url: string;
+  userName: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+}
+
+export interface StoreGallery {
+  storeId: string;
+  storeName: string;
+  ownerPhotos: string[];
+  customerPhotos: CustomerPhoto[];
+  totalPhotos: number;
+}
+
 export interface OwnerStoreData {
   id: string;
   _id?: string;
   name: string;
   address: string;
   category?: string;
+  latitude?: number;
+  longitude?: number;
+  photos?: string[];
   averageRating: number | null;
   totalRatings: number;
   ratings: OwnerRatingEntry[];

@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsArray, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class UpdateRatingDto {
   @IsInt({ message: 'Rating must be an integer' })
@@ -10,4 +10,9 @@ export class UpdateRatingDto {
   @IsString()
   @MaxLength(1000, { message: 'Review cannot exceed 1000 characters' })
   review?: string;
+
+  @IsOptional()
+  @IsArray({ message: 'Photos must be an array of image URLs' })
+  @IsString({ each: true, message: 'Each photo must be a valid string URL' })
+  photos?: string[];
 }

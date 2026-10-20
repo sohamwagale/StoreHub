@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { StoresModule } from './stores/stores.module.js';
 import { RatingsModule } from './ratings/ratings.module.js';
 import { SeedModule } from './seed/seed.module.js';
+import { UploadsModule } from './uploads/uploads.module.js';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SeedModule } from './seed/seed.module.js';
     AuthModule,
     StoresModule,
     RatingsModule,
+    UploadsModule,
     SeedModule,
   ],
 })

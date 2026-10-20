@@ -40,6 +40,12 @@ export class Rating {
   })
   review?: string;
 
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  photos: string[];
+
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -20,6 +20,10 @@ import {
   Mail,
   User as UserIcon,
   RefreshCw,
+  Camera,
+  Upload,
+  CheckCircle,
+  Navigation,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,6 +34,8 @@ export default function OwnerDashboardPage() {
   const [stores, setStores] = useState<OwnerStoreData[]>([]);
   const [selectedStoreIndex, setSelectedStoreIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState<boolean>(false);
+  const [photoSuccessMsg, setPhotoSuccessMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const fetchDashboard = useCallback(async () => {
@@ -48,6 +54,28 @@ export default function OwnerDashboardPage() {
       setIsLoading(false);
     }
   }, []);
+
+  const handleUploadOwnerPhotos = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    const activeStore = stores[selectedStoreIndex];
+    if (!files || files.length === 0 || !activeStore) return;
+
+    setIsUploadingPhoto(true);
+    setError(null);
+    setPhotoSuccessMsg(null);
+    try {
+      const fileList = Array.from(files);
+      const res = await api.uploads.uploadFiles(fileList);
+      await api.stores.addPhotos(activeStore.id, res.urls);
+      setPhotoSuccessMsg('Store photos uploaded successfully!');
+      await fetchDashboard();
+    } catch (err: any) {
+      setError(err?.message || 'Failed to upload photos');
+    } finally {
+      setIsUploadingPhoto(false);
+      e.target.value = '';
+    }
+  };
 
   useEffect(() => {
     if (!isAuthLoading) {
@@ -139,6 +167,13 @@ export default function OwnerDashboardPage() {
         </div>
       )}
 
+      {photoSuccessMsg && (
+        <div className="mb-6 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-start gap-3 text-emerald-700 dark:text-emerald-300 text-sm">
+          <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
+          <p>{photoSuccessMsg}</p>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="flex justify-center py-20">
           <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
@@ -180,12 +215,17 @@ export default function OwnerDashboardPage() {
             <>
               {/* Store Summary Metrics Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Store Profile Card */}
+                {/* Store Profile Card with GPS */}
                 <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
                   <div>
-                    <span className="text-[11px] font-semibold tracking-wider uppercase text-indigo-600 dark:text-indigo-400">
-                      Store Details
-                    </span>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[11px] font-semibold tracking-wider uppercase text-indigo-600 dark:text-indigo-400">
+                        Store Details
+                      </span>
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                        {activeStore.category || 'General'}
+                      </span>
+                    </div>
                     <h3 className="text-xl font-extrabold text-zinc-900 dark:text-white mt-1">
                       {activeStore.name}
                     </h3>
@@ -193,11 +233,23 @@ export default function OwnerDashboardPage() {
                       <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
                       <span>{activeStore.address}</span>
                     </div>
+                    {activeStore.latitude !== undefined && activeStore.longitude !== undefined && (
+                      <div className="flex items-center gap-2 mt-2 pt-2 border-t border-zinc-100 dark:border-zinc-800 text-[11px] font-mono text-indigo-600 dark:text-indigo-400">
+                        <Navigation className="w-3 h-3" />
+                        <span>GPS: {activeStore.latitude.toFixed(4)}°, {activeStore.longitude.toFixed(4)}°</span>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
-                    <span>Store ID:</span>
+                    <Link
+                      href="/"
+                      className="text-xs font-semibold text-indigo-600 hover:underline flex items-center gap-1"
+                    >
+                      <Navigation className="w-3 h-3" />
+                      <span>Locate on Map</span>
+                    </Link>
                     <span className="font-mono text-[11px] bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">
-                      {activeStore.id.slice(-8)}
+                      ID: {activeStore.id.slice(-6)}
                     </span>
                   </div>
                 </div>
@@ -243,6 +295,65 @@ export default function OwnerDashboardPage() {
                     <span>{activeStore.ratings.length} verified customer reviews</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Store Photos Management Box */}
+              <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    <Camera className="w-5 h-5 text-indigo-600" />
+                    <div>
+                      <h3 className="text-base font-bold text-zinc-900 dark:text-white">
+                        Shop Photos & Visual Showcase
+                      </h3>
+                      <p className="text-xs text-zinc-500">
+                        Upload high-resolution store photos to attract more shoppers and raters.
+                      </p>
+                    </div>
+                  </div>
+
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition active:scale-95 shrink-0 self-start sm:self-auto">
+                    {isUploadingPhoto ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <span>{isUploadingPhoto ? 'Uploading...' : 'Upload Shop Photos'}</span>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleUploadOwnerPhotos}
+                      disabled={isUploadingPhoto}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                {activeStore.photos && activeStore.photos.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-1">
+                    {activeStore.photos.map((url, pIdx) => (
+                      <div
+                        key={pIdx}
+                        className="group relative aspect-square rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100"
+                      >
+                        <img
+                          src={url}
+                          alt={`Store photo ${pIdx + 1}`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/60 text-[9px] font-bold text-white backdrop-blur-xs">
+                          #{pIdx + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-zinc-400">
+                    <Camera className="w-8 h-8 mx-auto mb-1 opacity-40" />
+                    <p className="text-xs">No photos uploaded for this store yet.</p>
+                  </div>
+                )}
               </div>
 
               {/* Customer Ratings Table / List */}
