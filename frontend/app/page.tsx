@@ -7,7 +7,28 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import StoreCard from '@/components/StoreCard';
 import RatingModal from '@/components/RatingModal';
-import { Search, Store as StoreIcon, Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
+import {
+  Search,
+  Store as StoreIcon,
+  Sparkles,
+  AlertCircle,
+  RefreshCw,
+  ShoppingBag,
+  Building2,
+  Shirt,
+  Laptop,
+  Coffee,
+  LayoutGrid,
+} from 'lucide-react';
+
+const CATEGORIES = [
+  { id: 'All', label: 'All Stores', icon: LayoutGrid },
+  { id: 'Grocery', label: 'Grocery', icon: ShoppingBag },
+  { id: 'Malls', label: 'Malls', icon: Building2 },
+  { id: 'Clothes', label: 'Clothes', icon: Shirt },
+  { id: 'Electronics', label: 'Electronics', icon: Laptop },
+  { id: 'Bakery', label: 'Bakery & Cafe', icon: Coffee },
+];
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -15,6 +36,7 @@ export default function HomePage() {
 
   const [stores, setStores] = useState<Store[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,11 +44,11 @@ export default function HomePage() {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const fetchStores = useCallback(async (query?: string) => {
+  const fetchStores = useCallback(async (query?: string, category?: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await api.stores.getAll(query);
+      const data = await api.stores.getAll(query, category);
       setStores(data);
     } catch (err: any) {
       setError(err?.message || 'Failed to load stores. Please check server connection.');
@@ -37,11 +59,11 @@ export default function HomePage() {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchStores(searchQuery);
-    }, 300);
+      fetchStores(searchQuery, selectedCategory);
+    }, 250);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, fetchStores]);
+  }, [searchQuery, selectedCategory, fetchStores]);
 
   const handleOpenRateModal = (store: Store) => {
     setSelectedStore(store);
@@ -53,22 +75,22 @@ export default function HomePage() {
   };
 
   const handleRatingSuccess = () => {
-    fetchStores(searchQuery);
+    fetchStores(searchQuery, selectedCategory);
   };
 
   return (
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Hero Section */}
-      <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+      <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-100/80 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 text-xs font-semibold mb-4 border border-amber-200 dark:border-amber-800/60 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>Real Opinions • Transparent Ratings</span>
+          <span>Real Opinions • Categorized Directory • Transparent Ratings</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
           Find top-rated stores & share your honest reviews.
         </h1>
         <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-          Explore registered stores, view community ratings from verified shoppers, and submit your personal 1–5 star ratings anytime.
+          Explore stores across popular categories like Groceries, Shopping Malls, Fashion Apparel, and Tech. Submit your verified 1–5 star ratings anytime.
         </p>
 
         {/* Search Bar */}
@@ -79,7 +101,7 @@ export default function HomePage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search stores by name or location..."
+              placeholder="Search by store name, address, or category..."
               className="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400"
             />
             {searchQuery && (
@@ -92,6 +114,30 @@ export default function HomePage() {
             )}
           </div>
         </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex items-center justify-center gap-2 mt-6 overflow-x-auto pb-2 scrollbar-none">
+          {CATEGORIES.map((cat) => {
+            const IconComponent = cat.icon;
+            const isSelected = selectedCategory === cat.id;
+
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+                  isSelected
+                    ? 'bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 shadow-md shadow-zinc-900/10 dark:shadow-amber-500/20 scale-105'
+                    : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:border-amber-400 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white'
+                }`}
+              >
+                <IconComponent className="w-3.5 h-3.5" />
+                <span>{cat.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Main Content Area */}
@@ -100,7 +146,11 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <StoreIcon className="w-5 h-5 text-amber-500" />
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-              {searchQuery ? `Search Results for "${searchQuery}"` : 'All Registered Stores'}
+              {selectedCategory !== 'All'
+                ? `${selectedCategory} Stores`
+                : searchQuery
+                ? `Results for "${searchQuery}"`
+                : 'All Stores'}
             </h2>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
               {stores.length}
@@ -108,7 +158,7 @@ export default function HomePage() {
           </div>
 
           <button
-            onClick={() => fetchStores(searchQuery)}
+            onClick={() => fetchStores(searchQuery, selectedCategory)}
             disabled={isLoading}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
             title="Refresh store listing"
@@ -153,19 +203,24 @@ export default function HomePage() {
               <StoreIcon className="w-7 h-7" />
             </div>
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
-              {searchQuery ? 'No matching stores found' : 'No stores registered yet'}
+              {searchQuery || selectedCategory !== 'All'
+                ? 'No matching stores found'
+                : 'No stores registered yet'}
             </h3>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1">
-              {searchQuery
-                ? `We couldn't find any stores matching "${searchQuery}". Try a different keyword.`
+              {searchQuery || selectedCategory !== 'All'
+                ? `No stores matched your selected filters. Try choosing a different category or clearing search terms.`
                 : 'Registered stores will appear here once owners add them.'}
             </p>
-            {searchQuery && (
+            {(searchQuery || selectedCategory !== 'All') && (
               <button
-                onClick={() => setSearchQuery('')}
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('All');
+                }}
                 className="mt-4 px-4 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 rounded-xl hover:bg-amber-100 transition-colors"
               >
-                Clear Search
+                Reset Filters
               </button>
             )}
           </div>

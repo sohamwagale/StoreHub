@@ -113,8 +113,13 @@ class ApiClient {
 
   // Store Endpoints
   stores = {
-    getAll: (search?: string): Promise<Store[]> => {
-      const query = search ? `?search=${encodeURIComponent(search.trim())}` : '';
+    getAll: (search?: string, category?: string): Promise<Store[]> => {
+      const params = new URLSearchParams();
+      if (search && search.trim()) params.append('search', search.trim());
+      if (category && category.trim() && category.toLowerCase() !== 'all') {
+        params.append('category', category.trim());
+      }
+      const query = params.toString() ? `?${params.toString()}` : '';
       return this.request<Store[]>(`/stores${query}`);
     },
 

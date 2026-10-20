@@ -84,77 +84,36 @@ export default function UserDashboardPage() {
 
   return (
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Profile Overview Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200/80 dark:border-zinc-800 shadow-sm mb-10">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-zinc-100 dark:border-zinc-800">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20 text-2xl font-bold">
-              {user.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
-                  {user.name}
-                </h1>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                  {user.role}
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                <span className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                  {user.email}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-                  {user.address}
-                </span>
-              </div>
-            </div>
+      {/* Dashboard Clean Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 text-xs font-semibold mb-2">
+            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+            <span>Shopper Feedback Hub</span>
           </div>
-
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 transition-colors"
-          >
-            <span>Explore Stores</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </Link>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
+            My Submitted Ratings
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            Review and update your 1–5 star ratings for stores you have visited
+          </p>
         </div>
 
-        {/* Stats strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6">
-          <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              Submitted Ratings
-            </span>
-            <div className="text-2xl font-extrabold text-zinc-900 dark:text-white mt-1">
-              {myRatings.length}
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              Average Score Given
-            </span>
-            <div className="text-2xl font-extrabold text-amber-500 mt-1">
-              {myRatings.length > 0
-                ? (
-                    myRatings.reduce((acc, curr) => acc + curr.rating, 0) /
-                    myRatings.length
-                  ).toFixed(1)
-                : 'N/A'}
-            </div>
-          </div>
-
-          <div className="col-span-2 sm:col-span-1 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              Account Status
-            </span>
-            <div className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
-              Verified Shopper
-            </div>
-          </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/profile"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm"
+          >
+            <UserIcon className="w-3.5 h-3.5 text-zinc-500" />
+            <span>My Profile</span>
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/20 transition-all"
+          >
+            <span>Rate More Stores</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
 

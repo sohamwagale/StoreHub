@@ -22,18 +22,24 @@ export class StoresService {
     const store = new this.storeModel({
       name: createStoreDto.name.trim(),
       address: createStoreDto.address.trim(),
+      category: createStoreDto.category ? createStoreDto.category.trim() : 'General',
       ownerId: new Types.ObjectId(ownerId),
     });
     return store.save();
   }
 
-  async findAll(search?: string, currentUserId?: string) {
+  async findAll(search?: string, category?: string, currentUserId?: string) {
     const filter: any = {};
     if (search && search.trim()) {
       filter.$or = [
         { name: { $regex: search.trim(), $options: 'i' } },
         { address: { $regex: search.trim(), $options: 'i' } },
+        { category: { $regex: search.trim(), $options: 'i' } },
       ];
+    }
+
+    if (category && category.trim() && category.toLowerCase() !== 'all') {
+      filter.category = { $regex: new RegExp(`^${category.trim()}$`, 'i') };
     }
 
     const stores = await this.storeModel.find(filter).sort({ createdAt: -1 }).lean().exec();
@@ -85,6 +91,7 @@ export class StoresService {
         _id: sId,
         name: store.name,
         address: store.address,
+        category: (store as any).category || 'General',
         ownerId: store.ownerId.toString(),
         averageRating: stats ? stats.averageRating : null,
         totalRatings: stats ? stats.totalRatings : 0,
@@ -140,6 +147,7 @@ export class StoresService {
       _id: store._id.toString(),
       name: store.name,
       address: store.address,
+      category: (store as any).category || 'General',
       ownerId: store.ownerId.toString(),
       averageRating: stats ? Math.round(stats.averageRating * 10) / 10 : null,
       totalRatings: stats ? stats.totalRatings : 0,
@@ -213,6 +221,7 @@ export class StoresService {
           _id: storeId.toString(),
           name: store.name,
           address: store.address,
+          category: (store as any).category || 'General',
           averageRating:
             storeStats.averageRating !== null
               ? Math.round(storeStats.averageRating * 10) / 10

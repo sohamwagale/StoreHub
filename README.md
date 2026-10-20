@@ -28,15 +28,16 @@ The platform provides a transparent, secure environment where registered shopper
 
 ### For Normal Users (`USER`)
 - **Secure Registration & Login**: Validated registration with strict password policies and bcrypt hashing.
-- **Store Directory & Live Search**: Case-insensitive instant search by store name or address.
+- **Store Directory, Categories & Live Search**: Filter stores by category (Grocery, Malls, Clothes, Electronics, Bakery) with live case-insensitive search.
 - **Star Rating System**: Intuitive 1–5 star interactive rating UI.
 - **One Rating Per Store**: Automatic enforcement of single rating per user/store with conflict prevention.
 - **Update Existing Ratings**: Edit previously submitted ratings at any time.
-- **Personal Shopper Dashboard**: View profile details, review history, and update ratings directly.
+- **Personal Shopper Dashboard (`/dashboard`)**: Dedicated feedback hub focused purely on submitted ratings without cluttering personal user data.
+- **Dedicated Profile Page (`/profile`)**: Separate page displaying safe profile information, address, account security status, and review metrics.
 
 ### For Store Owners (`OWNER`)
 - **Role-based Security**: Strict backend RBAC enforcement preventing unauthorized user access.
-- **Store Performance Metrics**: Real-time average rating calculation and total review counts.
+- **Store Performance Metrics**: Real-time average rating calculation and total review counts across categorized stores.
 - **Customer Feedback Breakdown**: Detailed table displaying customer name, email, rating, and submission timestamp.
 - **Owner Data Isolation**: Owners can only view data and customer ratings for stores they own.
 

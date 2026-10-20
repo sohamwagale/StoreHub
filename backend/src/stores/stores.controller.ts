@@ -26,9 +26,10 @@ export class StoresController {
   @UseGuards(OptionalJwtAuthGuard)
   async findAll(
     @Query('search') search?: string,
+    @Query('category') category?: string,
     @CurrentUser('id') currentUserId?: string,
   ) {
-    return this.storesService.findAll(search, currentUserId);
+    return this.storesService.findAll(search, category, currentUserId);
   }
 
   @Get(':id')

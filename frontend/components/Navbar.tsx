@@ -71,10 +71,28 @@ export default function Navbar() {
               </Link>
             )}
 
+            {user && (
+              <Link
+                href="/profile"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  pathname === '/profile'
+                    ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30'
+                    : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                }`}
+              >
+                <UserIcon className="w-4 h-4" />
+                <span>Profile</span>
+              </Link>
+            )}
+
             {/* Auth Actions */}
             {user ? (
               <div className="flex items-center gap-3 pl-2 sm:pl-4 border-l border-zinc-200 dark:border-zinc-800">
-                <div className="hidden md:flex flex-col text-right">
+                <Link
+                  href="/profile"
+                  className="hidden md:flex flex-col text-right hover:opacity-80 transition-opacity"
+                  title="View your profile"
+                >
                   <span className="text-xs font-semibold text-zinc-900 dark:text-white truncate max-w-[150px]">
                     {user.name}
                   </span>
@@ -86,7 +104,7 @@ export default function Navbar() {
                     />
                     {user.role}
                   </span>
-                </div>
+                </Link>
                 <button
                   onClick={logout}
                   className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors border border-rose-200 dark:border-rose-900/40"

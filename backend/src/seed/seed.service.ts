@@ -60,22 +60,39 @@ export class SeedService implements OnApplicationBootstrap {
         role: UserRole.USER,
       });
 
-      // 3. Create Stores owned by Owner
+      // 3. Create Stores owned by Owner with categories
       const store1 = await this.storeModel.create({
         name: 'Green Valley Organic Market',
         address: '123 Market St, San Francisco, CA',
+        category: 'Grocery',
         ownerId: owner._id,
       });
 
       const store2 = await this.storeModel.create({
-        name: 'Urban Pulse Tech & Coffee',
-        address: '456 Innovation Blvd, Seattle, WA',
+        name: 'Metro Grand Shopping Center',
+        address: '800 Downtown Center Way, San Francisco, CA',
+        category: 'Malls',
         ownerId: owner._id,
       });
 
       const store3 = await this.storeModel.create({
-        name: 'Sunrise Artisan Bakery & Deli',
+        name: 'Velvet & Thread Apparel Co.',
+        address: '240 Fashion Avenue, Los Angeles, CA',
+        category: 'Clothes',
+        ownerId: owner._id,
+      });
+
+      const store4 = await this.storeModel.create({
+        name: 'Urban Pulse Tech & Gadgets',
+        address: '456 Innovation Blvd, Seattle, WA',
+        category: 'Electronics',
+        ownerId: owner._id,
+      });
+
+      const store5 = await this.storeModel.create({
+        name: 'Sunrise Artisan Bakery & Cafe',
         address: '789 Harbor View Way, San Diego, CA',
+        category: 'Bakery',
         ownerId: owner._id,
       });
 
@@ -100,6 +117,16 @@ export class SeedService implements OnApplicationBootstrap {
           userId: bob._id,
           storeId: store2._id,
           rating: 5,
+        },
+        {
+          userId: alice._id,
+          storeId: store3._id,
+          rating: 5,
+        },
+        {
+          userId: bob._id,
+          storeId: store4._id,
+          rating: 4,
         },
       ]);
 

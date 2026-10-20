@@ -11,4 +11,8 @@ export class CreateStoreDto {
   @IsNotEmpty({ message: 'Store address is required' })
   @MaxLength(400, { message: 'Store address cannot exceed 400 characters' })
   address: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Store category is required' })
+  category?: string;
 }

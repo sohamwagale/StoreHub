@@ -16,6 +16,7 @@ export interface Store {
   _id?: string;
   name: string;
   address: string;
+  category?: string;
   ownerId: string;
   averageRating: number | null;
   totalRatings: number;
@@ -64,6 +65,7 @@ export interface OwnerStoreData {
   _id?: string;
   name: string;
   address: string;
+  category?: string;
   averageRating: number | null;
   totalRatings: number;
   ratings: OwnerRatingEntry[];

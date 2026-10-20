@@ -268,6 +268,14 @@ describe('Store Rating Platform API Tests', () => {
       const store1 = res.body.find((s: any) => s.name === 'Green Valley Organic Market');
       expect(store1.userRating).toBe(5); // Alice rated store 1 with 5 in seed
     });
+
+    it('should filter stores by category', async () => {
+      const res = await request(app.getHttpServer()).get('/stores?category=Grocery');
+
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBeGreaterThanOrEqual(1);
+      expect(res.body.every((s: any) => s.category.toLowerCase() === 'grocery')).toBe(true);
+    });
   });
 
   describe('3. Ratings APIs', () => {

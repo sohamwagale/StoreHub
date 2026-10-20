@@ -28,6 +28,14 @@ export class Store {
   })
   ownerId: Types.ObjectId;
 
+  @Prop({
+    type: String,
+    trim: true,
+    default: 'General',
+    index: true,
+  })
+  category: string;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
