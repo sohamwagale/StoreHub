@@ -179,7 +179,7 @@ export default function ProfilePage() {
           )}
 
           <Link
-            href="/"
+            href="/stores"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors"
           >
             <span>Explore Stores</span>
