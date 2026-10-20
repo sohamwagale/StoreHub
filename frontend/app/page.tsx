@@ -61,102 +61,113 @@ export default function LandingPage() {
 
   return (
     <div className="flex-1 flex flex-col w-full">
-      {/* 1. Hero Section with Glow */}
-      <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 border-b border-zinc-200/80 dark:border-zinc-800/60 bg-gradient-to-b from-amber-500/5 via-orange-500/5 to-transparent">
-        {/* Glow Spheres */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-500/15 via-orange-500/10 to-rose-500/15 rounded-full blur-3xl pointer-events-none -z-10" />
+      {/* 1. Hero Section with Glow - Only visible when logged out */}
+      {!isAuthenticated ? (
+        <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 border-b border-zinc-200/80 dark:border-zinc-800/60 bg-gradient-to-b from-amber-500/5 via-orange-500/5 to-transparent">
+          {/* Glow Spheres */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-500/15 via-orange-500/10 to-rose-500/15 rounded-full blur-3xl pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Welcome back banner for authenticated users */}
-          {isAuthenticated && user && (
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-6 animate-in fade-in">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Welcome back, {user.name}!</span>
-              <Link
-                href={user.role === 'OWNER' ? '/owner' : '/dashboard'}
-                className="underline hover:text-emerald-900 dark:hover:text-emerald-200 ml-1 font-bold"
-              >
-                Go to {user.role === 'OWNER' ? 'Owner Portal' : 'My Ratings'} →
-              </Link>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100/80 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-900/60 text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>The Verified Community Store Rating Platform</span>
             </div>
-          )}
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100/80 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-900/60 text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            <span>The Verified Community Store Rating Platform</span>
-          </div>
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white max-w-4xl mx-auto leading-[1.1]">
+              Real Ratings. Honest Reviews.{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">
+                Better Local Shopping.
+              </span>
+            </h1>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white max-w-4xl mx-auto leading-[1.1]">
-            Real Ratings. Honest Reviews.{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">
-              Better Local Shopping.
-            </span>
-          </h1>
+            {/* Subtitle */}
+            <p className="mt-6 text-base sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+              Discover top-rated local grocery shops, malls, fashion boutiques, and electronics with verified customer feedback, exact GPS coordinates, and real community photos.
+            </p>
 
-          {/* Subtitle */}
-          <p className="mt-6 text-base sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Discover top-rated local grocery shops, malls, fashion boutiques, and electronics with verified customer feedback, exact GPS coordinates, and real community photos.
-          </p>
-
-          {/* Primary Action Buttons */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 max-w-md sm:max-w-none mx-auto">
-            {/* Primary Guest Option: Continue Without Sign In */}
-            <Link
-              href="/stores"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 shadow-lg shadow-orange-500/25 transition-all transform hover:-translate-y-0.5 active:scale-95"
-            >
-              <Compass className="w-4 h-4" />
-              <span>Continue without sign in</span>
-              <ArrowRight className="w-4 h-4 ml-0.5" />
-            </Link>
-
-            {!isAuthenticated ? (
-              <>
-                <Link
-                  href="/register"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm"
-                >
-                  <UserPlus className="w-4 h-4 text-amber-500" />
-                  <span>Create Account</span>
-                </Link>
-
-                <Link
-                  href="/register?role=OWNER"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-all"
-                >
-                  <StoreIcon className="w-4 h-4 text-indigo-500" />
-                  <span>Register as Store Owner</span>
-                </Link>
-              </>
-            ) : (
+            {/* Primary Action Buttons */}
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 max-w-md sm:max-w-none mx-auto">
               <Link
                 href="/stores"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 shadow-lg shadow-orange-500/25 transition-all transform hover:-translate-y-0.5 active:scale-95"
+              >
+                <Compass className="w-4 h-4" />
+                <span>Continue without sign in</span>
+                <ArrowRight className="w-4 h-4 ml-0.5" />
+              </Link>
+
+              <Link
+                href="/register"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm"
               >
-                <span>Browse Store Directory</span>
+                <UserPlus className="w-4 h-4 text-amber-500" />
+                <span>Create Account</span>
               </Link>
-            )}
-          </div>
 
-          {/* Trust badges */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>100% Free & Open Guest Access</span>
+              <Link
+                href="/register?role=OWNER"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-all"
+              >
+                <StoreIcon className="w-4 h-4 text-indigo-500" />
+                <span>Register as Store Owner</span>
+              </Link>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>Verified 1-to-5 Star Single Rating Rule</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>Real Customer Photo Showcases</span>
+
+            {/* Trust badges */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>100% Free & Open Guest Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>Verified 1-to-5 Star Single Rating Rule</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>Real Customer Photo Showcases</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        /* Authenticated Clean Bar when user is logged in (No abstract hero) */
+        <section className="py-6 sm:py-8 bg-white dark:bg-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                  Logged in as {user?.role}
+                </span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
+                Welcome back, {user?.name}!
+              </h1>
+              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                Explore local store ratings, discover new favorites, or manage your feedback.
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5 self-stretch sm:self-auto">
+              <Link
+                href="/stores"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 transition shadow-sm"
+              >
+                <Compass className="w-3.5 h-3.5" />
+                <span>Explore Stores</span>
+              </Link>
+              <Link
+                href={user?.role === 'OWNER' ? '/owner' : '/dashboard'}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition"
+              >
+                <span>{user?.role === 'OWNER' ? 'Owner Portal' : 'My Ratings'}</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2. Top-Rated Stores Live Showcase */}
       <section className="py-16 sm:py-20 bg-zinc-50/50 dark:bg-zinc-900/30 border-b border-zinc-200/80 dark:border-zinc-800/60">
@@ -352,34 +363,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 4. Bottom Call To Action */}
-      <section className="py-16 bg-gradient-to-tr from-amber-500/10 via-orange-500/10 to-rose-500/10 border-t border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">
-            Start Exploring Verified Stores Today
-          </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
-            Browse without logging in, or sign up to rate your favorite stores and help your community find the best shopping in town.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Link
-              href="/stores"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-orange-500/20 transition-all transform hover:-translate-y-0.5"
-            >
-              <Compass className="w-4 h-4" />
-              <span>Explore Stores (No Sign In Required)</span>
-            </Link>
-            {!isAuthenticated && (
+      {/* 4. Bottom Call To Action - Only for logged-out visitors */}
+      {!isAuthenticated && (
+        <section className="py-16 bg-gradient-to-tr from-amber-500/10 via-orange-500/10 to-rose-500/10 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">
+              Start Exploring Verified Stores Today
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
+              Browse without logging in, or sign up to rate your favorite stores and help your community find the best shopping in town.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+              <Link
+                href="/stores"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-orange-500/20 transition-all transform hover:-translate-y-0.5"
+              >
+                <Compass className="w-4 h-4" />
+                <span>Explore Stores (No Sign In Required)</span>
+              </Link>
               <Link
                 href="/register"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all"
               >
                 <span>Join Community</span>
               </Link>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }
