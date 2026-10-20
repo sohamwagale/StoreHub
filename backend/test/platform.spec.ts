@@ -371,4 +371,103 @@ describe('Store Rating Platform API Tests', () => {
       }
     });
   });
+
+  describe('5. Review Voting (Like / Dislike)', () => {
+    let voterToken: string;
+    let targetRatingId: string;
+
+    beforeAll(async () => {
+      // Register a second distinct user to act as the voter
+      const res = await request(app.getHttpServer())
+        .post('/auth/register')
+        .send({
+          name: 'Voter User Reviewer',
+          email: 'voter@example.com',
+          address: '404 Second St, Seattle, WA',
+          password: 'Password@123',
+        });
+      voterToken = res.body.access_token;
+
+      // Submit a review with text from the main user
+      const reviewRes = await request(app.getHttpServer())
+        .patch(`/stores/${testStoreId}/ratings`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({ rating: 5, review: 'Phenomenal service and quality products!' });
+
+      expect(reviewRes.status).toBe(200);
+
+      // Fetch reviews to get the rating ID
+      const listRes = await request(app.getHttpServer())
+        .get(`/stores/${testStoreId}/reviews`)
+        .set('Authorization', `Bearer ${voterToken}`);
+
+      expect(listRes.status).toBe(200);
+      expect(listRes.body.length).toBeGreaterThanOrEqual(1);
+      targetRatingId = listRes.body[0].id;
+    });
+
+    it('should prevent a user from voting on their own review with 400 Bad Request', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/ratings/${targetRatingId}/vote`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({ type: 'LIKE' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toContain('You cannot vote on your own review');
+    });
+
+    it('should allow another user to like a review', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/ratings/${targetRatingId}/vote`)
+        .set('Authorization', `Bearer ${voterToken}`)
+        .send({ type: 'LIKE' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.likesCount).toBe(1);
+      expect(res.body.dislikesCount).toBe(0);
+      expect(res.body.userVote).toBe('LIKE');
+    });
+
+    it('should switch vote to dislike when voter chooses DISLIKE', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/ratings/${targetRatingId}/vote`)
+        .set('Authorization', `Bearer ${voterToken}`)
+        .send({ type: 'DISLIKE' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.likesCount).toBe(0);
+      expect(res.body.dislikesCount).toBe(1);
+      expect(res.body.userVote).toBe('DISLIKE');
+    });
+
+    it('should toggle vote off when voting same type again', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/ratings/${targetRatingId}/vote`)
+        .set('Authorization', `Bearer ${voterToken}`)
+        .send({ type: 'DISLIKE' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.likesCount).toBe(0);
+      expect(res.body.dislikesCount).toBe(0);
+      expect(res.body.userVote).toBeNull();
+    });
+
+    it('should reflect userVote and counts in GET /stores/:storeId/reviews', async () => {
+      // Like again
+      await request(app.getHttpServer())
+        .post(`/ratings/${targetRatingId}/like`)
+        .set('Authorization', `Bearer ${voterToken}`);
+
+      const res = await request(app.getHttpServer())
+        .get(`/stores/${testStoreId}/reviews`)
+        .set('Authorization', `Bearer ${voterToken}`);
+
+      expect(res.status).toBe(200);
+      const target = res.body.find((r: any) => r.id === targetRatingId);
+      expect(target).toBeDefined();
+      expect(target.likesCount).toBe(1);
+      expect(target.dislikesCount).toBe(0);
+      expect(target.userVote).toBe('LIKE');
+    });
+  });
 });

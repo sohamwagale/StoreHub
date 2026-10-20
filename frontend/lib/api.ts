@@ -186,6 +186,29 @@ class ApiClient {
     getMyRatings: (): Promise<MyRating[]> => {
       return this.request<MyRating[]>('/ratings/my-ratings');
     },
+
+    vote: (
+      ratingId: string,
+      type: 'LIKE' | 'DISLIKE',
+    ): Promise<{
+      ratingId: string;
+      likesCount: number;
+      dislikesCount: number;
+      userVote: 'LIKE' | 'DISLIKE' | null;
+    }> => {
+      return this.request(`/ratings/${ratingId}/vote`, {
+        method: 'POST',
+        body: JSON.stringify({ type }),
+      });
+    },
+
+    like: (ratingId: string): Promise<any> => {
+      return this.request(`/ratings/${ratingId}/like`, { method: 'POST' });
+    },
+
+    dislike: (ratingId: string): Promise<any> => {
+      return this.request(`/ratings/${ratingId}/dislike`, { method: 'POST' });
+    },
   };
 
   // Upload Endpoints

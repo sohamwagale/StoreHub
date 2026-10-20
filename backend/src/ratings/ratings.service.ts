@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ConflictException,
   ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -117,7 +118,7 @@ export class RatingsService {
     };
   }
 
-  async getStoreReviews(storeId: string) {
+  async getStoreReviews(storeId: string, currentUserId?: string) {
     if (!Types.ObjectId.isValid(storeId)) {
       throw new NotFoundException('Store not found');
     }
@@ -129,19 +130,93 @@ export class RatingsService {
       .lean()
       .exec();
 
-    return ratings.map((r: any) => ({
-      id: r._id.toString(),
-      _id: r._id.toString(),
-      rating: r.rating,
-      review: r.review || '',
-      photos: r.photos || [],
-      createdAt: r.createdAt,
-      updatedAt: r.updatedAt,
-      user: {
-        id: r.userId?._id ? r.userId._id.toString() : (r.userId?.toString() || 'anonymous'),
-        name: r.userId?.name || 'Verified Shopper',
-      },
-    }));
+    return ratings.map((r: any) => {
+      const likes = (r.likes || []).map((id: any) => id.toString());
+      const dislikes = (r.dislikes || []).map((id: any) => id.toString());
+
+      let userVote: 'LIKE' | 'DISLIKE' | null = null;
+      if (currentUserId) {
+        if (likes.includes(currentUserId)) {
+          userVote = 'LIKE';
+        } else if (dislikes.includes(currentUserId)) {
+          userVote = 'DISLIKE';
+        }
+      }
+
+      return {
+        id: r._id.toString(),
+        _id: r._id.toString(),
+        rating: r.rating,
+        review: r.review || '',
+        photos: r.photos || [],
+        likesCount: likes.length,
+        dislikesCount: dislikes.length,
+        userVote,
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt,
+        user: {
+          id: r.userId?._id ? r.userId._id.toString() : (r.userId?.toString() || 'anonymous'),
+          name: r.userId?.name || 'Verified Shopper',
+        },
+      };
+    });
+  }
+
+  async vote(ratingId: string, userId: string, type: 'LIKE' | 'DISLIKE') {
+    if (!Types.ObjectId.isValid(ratingId)) {
+      throw new NotFoundException('Review not found');
+    }
+
+    const rating = await this.ratingModel.findById(ratingId).exec();
+    if (!rating) {
+      throw new NotFoundException('Review not found');
+    }
+
+    if (rating.userId.toString() === userId) {
+      throw new BadRequestException('You cannot vote on your own review');
+    }
+
+    const userObjId = new Types.ObjectId(userId);
+    if (!rating.likes) rating.likes = [];
+    if (!rating.dislikes) rating.dislikes = [];
+
+    const likes = rating.likes.map((id) => id.toString());
+    const dislikes = rating.dislikes.map((id) => id.toString());
+
+    let userVote: 'LIKE' | 'DISLIKE' | null = null;
+
+    if (type === 'LIKE') {
+      if (likes.includes(userId)) {
+        // Toggle off
+        rating.likes = rating.likes.filter((id) => id.toString() !== userId);
+        userVote = null;
+      } else {
+        // Add like, remove from dislikes
+        rating.likes.push(userObjId);
+        rating.dislikes = rating.dislikes.filter((id) => id.toString() !== userId);
+        userVote = 'LIKE';
+      }
+    } else if (type === 'DISLIKE') {
+      if (dislikes.includes(userId)) {
+        // Toggle off
+        rating.dislikes = rating.dislikes.filter((id) => id.toString() !== userId);
+        userVote = null;
+      } else {
+        // Add dislike, remove from likes
+        rating.dislikes.push(userObjId);
+        rating.likes = rating.likes.filter((id) => id.toString() !== userId);
+        userVote = 'DISLIKE';
+      }
+    }
+
+    await rating.save();
+
+    return {
+      ratingId: rating._id.toString(),
+      likesCount: rating.likes.length,
+      dislikesCount: rating.dislikes.length,
+      userVote,
+    };
   }
 
   async getMyRatingForStore(storeId: string, userId: string) {

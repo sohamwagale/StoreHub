@@ -46,6 +46,18 @@ export class Rating {
   })
   photos: string[];
 
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: 'User' }],
+    default: [],
+  })
+  likes: Types.ObjectId[];
+
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: 'User' }],
+    default: [],
+  })
+  dislikes: Types.ObjectId[];
+
   createdAt?: Date;
   updatedAt?: Date;
 }

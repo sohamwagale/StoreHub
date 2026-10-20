@@ -233,7 +233,9 @@ export default function StoreMap({
               <span class="text-slate-400 font-normal ml-0.5">(${store.totalRatings})</span>
             </div>
           </div>
-          <h4 class="font-bold text-sm text-slate-900 leading-snug mb-1">${store.name}</h4>
+          <h4 class="font-bold text-sm text-slate-900 leading-snug mb-1">
+            <a href="/stores/${store.id}" class="hover:text-indigo-600 hover:underline transition">${store.name}</a>
+          </h4>
           <p class="text-xs text-slate-500 mb-3 flex items-start gap-1">
             <span class="shrink-0 text-slate-400">📍</span>
             <span>${store.address}</span>
@@ -246,6 +248,9 @@ export default function StoreMap({
               ★ Rate
             </button>
           </div>
+          <a href="/stores/${store.id}" class="block text-center mt-2 text-[11px] font-medium text-indigo-600 hover:text-indigo-800 hover:underline">
+            View Full Store Page & Gallery →
+          </a>
         </div>
       `;
 

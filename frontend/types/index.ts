@@ -63,6 +63,9 @@ export interface StoreReview {
   rating: number;
   review: string;
   photos?: string[];
+  likesCount?: number;
+  dislikesCount?: number;
+  userVote?: 'LIKE' | 'DISLIKE' | null;
   createdAt: string;
   updatedAt?: string;
   user: {

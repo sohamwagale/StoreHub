@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Store } from '@/types';
 import StarRating from './StarRating';
 import {
@@ -12,6 +13,7 @@ import {
   MessageSquare,
   Camera,
   Navigation,
+  ExternalLink,
 } from 'lucide-react';
 
 interface StoreCardProps {
@@ -51,7 +53,10 @@ export default function StoreCard({
   return (
     <div className="group relative bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 hover:border-amber-400/50 dark:hover:border-amber-500/40 shadow-sm hover:shadow-xl hover:shadow-amber-500/5 transition-all duration-300 flex flex-col justify-between">
       {/* Photo Cover or Category Pattern */}
-      <div className="relative w-full h-40 bg-gradient-to-tr from-zinc-800 to-zinc-900 overflow-hidden">
+      <Link
+        href={`/stores/${store.id}`}
+        className="block relative w-full h-40 bg-gradient-to-tr from-zinc-800 to-zinc-900 overflow-hidden cursor-pointer"
+      >
         {coverPhoto ? (
           <img
             src={coverPhoto}
@@ -98,11 +103,12 @@ export default function StoreCard({
           <button
             type="button"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               onLocateOnMap(store);
             }}
             title="Locate store on Map"
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-zinc-900/90 hover:bg-white text-zinc-700 dark:text-zinc-200 hover:text-amber-600 shadow-md backdrop-blur-md transition-all active:scale-95"
+            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-zinc-900/90 hover:bg-white text-zinc-700 dark:text-zinc-200 hover:text-amber-600 shadow-md backdrop-blur-md transition-all active:scale-95 z-10"
           >
             <Navigation className="w-3.5 h-3.5" />
           </button>
@@ -115,14 +121,16 @@ export default function StoreCard({
             <span>You Rated: {store.userRating}★</span>
           </div>
         )}
-      </div>
+      </Link>
 
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Store Name */}
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1 mb-1">
-            {store.name}
-          </h3>
+          {/* Store Name linking to dedicated store page */}
+          <Link href={`/stores/${store.id}`} className="block group/link">
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white group-hover/link:text-amber-600 dark:group-hover/link:text-amber-400 transition-colors line-clamp-1 mb-1">
+              {store.name}
+            </h3>
+          </Link>
 
           {/* Address & Coordinates */}
           <div className="space-y-1 mb-4">
@@ -170,11 +178,20 @@ export default function StoreCard({
 
         {/* Action Footer */}
         <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center gap-2">
+          <Link
+            href={`/stores/${store.id}`}
+            className="py-2 px-2.5 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1 transition"
+            title="Open shop page with details and reviews"
+          >
+            <span>Details</span>
+            <ExternalLink className="w-3 h-3 text-zinc-400" />
+          </Link>
+
           {onViewReviews && (
             <button
               type="button"
               onClick={() => onViewReviews(store)}
-              className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1.5 transition-colors"
+              className="flex-1 py-2 px-2.5 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1.5 transition-colors"
               title="Read customer reviews & photos"
             >
               <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
@@ -189,7 +206,7 @@ export default function StoreCard({
           ) : (
             <button
               onClick={handleActionClick}
-              className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all transform active:scale-95 ${
+              className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all transform active:scale-95 ${
                 userHasRated
                   ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100'
                   : 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-sm'

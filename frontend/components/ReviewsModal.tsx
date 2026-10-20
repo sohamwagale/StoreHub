@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Store, StoreReview, StoreGallery } from '@/types';
 import StarRating from './StarRating';
 import { api } from '@/lib/api';
@@ -17,6 +18,9 @@ import {
   Maximize2,
   Image as ImageIcon,
   CheckCircle,
+  ThumbsUp,
+  ThumbsDown,
+  ExternalLink,
 } from 'lucide-react';
 
 interface ReviewsModalProps {
@@ -91,6 +95,56 @@ export default function ReviewsModal({
     } finally {
       setIsUploadingPhoto(false);
       e.target.value = '';
+    }
+  };
+
+  const handleVote = async (reviewId: string, voteType: 'LIKE' | 'DISLIKE') => {
+    if (!store) return;
+
+    // Optimistic UI update
+    setReviews((prev) =>
+      prev.map((r) => {
+        if (r.id !== reviewId) return r;
+
+        let newLikes = r.likesCount || 0;
+        let newDislikes = r.dislikesCount || 0;
+        let newVote: 'LIKE' | 'DISLIKE' | null = null;
+
+        if (voteType === 'LIKE') {
+          if (r.userVote === 'LIKE') {
+            newLikes = Math.max(0, newLikes - 1);
+          } else {
+            newLikes += 1;
+            if (r.userVote === 'DISLIKE') newDislikes = Math.max(0, newDislikes - 1);
+            newVote = 'LIKE';
+          }
+        } else if (voteType === 'DISLIKE') {
+          if (r.userVote === 'DISLIKE') {
+            newDislikes = Math.max(0, newDislikes - 1);
+          } else {
+            newDislikes += 1;
+            if (r.userVote === 'LIKE') newLikes = Math.max(0, newLikes - 1);
+            newVote = 'DISLIKE';
+          }
+        }
+
+        return {
+          ...r,
+          likesCount: newLikes,
+          dislikesCount: newDislikes,
+          userVote: newVote,
+        };
+      }),
+    );
+
+    try {
+      const res = await api.ratings.vote(reviewId, voteType);
+      setReviews((prev) =>
+        prev.map((r) => (r.id === reviewId ? { ...r, ...res } : r)),
+      );
+    } catch (err: any) {
+      setError(err?.message || 'Failed to submit vote. You cannot vote on your own review.');
+      loadData(store.id);
     }
   };
 
@@ -255,6 +309,39 @@ export default function ReviewsModal({
                       ))}
                     </div>
                   )}
+
+                  {/* Like / Dislike Community Voting Footer */}
+                  <div className="mt-3 pt-2.5 border-t border-zinc-200/60 dark:border-zinc-700/60 flex items-center justify-between text-xs text-zinc-500 pl-10">
+                    <span className="text-[11px] text-zinc-400">Helpful review?</span>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleVote(rev.id, 'LIKE')}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition active:scale-95 ${
+                          rev.userVote === 'LIKE'
+                            ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-700 font-bold'
+                            : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-amber-400'
+                        }`}
+                      >
+                        <ThumbsUp className={`w-3 h-3 ${rev.userVote === 'LIKE' ? 'fill-amber-500 text-amber-500' : ''}`} />
+                        <span>{rev.likesCount || 0}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleVote(rev.id, 'DISLIKE')}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition active:scale-95 ${
+                          rev.userVote === 'DISLIKE'
+                            ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-700 font-bold'
+                            : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-rose-400'
+                        }`}
+                      >
+                        <ThumbsDown className={`w-3 h-3 ${rev.userVote === 'DISLIKE' ? 'fill-rose-500 text-rose-500' : ''}`} />
+                        <span>{rev.dislikesCount || 0}</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))
             )
