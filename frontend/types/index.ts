@@ -77,6 +77,10 @@ export interface StoreReview {
 export interface OwnerRatingEntry {
   id: string;
   rating: number;
+  review?: string;
+  photos?: string[];
+  likesCount?: number;
+  dislikesCount?: number;
   createdAt: string;
   updatedAt: string;
   user: {

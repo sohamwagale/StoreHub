@@ -24,6 +24,9 @@ import {
   Upload,
   CheckCircle,
   Navigation,
+  ThumbsUp,
+  ThumbsDown,
+  MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -398,35 +401,84 @@ export default function OwnerDashboardPage() {
                       <thead>
                         <tr className="bg-zinc-50/70 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                           <th className="py-3.5 px-6">Customer</th>
-                          <th className="py-3.5 px-6">Email Address</th>
-                          <th className="py-3.5 px-6">Submitted Rating</th>
-                          <th className="py-3.5 px-6">Date</th>
+                          <th className="py-3.5 px-6">Rating</th>
+                          <th className="py-3.5 px-6">Customer Review & Feedback</th>
+                          <th className="py-3.5 px-6 whitespace-nowrap">Date</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 text-sm">
                         {activeStore.ratings.map((entry) => (
                           <tr
                             key={entry.id}
-                            className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors"
+                            className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors align-top"
                           >
-                            <td className="py-4 px-6 font-medium text-zinc-900 dark:text-white flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold flex items-center justify-center text-xs shrink-0">
-                                {entry.user.name.charAt(0).toUpperCase()}
+                            <td className="py-4 px-6 font-medium text-zinc-900 dark:text-white">
+                              <div className="flex items-start gap-3">
+                                <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">
+                                  {entry.user.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="font-semibold text-zinc-900 dark:text-white truncate max-w-[180px]">
+                                    {entry.user.name}
+                                  </div>
+                                  <div className="text-zinc-500 dark:text-zinc-400 font-mono text-[11px] truncate max-w-[180px]">
+                                    {entry.user.email}
+                                  </div>
+                                </div>
                               </div>
-                              <span className="truncate max-w-[200px]">{entry.user.name}</span>
                             </td>
-                            <td className="py-4 px-6 text-zinc-600 dark:text-zinc-300 font-mono text-xs">
-                              {entry.user.email}
-                            </td>
-                            <td className="py-4 px-6">
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold text-amber-500">
+                            <td className="py-4 px-6 whitespace-nowrap">
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-bold text-amber-500 text-sm">
                                   ★ {entry.rating}
                                 </span>
                                 <StarRating rating={entry.rating} size="sm" />
                               </div>
                             </td>
-                            <td className="py-4 px-6 text-xs text-zinc-500 dark:text-zinc-400">
+                            <td className="py-4 px-6 max-w-md">
+                              {entry.review ? (
+                                <div className="space-y-2">
+                                  <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed font-sans">
+                                    "{entry.review}"
+                                  </p>
+                                  {entry.photos && entry.photos.length > 0 && (
+                                    <div className="flex items-center gap-2 overflow-x-auto pt-1">
+                                      {entry.photos.map((photoUrl, pIdx) => (
+                                        <a
+                                          key={pIdx}
+                                          href={photoUrl}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="relative w-12 h-12 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 shrink-0 hover:opacity-80 transition"
+                                          title="View full photo"
+                                        >
+                                          <img
+                                            src={photoUrl}
+                                            alt="Review attachment"
+                                            className="w-full h-full object-cover"
+                                          />
+                                        </a>
+                                      ))}
+                                    </div>
+                                  )}
+                                  <div className="flex items-center gap-3 text-[11px] text-zinc-500 pt-0.5">
+                                    <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                                      <ThumbsUp className="w-3 h-3" />
+                                      <span>{entry.likesCount || 0}</span>
+                                    </span>
+                                    <span className="flex items-center gap-1 text-rose-500 font-semibold">
+                                      <ThumbsDown className="w-3 h-3" />
+                                      <span>{entry.dislikesCount || 0}</span>
+                                    </span>
+                                  </div>
+                                </div>
+                              ) : (
+                                <span className="text-xs text-zinc-400 italic">
+                                  Rating submitted without written review
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-4 px-6 text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
                               <div className="flex items-center gap-1.5">
                                 <Clock className="w-3.5 h-3.5 text-zinc-400" />
                                 <span>

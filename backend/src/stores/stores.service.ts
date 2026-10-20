@@ -210,6 +210,10 @@ export class StoresService {
         const formattedRatings = ratings.map((r: any) => ({
           id: r._id.toString(),
           rating: r.rating,
+          review: r.review || '',
+          photos: r.photos || [],
+          likesCount: Array.isArray(r.likes) ? r.likes.length : 0,
+          dislikesCount: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
           createdAt: r.createdAt,
           updatedAt: r.updatedAt,
           user: r.userId
