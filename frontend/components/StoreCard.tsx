@@ -13,7 +13,6 @@ import {
   MessageSquare,
   Camera,
   Navigation,
-  ExternalLink,
 } from 'lucide-react';
 
 interface StoreCardProps {
@@ -178,15 +177,6 @@ export default function StoreCard({
 
         {/* Action Footer */}
         <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center gap-2">
-          <Link
-            href={`/stores/${store.id}`}
-            className="py-2 px-2.5 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1 transition"
-            title="Open shop page with details and reviews"
-          >
-            <span>Details</span>
-            <ExternalLink className="w-3 h-3 text-zinc-400" />
-          </Link>
-
           {onViewReviews && (
             <button
               type="button"
