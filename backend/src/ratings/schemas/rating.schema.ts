@@ -32,6 +32,14 @@ export class Rating {
   })
   rating: number;
 
+  @Prop({
+    type: String,
+    trim: true,
+    maxlength: 1000,
+    default: '',
+  })
+  review?: string;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

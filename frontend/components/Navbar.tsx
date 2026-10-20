@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Store, User as UserIcon, LogOut, LogIn, UserPlus, Shield, LayoutDashboard } from 'lucide-react';
+import { Store, User as UserIcon, LogOut, LogIn, UserPlus, Shield, LayoutDashboard, Compass } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -40,6 +40,18 @@ export default function Navbar() {
               }`}
             >
               Stores
+            </Link>
+
+            <Link
+              href="/discover"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                pathname === '/discover'
+                  ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30'
+                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+              }`}
+            >
+              <Compass className="w-4 h-4 text-amber-500" />
+              <span>Discover</span>
             </Link>
 
             {user?.role === 'USER' && (

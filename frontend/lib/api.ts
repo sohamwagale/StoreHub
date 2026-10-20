@@ -4,6 +4,7 @@ import {
   Store,
   Rating,
   MyRating,
+  StoreReview,
   OwnerDashboardResponse,
   ApiError,
 } from '@/types';
@@ -126,26 +127,30 @@ class ApiClient {
     getById: (id: string): Promise<Store> => {
       return this.request<Store>(`/stores/${id}`);
     },
+
+    getReviews: (storeId: string): Promise<StoreReview[]> => {
+      return this.request<StoreReview[]>(`/stores/${storeId}/reviews`);
+    },
   };
 
   // Rating Endpoints
   ratings = {
-    submit: (storeId: string, rating: number): Promise<Rating> => {
+    submit: (storeId: string, rating: number, review?: string): Promise<Rating> => {
       return this.request<Rating>(`/stores/${storeId}/ratings`, {
         method: 'POST',
-        body: JSON.stringify({ rating }),
+        body: JSON.stringify({ rating, review }),
       });
     },
 
-    update: (storeId: string, rating: number): Promise<Rating> => {
+    update: (storeId: string, rating: number, review?: string): Promise<Rating> => {
       return this.request<Rating>(`/stores/${storeId}/ratings`, {
         method: 'PATCH',
-        body: JSON.stringify({ rating }),
+        body: JSON.stringify({ rating, review }),
       });
     },
 
-    getMyRatingForStore: (storeId: string): Promise<{ rating: number | null }> => {
-      return this.request<{ rating: number | null }>(`/stores/${storeId}/ratings/me`);
+    getMyRatingForStore: (storeId: string): Promise<{ rating: number | null; review?: string }> => {
+      return this.request<{ rating: number | null; review?: string }>(`/stores/${storeId}/ratings/me`);
     },
 
     getMyRatings: (): Promise<MyRating[]> => {

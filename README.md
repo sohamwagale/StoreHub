@@ -221,9 +221,10 @@ shop-rating-platform/
 ### Ratings
 | Method | Endpoint | Description | Access |
 |---|---|---|---|
-| `POST` | `/stores/:storeId/ratings` | Submit 1–5 star rating | `USER` only |
-| `PATCH` | `/stores/:storeId/ratings` | Update previously submitted rating | `USER` only (Owner of rating) |
+| `POST` | `/stores/:storeId/ratings` | Submit 1–5 star rating with optional review text | `USER` only |
+| `PATCH` | `/stores/:storeId/ratings` | Update previously submitted rating & review | `USER` only (Owner of rating) |
 | `GET` | `/stores/:storeId/ratings/me` | Get current user's rating for store | `USER` only |
+| `GET` | `/stores/:storeId/reviews` | Get list of public community reviews for store | Public |
 | `GET` | `/ratings/my-ratings` | Get all ratings submitted by user | `USER` only |
 
 ### Owner Portal

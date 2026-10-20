@@ -61,4 +61,9 @@ export class RatingsController {
   async getMyRatings(@CurrentUser('id') userId: string) {
     return this.ratingsService.getMyRatings(userId);
   }
+
+  @Get('stores/:storeId/reviews')
+  async getStoreReviews(@Param('storeId') storeId: string) {
+    return this.ratingsService.getStoreReviews(storeId);
+  }
 }

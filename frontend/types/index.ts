@@ -31,6 +31,7 @@ export interface Rating {
   storeId: string;
   userId: string;
   rating: number;
+  review?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -39,13 +40,28 @@ export interface MyRating {
   id: string;
   _id?: string;
   rating: number;
+  review?: string;
   createdAt: string;
   updatedAt: string;
   store: {
     id: string;
     name: string;
     address: string;
+    category?: string;
   } | null;
+}
+
+export interface StoreReview {
+  id: string;
+  _id?: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+  updatedAt?: string;
+  user: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface OwnerRatingEntry {

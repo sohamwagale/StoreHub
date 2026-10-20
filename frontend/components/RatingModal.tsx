@@ -20,15 +20,28 @@ export default function RatingModal({
   onSuccess,
 }: RatingModalProps) {
   const [selectedRating, setSelectedRating] = useState<number>(5);
+  const [reviewText, setReviewText] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (store) {
+    if (store && isOpen) {
       setSelectedRating(store.userRating || 5);
       setError(null);
       setSuccessMessage(null);
+
+      // Fetch user's previous review text if available
+      api.ratings
+        .getMyRatingForStore(store.id)
+        .then((data) => {
+          if (data && data.review) {
+            setReviewText(data.review);
+          } else {
+            setReviewText('');
+          }
+        })
+        .catch(() => setReviewText(''));
     }
   }, [store, isOpen]);
 
@@ -49,11 +62,11 @@ export default function RatingModal({
 
     try {
       if (isUpdating) {
-        await api.ratings.update(store.id, selectedRating);
-        setSuccessMessage('Your rating has been updated successfully!');
+        await api.ratings.update(store.id, selectedRating, reviewText);
+        setSuccessMessage('Your rating and review have been updated successfully!');
       } else {
-        await api.ratings.submit(store.id, selectedRating);
-        setSuccessMessage('Thank you! Your rating has been submitted.');
+        await api.ratings.submit(store.id, selectedRating, reviewText);
+        setSuccessMessage('Thank you! Your rating and review have been submitted.');
       }
 
       setTimeout(() => {
@@ -141,6 +154,25 @@ export default function RatingModal({
               {selectedRating === 2 && '👎 Poor'}
               {selectedRating === 1 && '⚠️ Terrible experience'}
             </span>
+          </div>
+
+          {/* Written Review Input */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                Your Review <span className="text-zinc-400 font-normal">(Optional)</span>
+              </label>
+              <span className="text-[11px] text-zinc-400">{reviewText.length}/1000</span>
+            </div>
+            <textarea
+              rows={3}
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              maxLength={1000}
+              placeholder="Tell other shoppers what you loved, service quality, recommendations..."
+              disabled={isSubmitting}
+              className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all resize-none"
+            />
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-2">

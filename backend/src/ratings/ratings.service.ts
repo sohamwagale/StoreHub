@@ -45,6 +45,7 @@ export class RatingsService {
         storeId: new Types.ObjectId(storeId),
         userId: new Types.ObjectId(userId),
         rating: createRatingDto.rating,
+        review: createRatingDto.review ? createRatingDto.review.trim() : '',
       });
 
       const saved = await newRating.save();
@@ -54,6 +55,7 @@ export class RatingsService {
         storeId: saved.storeId.toString(),
         userId: saved.userId.toString(),
         rating: saved.rating,
+        review: saved.review || '',
         createdAt: saved.createdAt,
         updatedAt: saved.updatedAt,
       };
@@ -92,6 +94,9 @@ export class RatingsService {
     }
 
     existing.rating = updateRatingDto.rating;
+    if (updateRatingDto.review !== undefined) {
+      existing.review = updateRatingDto.review.trim();
+    }
     const saved = await existing.save();
 
     return {
@@ -100,9 +105,36 @@ export class RatingsService {
       storeId: saved.storeId.toString(),
       userId: saved.userId.toString(),
       rating: saved.rating,
+      review: saved.review || '',
       createdAt: saved.createdAt,
       updatedAt: saved.updatedAt,
     };
+  }
+
+  async getStoreReviews(storeId: string) {
+    if (!Types.ObjectId.isValid(storeId)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const ratings = await this.ratingModel
+      .find({ storeId: new Types.ObjectId(storeId) })
+      .populate('userId', 'name')
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec();
+
+    return ratings.map((r: any) => ({
+      id: r._id.toString(),
+      _id: r._id.toString(),
+      rating: r.rating,
+      review: r.review || '',
+      createdAt: r.createdAt,
+      updatedAt: r.updatedAt,
+      user: {
+        id: r.userId?._id ? r.userId._id.toString() : (r.userId?.toString() || 'anonymous'),
+        name: r.userId?.name || 'Verified Shopper',
+      },
+    }));
   }
 
   async getMyRatingForStore(storeId: string, userId: string) {
@@ -116,7 +148,7 @@ export class RatingsService {
     });
 
     if (!rating) {
-      return { rating: null };
+      return { rating: null, review: '' };
     }
 
     return {
@@ -125,6 +157,7 @@ export class RatingsService {
       storeId: rating.storeId.toString(),
       userId: rating.userId.toString(),
       rating: rating.rating,
+      review: rating.review || '',
       createdAt: rating.createdAt,
       updatedAt: rating.updatedAt,
     };
@@ -133,7 +166,7 @@ export class RatingsService {
   async getMyRatings(userId: string) {
     const ratings = await this.ratingModel
       .find({ userId: new Types.ObjectId(userId) })
-      .populate('storeId', 'name address')
+      .populate('storeId', 'name address category')
       .sort({ updatedAt: -1 })
       .lean()
       .exec();
@@ -142,6 +175,7 @@ export class RatingsService {
       id: r._id.toString(),
       _id: r._id.toString(),
       rating: r.rating,
+      review: r.review || '',
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       store: r.storeId
@@ -149,6 +183,7 @@ export class RatingsService {
             id: r.storeId._id ? r.storeId._id.toString() : r.storeId.toString(),
             name: r.storeId.name,
             address: r.storeId.address,
+            category: r.storeId.category || 'General',
           }
         : null,
     }));

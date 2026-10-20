@@ -3,11 +3,12 @@
 import React from 'react';
 import { Store } from '@/types';
 import StarRating from './StarRating';
-import { MapPin, Star, Edit3, PlusCircle, CheckCircle2 } from 'lucide-react';
+import { MapPin, Star, Edit3, PlusCircle, CheckCircle2, MessageSquare } from 'lucide-react';
 
 interface StoreCardProps {
   store: Store;
   onRate: (store: Store) => void;
+  onViewReviews?: (store: Store) => void;
   currentUserRole?: 'USER' | 'OWNER' | null;
   isAuthenticated: boolean;
   onLoginPrompt: () => void;
@@ -16,6 +17,7 @@ interface StoreCardProps {
 export default function StoreCard({
   store,
   onRate,
+  onViewReviews,
   currentUserRole,
   isAuthenticated,
   onLoginPrompt,
@@ -107,15 +109,27 @@ export default function StoreCard({
       </div>
 
       {/* Action Footer */}
-      <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between gap-3">
+      <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center gap-2">
+        {onViewReviews && (
+          <button
+            type="button"
+            onClick={() => onViewReviews(store)}
+            className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center gap-1.5 transition-colors"
+            title="Read customer reviews"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
+            <span>Reviews ({store.totalRatings})</span>
+          </button>
+        )}
+
         {currentUserRole === 'OWNER' ? (
-          <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500 italic">
+          <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 italic py-2">
             Owner view only
           </span>
         ) : (
           <button
             onClick={handleActionClick}
-            className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all transform active:scale-95 ${
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all transform active:scale-95 ${
               userHasRated
                 ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100'
                 : 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-sm'
@@ -124,12 +138,12 @@ export default function StoreCard({
             {userHasRated ? (
               <>
                 <Edit3 className="w-3.5 h-3.5" />
-                <span>Update My Rating</span>
+                <span>Update Rating</span>
               </>
             ) : (
               <>
                 <PlusCircle className="w-3.5 h-3.5" />
-                <span>{isAuthenticated ? 'Rate This Store' : 'Log in to Rate'}</span>
+                <span>{isAuthenticated ? 'Rate' : 'Log in to Rate'}</span>
               </>
             )}
           </button>

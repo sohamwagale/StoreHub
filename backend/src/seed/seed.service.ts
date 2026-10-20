@@ -96,37 +96,49 @@ export class SeedService implements OnApplicationBootstrap {
         ownerId: owner._id,
       });
 
-      // 4. Create Ratings
+      // 4. Create Ratings & Reviews
       await this.ratingModel.create([
         {
           userId: alice._id,
           storeId: store1._id,
           rating: 5,
+          review: 'Exceptional organic selection, farm-fresh fruit and super clean layout. Highly recommended!',
         },
         {
           userId: bob._id,
           storeId: store1._id,
           rating: 4,
+          review: 'Friendly staff, quick checkout, and great bulk nuts and granola section.',
         },
         {
           userId: alice._id,
           storeId: store2._id,
           rating: 4,
+          review: 'Huge modern shopping mall with fantastic dining terrace and premium boutique shops.',
         },
         {
           userId: bob._id,
           storeId: store2._id,
           rating: 5,
+          review: 'Spotlessly clean facilities, plenty of EV charging parking, and all flagship brand stores under one roof.',
         },
         {
           userId: alice._id,
           storeId: store3._id,
           rating: 5,
+          review: 'Trendy and high quality apparel. The styling team was attentive without being pushy.',
         },
         {
           userId: bob._id,
           storeId: store4._id,
           rating: 4,
+          review: 'Knowledgeable tech staff and competitive prices on the latest laptops and smart home gadgets.',
+        },
+        {
+          userId: alice._id,
+          storeId: store5._id,
+          rating: 5,
+          review: 'Best artisan bakery in town! The sourdough bread and almond croissants melt in your mouth.',
         },
       ]);
 

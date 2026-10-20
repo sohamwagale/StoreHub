@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import StoreCard from '@/components/StoreCard';
 import RatingModal from '@/components/RatingModal';
+import ReviewsModal from '@/components/ReviewsModal';
 import {
   Search,
   Store as StoreIcon,
@@ -44,6 +45,10 @@ export default function HomePage() {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // Reviews View Modal state
+  const [selectedReviewStore, setSelectedReviewStore] = useState<Store | null>(null);
+  const [isReviewsModalOpen, setIsReviewsModalOpen] = useState<boolean>(false);
+
   const fetchStores = useCallback(async (query?: string, category?: string) => {
     setIsLoading(true);
     setError(null);
@@ -68,6 +73,11 @@ export default function HomePage() {
   const handleOpenRateModal = (store: Store) => {
     setSelectedStore(store);
     setIsModalOpen(true);
+  };
+
+  const handleOpenReviewsModal = (store: Store) => {
+    setSelectedReviewStore(store);
+    setIsReviewsModalOpen(true);
   };
 
   const handleLoginPrompt = () => {
@@ -234,6 +244,7 @@ export default function HomePage() {
                 key={store.id}
                 store={store}
                 onRate={handleOpenRateModal}
+                onViewReviews={handleOpenReviewsModal}
                 currentUserRole={user?.role}
                 isAuthenticated={!!user}
                 onLoginPrompt={handleLoginPrompt}
@@ -249,6 +260,14 @@ export default function HomePage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleRatingSuccess}
+      />
+
+      {/* Community Reviews Modal */}
+      <ReviewsModal
+        store={selectedReviewStore}
+        isOpen={isReviewsModalOpen}
+        onClose={() => setIsReviewsModalOpen(false)}
+        onRateClick={handleOpenRateModal}
       />
     </div>
   );
