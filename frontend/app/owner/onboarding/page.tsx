@@ -137,14 +137,22 @@ export default function OwnerOnboardingPage() {
     setError(null);
 
     try {
-      await api.stores.create({
+      const payload: any = {
         name: name.trim(),
         category,
         address: address.trim(),
-        latitude,
-        longitude,
-        photos: uploadedPhotos,
-      });
+      };
+      if (typeof latitude === 'number' && !isNaN(latitude)) {
+        payload.latitude = latitude;
+      }
+      if (typeof longitude === 'number' && !isNaN(longitude)) {
+        payload.longitude = longitude;
+      }
+      if (uploadedPhotos && uploadedPhotos.length > 0) {
+        payload.photos = uploadedPhotos;
+      }
+
+      await api.stores.create(payload);
 
       // Redirect to owner dashboard
       router.push('/owner?onboarded=true');
