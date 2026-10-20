@@ -72,43 +72,39 @@ export default function Navbar() {
               </Link>
             )}
 
-            {user && (
-              <Link
-                href="/profile"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                  pathname === '/profile'
-                    ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30'
-                    : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-                }`}
-              >
-                <UserIcon className="w-4 h-4" />
-                <span>Profile</span>
-              </Link>
-            )}
-
             {/* Auth Actions */}
             {user ? (
-              <div className="flex items-center gap-3 pl-2 sm:pl-4 border-l border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-4 border-l border-zinc-200 dark:border-zinc-800">
                 <Link
                   href="/profile"
-                  className="hidden md:flex flex-col text-right hover:opacity-80 transition-opacity"
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl transition-all ${
+                    pathname === '/profile'
+                      ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 ring-1 ring-amber-300 dark:ring-amber-800'
+                      : 'hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300'
+                  }`}
                   title="View your profile"
                 >
-                  <span className="text-xs font-semibold text-zinc-900 dark:text-white truncate max-w-[150px]">
-                    {user.name}
-                  </span>
-                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400 flex items-center justify-end gap-1">
-                    <span
-                      className={`inline-block w-1.5 h-1.5 rounded-full ${
-                        user.role === 'OWNER' ? 'bg-indigo-500' : 'bg-emerald-500'
-                      }`}
-                    />
-                    {user.role}
-                  </span>
+                  <div className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 font-bold text-xs">
+                    {user.name ? user.name[0].toUpperCase() : <UserIcon className="w-3.5 h-3.5" />}
+                  </div>
+                  <div className="hidden sm:flex flex-col text-left">
+                    <span className="text-xs font-semibold text-zinc-900 dark:text-white truncate max-w-[130px]">
+                      {user.name}
+                    </span>
+                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1 leading-none">
+                      <span
+                        className={`inline-block w-1.5 h-1.5 rounded-full ${
+                          user.role === 'OWNER' ? 'bg-indigo-500' : 'bg-emerald-500'
+                        }`}
+                      />
+                      {user.role}
+                    </span>
+                  </div>
                 </Link>
+
                 <button
                   onClick={logout}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors border border-rose-200 dark:border-rose-900/40"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-colors border border-rose-200 dark:border-rose-900/40"
                   title="Logout"
                 >
                   <LogOut className="w-3.5 h-3.5" />
