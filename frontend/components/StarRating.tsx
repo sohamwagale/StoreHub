@@ -57,8 +57,8 @@ export default function StarRating({
               <Star
                 className={`${starSizes[size]} transition-colors duration-150 ${
                   isFilled
-                    ? 'fill-amber-500 text-amber-500'
-                    : 'fill-zinc-200 text-zinc-300 dark:fill-zinc-800 dark:text-zinc-700'
+                    ? 'fill-rating text-rating'
+                    : 'fill-border text-border'
                 }`}
               />
             </button>
@@ -67,7 +67,7 @@ export default function StarRating({
       </div>
 
       {showValue && (
-        <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 ml-1">
+        <span className="text-xs font-semibold text-muted ml-1">
           {rating !== null && rating > 0 ? rating.toFixed(1) : 'No ratings yet'}
         </span>
       )}

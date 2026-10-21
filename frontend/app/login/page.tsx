@@ -66,18 +66,18 @@ export default function LoginPage() {
   return (
     <div className="flex-1 min-h-[calc(100vh-4rem)] w-full flex flex-col lg:flex-row">
       {/* LEFT COLUMN: Brand & Value Proposition Showcase (45%) */}
-      <div className="relative w-full lg:w-[45%] bg-[#fffde7] dark:bg-zinc-900 border-b lg:border-b-0 lg:border-r border-zinc-300 dark:border-zinc-800 flex flex-col justify-between p-6 sm:p-10 lg:p-12">
+      <div className="relative w-full lg:w-[45%] bg-surface border-b lg:border-b-0 lg:border-r border-border flex flex-col justify-between p-6 sm:p-10 lg:p-12">
         {/* Top Section: Brand Identity */}
         <div>
           <div className="inline-flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white shrink-0">
+            <div className="w-9 h-9 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
               <Store className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight text-zinc-950 dark:text-white leading-none">
+              <span className="font-extrabold text-lg tracking-tight text-foreground leading-none">
                 StoreRank
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mt-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-muted mt-1">
                 Discover · Rate · Review
               </span>
             </div>
@@ -86,67 +86,67 @@ export default function LoginPage() {
 
         {/* Middle Section: Hero Copy & Trust Anchor Elements */}
         <div className="py-8 lg:py-12 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-xs font-mono uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
-            <span className="w-1.5 h-1.5 bg-amber-500 inline-block shrink-0" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border text-xs font-mono uppercase tracking-wider text-foreground">
+            <span className="w-1.5 h-1.5 bg-accent inline-block shrink-0" />
             <span>Community-Powered Retail Intelligence</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
             Transparent ratings from real shoppers in your city.
           </h1>
 
-          <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-lg">
+          <p className="text-sm text-muted leading-relaxed max-w-lg">
             Join thousands of community members discovering the best verified local businesses, sharing objective feedback, and supporting authentic retailers.
           </p>
 
           {/* Feature Points */}
           <div className="space-y-2.5 max-w-lg">
-            <div className="flex items-center gap-3 p-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
-              <div className="flex items-center justify-center w-5 h-5 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shrink-0">
+            <div className="flex items-center gap-3 p-3 bg-surface border border-border">
+              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
                 <Check className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
+              <span className="text-xs font-medium text-foreground">
                 100% verified in-store visits and genuine rating verification
               </span>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
-              <div className="flex items-center justify-center w-5 h-5 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shrink-0">
+            <div className="flex items-center gap-3 p-3 bg-surface border border-border">
+              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
                 <Shield className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
+              <span className="text-xs font-medium text-foreground">
                 Honest ratings protected by strict fraud prevention rules
               </span>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
-              <div className="flex items-center justify-center w-5 h-5 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shrink-0">
+            <div className="flex items-center gap-3 p-3 bg-surface border border-border">
+              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
                 <StorefrontIcon className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
+              <span className="text-xs font-medium text-foreground">
                 Direct community interaction with verified store owners
               </span>
             </div>
           </div>
 
           {/* Mini Review Highlight Card */}
-          <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 max-w-lg">
-            <div className="flex items-center gap-1 text-amber-500 mb-2">
-              <Star className="w-3.5 h-3.5 fill-amber-500" />
-              <Star className="w-3.5 h-3.5 fill-amber-500" />
-              <Star className="w-3.5 h-3.5 fill-amber-500" />
-              <Star className="w-3.5 h-3.5 fill-amber-500" />
-              <Star className="w-3.5 h-3.5 fill-amber-500" />
-              <span className="ml-2 text-[10px] font-mono uppercase text-zinc-500 dark:text-zinc-400 font-bold">
+          <div className="p-4 bg-surface border border-border max-w-lg">
+            <div className="flex items-center gap-1 text-rating mb-2">
+              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              <span className="ml-2 text-[10px] font-mono uppercase text-muted font-bold">
                 Verified Member
               </span>
             </div>
-            <p className="text-xs italic text-zinc-800 dark:text-zinc-200 leading-relaxed">
+            <p className="text-xs italic text-foreground leading-relaxed">
               "StoreRank helped our neighborhood discover authentic repair shops, boutique grocers, and certified tech stores with zero fake reviews."
             </p>
-            <div className="mt-3 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800 pt-2 font-mono">
-              <span className="font-semibold text-zinc-900 dark:text-zinc-100">— Anita Desai, Kolhapur</span>
-              <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400 text-[11px]">
+            <div className="mt-3 flex items-center justify-between text-xs text-muted border-t border-border pt-2 font-mono">
+              <span className="font-semibold text-foreground">— Anita Desai, Kolhapur</span>
+              <span className="inline-flex items-center gap-1 text-accent text-[11px]">
                 <CheckCircle2 className="w-3 h-3" /> Verified Reviewer
               </span>
             </div>
@@ -154,8 +154,8 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom Branding Footer */}
-        <div className="pt-4 border-t border-zinc-300 dark:border-zinc-800">
-          <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
+        <div className="pt-4 border-t border-border">
+          <p className="text-xs font-mono text-muted">
             © 2026 StoreRank Platform. Trusted by over 12,000 local businesses.
           </p>
         </div>
@@ -163,13 +163,13 @@ export default function LoginPage() {
 
       {/* RIGHT COLUMN: Login Card & Form Canvas (55%) */}
       <div className="w-full lg:w-[55%] flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12">
-        <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 p-6 sm:p-8 space-y-6">
+        <div className="w-full max-w-md bg-surface border border-border p-6 sm:p-8 space-y-6">
           {/* Header */}
           <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+            <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
               Welcome back
             </h2>
-            <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+            <p className="mt-1 text-xs text-muted">
               Enter your credentials to access your StoreRank account
             </p>
           </div>
@@ -193,29 +193,29 @@ export default function LoginPage() {
           )}
 
           {/* Demo Quick-Login Pills */}
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-xs font-mono">
-            <p className="font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-2 text-[10px]">
+          <div className="p-3 bg-muted-fill border border-border text-xs font-mono">
+            <p className="font-bold uppercase tracking-wider text-foreground mb-2 text-[10px]">
               Quick Fill Demo Accounts:
             </p>
             <div className="flex flex-wrap gap-1.5">
               <button
                 type="button"
                 onClick={() => handleFillDemo('alice@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors"
               >
                 Alice (Customer)
               </button>
               <button
                 type="button"
                 onClick={() => handleFillDemo('bob@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors"
               >
                 Bob (Customer)
               </button>
               <button
                 type="button"
                 onClick={() => handleFillDemo('owner@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white transition-colors font-bold"
+                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors font-bold"
               >
                 Owner (Business)
               </button>
@@ -226,7 +226,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => handleFillDemo('alice@example.com')}
-            className="w-full h-10 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-mono uppercase font-bold flex items-center justify-center gap-2.5 transition-colors"
+            className="w-full h-10 px-4 border border-border bg-surface hover:bg-muted-fill text-foreground text-xs font-mono uppercase font-bold flex items-center justify-center gap-2.5 transition-colors"
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path
@@ -252,10 +252,10 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-300 dark:border-zinc-700" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white dark:bg-zinc-900 px-3 font-mono text-[11px] uppercase tracking-wider text-zinc-500">
+              <span className="bg-surface px-3 font-mono text-[11px] uppercase tracking-wider text-muted">
                 or continue with email
               </span>
             </div>
@@ -266,13 +266,13 @@ export default function LoginPage() {
             {/* Email Field */}
             <div>
               <label
-                className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200 mb-1"
+                className="block text-xs font-mono uppercase font-bold text-foreground mb-1"
                 htmlFor="email"
               >
                 Email Address
               </label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -283,7 +283,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex.carter@example.com"
-                  className="w-full h-10 pl-9 pr-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                  className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
             </div>
@@ -292,14 +292,14 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label
-                  className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200"
+                  className="block text-xs font-mono uppercase font-bold text-foreground"
                   htmlFor="password"
                 >
                   Password
                 </label>
               </div>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -310,13 +310,13 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full h-10 pl-9 pr-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors tracking-wider"
+                  className="w-full h-10 pl-9 pr-10 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                 />
                 <button
                   type="button"
                   aria-label="Toggle password visibility"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-900 dark:hover:text-white focus:outline-none transition-colors"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted hover:text-foreground focus:outline-none transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -332,9 +332,9 @@ export default function LoginPage() {
                   name="remember-me"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 border border-zinc-300 dark:border-zinc-700 accent-zinc-950"
+                  className="w-4 h-4 border border-border accent-foreground"
                 />
-                <span className="text-xs text-zinc-600 dark:text-zinc-400 font-mono">
+                <span className="text-xs text-muted font-mono">
                   Remember device
                 </span>
               </label>
@@ -342,14 +342,14 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setForgotToast(true)}
-                className="text-xs font-mono text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white underline hover:no-underline"
+                className="text-xs font-mono text-muted hover:text-foreground underline hover:no-underline"
               >
                 Forgot password?
               </button>
             </div>
 
             {forgotToast && (
-              <div className="p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-[11px] font-mono text-amber-900 dark:text-amber-200 flex items-center justify-between">
+              <div className="p-2.5 bg-muted-fill border border-accent text-[11px] font-mono text-foreground flex items-center justify-between">
                 <span>Demo mode: Reset link will be simulated or use Quick-Fill above.</span>
                 <button type="button" onClick={() => setForgotToast(false)}>
                   <X className="w-3.5 h-3.5" />
@@ -362,7 +362,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-10 px-4 bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 text-white font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-zinc-950 dark:border-white transition-colors disabled:opacity-50"
+                className="w-full h-10 px-4 bg-foreground text-background hover:bg-accent-hover font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-foreground transition-colors disabled:opacity-50"
               >
                 {isLoading ? (
                   <>
@@ -380,12 +380,12 @@ export default function LoginPage() {
           </form>
 
           {/* Footer / Registration prompt */}
-          <div className="pt-4 border-t border-zinc-300 dark:border-zinc-700 text-center">
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          <div className="pt-4 border-t border-border text-center">
+            <p className="text-xs text-muted">
               Don't have an account?{' '}
               <Link
                 href="/register"
-                className="font-bold text-zinc-950 dark:text-white underline hover:no-underline font-mono uppercase tracking-wider ml-1"
+                className="font-bold text-foreground underline hover:no-underline font-mono uppercase tracking-wider ml-1"
               >
                 Sign up
               </Link>
@@ -394,8 +394,8 @@ export default function LoginPage() {
         </div>
 
         {/* Security Trust Footer */}
-        <div className="mt-4 text-center flex items-center justify-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400">
-          <Shield className="w-3.5 h-3.5 text-amber-500" />
+        <div className="mt-4 text-center flex items-center justify-center gap-1.5 text-xs font-mono text-muted">
+          <Shield className="w-3.5 h-3.5 text-accent" />
           <span>Protected by StoreRank Shield &amp; 256-bit SSL encryption</span>
         </div>
       </div>

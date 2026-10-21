@@ -209,8 +209,8 @@ export default function StoreMap({
         <div class="relative flex items-center justify-center">
           <div class="px-2 py-1 flex items-center justify-center border font-mono font-bold text-xs ${
             isSelected
-              ? 'bg-zinc-950 text-amber-400 border-amber-400'
-              : 'bg-zinc-950 text-white border-zinc-800 group-hover:border-zinc-500'
+              ? 'bg-foreground text-rating border-rating'
+              : 'bg-foreground text-background border-foreground'
           }">
             <span>★ ${store.averageRating !== null ? store.averageRating : '-'}</span>
           </div>
@@ -219,37 +219,37 @@ export default function StoreMap({
 
       // Popup Content
       const popupHtml = `
-        <div class="p-3 bg-white text-zinc-900 max-w-[250px] font-sans border border-zinc-300">
+        <div class="p-3 max-w-[250px] font-sans" style="background:var(--surface);color:var(--foreground);border:1px solid var(--border)">
           ${
             coverPhoto
-              ? `<div class="w-full h-24 mb-2 overflow-hidden relative bg-zinc-900">
+              ? `<div class="w-full h-24 mb-2 overflow-hidden relative bg-black">
                   <img src="${coverPhoto}" alt="${store.name}" class="w-full h-full object-cover" />
                  </div>`
               : ''
           }
           <div class="flex items-center gap-1.5 mb-1">
-            <span class="px-1.5 py-0.5 text-[9px] font-mono uppercase font-bold tracking-wider bg-zinc-900 text-white">${store.category || 'Shop'}</span>
-            <div class="flex items-center text-amber-600 text-xs font-bold font-mono ml-auto">
+            <span class="px-1.5 py-0.5 text-[9px] font-mono uppercase font-bold tracking-wider bg-black text-white">${store.category || 'Shop'}</span>
+            <div class="flex items-center text-xs font-bold font-mono ml-auto" style="color:var(--rating)">
               ★ ${store.averageRating !== null ? store.averageRating : 'New'} 
-              <span class="text-zinc-500 font-normal ml-0.5">(${store.totalRatings})</span>
+              <span class="font-normal ml-0.5" style="color:var(--muted)">(${store.totalRatings})</span>
             </div>
           </div>
-          <h4 class="font-bold text-xs text-zinc-950 leading-snug mb-1">
+          <h4 class="font-bold text-xs leading-snug mb-1">
             <a href="/stores/${store.id}" class="hover:underline transition">${store.name}</a>
           </h4>
-          <p class="text-[11px] text-zinc-600 mb-2.5 flex items-start gap-1">
-            <span class="shrink-0 text-zinc-400">📍</span>
+          <p class="text-[11px] mb-2.5 flex items-start gap-1" style="color:var(--muted)">
+            <span class="shrink-0">📍</span>
             <span class="line-clamp-2">${store.address}</span>
           </p>
-          <div class="flex items-center gap-1.5 pt-2 border-t border-zinc-200">
-            <button id="map-btn-review-${store.id}" class="flex-1 text-center py-1 px-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 border border-zinc-300 font-mono text-[10px] uppercase font-bold transition">
+          <div class="flex items-center gap-1.5 pt-2" style="border-top:1px solid var(--border)">
+            <button id="map-btn-review-${store.id}" class="flex-1 text-center py-1 px-1.5 font-mono text-[10px] uppercase font-bold transition" style="background:var(--muted-fill);color:var(--foreground);border:1px solid var(--border)">
               Reviews
             </button>
-            <button id="map-btn-rate-${store.id}" class="flex-1 text-center py-1 px-1.5 bg-zinc-950 hover:bg-zinc-800 text-white border border-zinc-950 font-mono text-[10px] uppercase font-bold transition">
+            <button id="map-btn-rate-${store.id}" class="flex-1 text-center py-1 px-1.5 font-mono text-[10px] uppercase font-bold transition" style="background:var(--foreground);color:var(--background);border:1px solid var(--foreground)">
               Rate
             </button>
           </div>
-          <a href="/stores/${store.id}" class="block text-center mt-2 text-[10px] font-mono text-zinc-900 hover:underline uppercase">
+          <a href="/stores/${store.id}" class="block text-center mt-2 text-[10px] font-mono hover:underline uppercase">
             View Store Details →
           </a>
         </div>
@@ -320,14 +320,14 @@ export default function StoreMap({
   };
 
   return (
-    <div className={`relative border border-zinc-300 dark:border-zinc-700 ${className}`}>
+    <div className={`relative border border-border ${className}`}>
       {/* Map Canvas */}
       <div ref={mapContainer} className={`w-full ${heightClass}`} />
 
       {/* Floating Map Controls Toolbar */}
-      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-white dark:bg-zinc-900 px-2.5 py-1.5 border border-zinc-300 dark:border-zinc-700">
-        <div className="flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-zinc-700 dark:text-zinc-300 mr-1">
-          <Layers className="w-3.5 h-3.5 text-amber-500" />
+      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-surface px-2.5 py-1.5 border border-border">
+        <div className="flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-muted mr-1">
+          <Layers className="w-3.5 h-3.5 text-accent" />
           <span>Style:</span>
         </div>
         {(Object.keys(TILE_STYLES) as Array<keyof typeof TILE_STYLES>).map((styleKey) => (
@@ -337,31 +337,31 @@ export default function StoreMap({
             onClick={() => handleStyleChange(styleKey)}
             className={`px-2 py-0.5 text-xs font-mono uppercase font-semibold transition ${
               currentStyle === styleKey
-                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border border-zinc-950 dark:border-white'
-                : 'bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-transparent'
+                ? 'bg-foreground text-background border border-foreground'
+                : 'bg-muted-fill hover:bg-muted-fill text-muted border border-transparent'
             }`}
           >
             {TILE_STYLES[styleKey].name}
           </button>
         ))}
 
-        <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700 mx-1"></div>
+        <div className="h-3.5 w-px bg-muted-fill mx-1"></div>
 
         <button
           type="button"
           onClick={handleFitAll}
           title="Fit all stores into view"
-          className="flex items-center gap-1 px-2 py-0.5 text-xs font-mono uppercase font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition"
+          className="flex items-center gap-1 px-2 py-0.5 text-xs font-mono uppercase font-semibold bg-muted-fill hover:bg-muted-fill text-muted transition"
         >
-          <Maximize2 className="w-3 h-3 text-zinc-500" />
+          <Maximize2 className="w-3 h-3 text-muted" />
           <span>Fit All</span>
         </button>
       </div>
 
       {/* Store Count Badge */}
-      <div className="absolute bottom-3 left-3 z-10 bg-zinc-950 text-white text-[11px] font-mono uppercase px-2.5 py-1 border border-zinc-800 flex items-center gap-1.5">
-        <MapPin className="w-3 h-3 text-amber-400" />
-        <span><strong className="text-white">{stores.length}</strong> stores mapped</span>
+      <div className="absolute bottom-3 left-3 z-10 bg-foreground text-background text-[11px] font-mono uppercase px-2.5 py-1 border border-foreground flex items-center gap-1.5">
+        <MapPin className="w-3 h-3" />
+        <span><strong>{stores.length}</strong> stores mapped</span>
       </div>
     </div>
   );

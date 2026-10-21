@@ -17,14 +17,20 @@ export default function ThemeToggle() {
         type="button"
         onClick={() => setTheme('light')}
         aria-pressed={theme === 'light'}
-        title="Switch to light mode (Chrome Yellow)"
-        className={`inline-flex items-center gap-1.5 px-2.5 py-1 uppercase tracking-wider font-semibold transition-colors ${
+        title="Switch to light mode"
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 uppercase tracking-wider font-semibold transition-colors border-r ${
           theme === 'light'
-            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-r border-zinc-950 dark:border-white'
-            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border-r border-zinc-300 dark:border-zinc-700'
+            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
+            : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-300 dark:border-zinc-700'
         }`}
       >
-        <Sun className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+        <Sun
+          className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+            theme === 'light'
+              ? 'text-amber-400 dark:text-amber-600 fill-amber-400/40'
+              : 'text-amber-600 dark:text-amber-400'
+          }`}
+        />
         <span className="hidden sm:inline">Light</span>
       </button>
 
@@ -32,14 +38,20 @@ export default function ThemeToggle() {
         type="button"
         onClick={() => setTheme('dark')}
         aria-pressed={theme === 'dark'}
-        title="Switch to dark mode (Monochromatic Zinc)"
+        title="Switch to dark mode"
         className={`inline-flex items-center gap-1.5 px-2.5 py-1 uppercase tracking-wider font-semibold transition-colors ${
           theme === 'dark'
-            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
-            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
+            : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white'
         }`}
       >
-        <Moon className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+        <Moon
+          className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+            theme === 'dark'
+              ? 'text-amber-400 dark:text-amber-600 fill-amber-400/40'
+              : 'text-zinc-500 dark:text-zinc-400'
+          }`}
+        />
         <span className="hidden sm:inline">Dark</span>
       </button>
     </div>

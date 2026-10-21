@@ -3,7 +3,6 @@ import {
   NotFoundException,
   ConflictException,
   ForbiddenException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -11,25 +10,35 @@ import { Rating, RatingDocument } from './schemas/rating.schema.js';
 import { Store, StoreDocument } from '../stores/schemas/store.schema.js';
 import { CreateRatingDto } from './dto/create-rating.dto.js';
 import { UpdateRatingDto } from './dto/update-rating.dto.js';
+import { RatingsSocialService } from './ratings-social.service.js';
+import {
+  formatRatingResponse,
+  formatStoreReviews,
+  formatMyRatings,
+} from './ratings.formatter.js';
 
 @Injectable()
 export class RatingsService {
   constructor(
     @InjectModel(Rating.name) private ratingModel: Model<RatingDocument>,
     @InjectModel(Store.name) private storeModel: Model<StoreDocument>,
+    private readonly socialService: RatingsSocialService,
   ) {}
 
-  async create(storeId: string, userId: string, createRatingDto: CreateRatingDto) {
+  private async validateStore(storeId: string) {
     if (!Types.ObjectId.isValid(storeId)) {
       throw new NotFoundException('Store not found');
     }
-
     const store = await this.storeModel.findById(storeId).exec();
     if (!store) {
       throw new NotFoundException('Store not found');
     }
+    return store;
+  }
 
-    // Check if user already rated this store
+  async create(storeId: string, userId: string, createRatingDto: CreateRatingDto) {
+    await this.validateStore(storeId);
+
     const existing = await this.ratingModel.findOne({
       storeId: new Types.ObjectId(storeId),
       userId: new Types.ObjectId(userId),
@@ -51,17 +60,7 @@ export class RatingsService {
       });
 
       const saved = await newRating.save();
-      return {
-        id: saved._id.toString(),
-        _id: saved._id.toString(),
-        storeId: saved.storeId.toString(),
-        userId: saved.userId.toString(),
-        rating: saved.rating,
-        review: saved.review || '',
-        photos: saved.photos || [],
-        createdAt: saved.createdAt,
-        updatedAt: saved.updatedAt,
-      };
+      return formatRatingResponse(saved);
     } catch (err: any) {
       if (err.code === 11000) {
         throw new ConflictException(
@@ -73,14 +72,7 @@ export class RatingsService {
   }
 
   async update(storeId: string, userId: string, updateRatingDto: UpdateRatingDto) {
-    if (!Types.ObjectId.isValid(storeId)) {
-      throw new NotFoundException('Store not found');
-    }
-
-    const store = await this.storeModel.findById(storeId).exec();
-    if (!store) {
-      throw new NotFoundException('Store not found');
-    }
+    await this.validateStore(storeId);
 
     const existing = await this.ratingModel.findOne({
       storeId: new Types.ObjectId(storeId),
@@ -91,7 +83,6 @@ export class RatingsService {
       throw new NotFoundException('Rating not found for this store. Please submit a rating first.');
     }
 
-    // Verify ownership
     if (existing.userId.toString() !== userId) {
       throw new ForbiddenException('You cannot modify another user\'s rating');
     }
@@ -105,17 +96,7 @@ export class RatingsService {
     }
     const saved = await existing.save();
 
-    return {
-      id: saved._id.toString(),
-      _id: saved._id.toString(),
-      storeId: saved.storeId.toString(),
-      userId: saved.userId.toString(),
-      rating: saved.rating,
-      review: saved.review || '',
-      photos: saved.photos || [],
-      createdAt: saved.createdAt,
-      updatedAt: saved.updatedAt,
-    };
+    return formatRatingResponse(saved);
   }
 
   async delete(storeId: string, userId: string) {
@@ -133,7 +114,6 @@ export class RatingsService {
     }
 
     await this.ratingModel.deleteOne({ _id: existing._id });
-
     return { success: true, message: 'Rating deleted successfully' };
   }
 
@@ -149,93 +129,15 @@ export class RatingsService {
       .lean()
       .exec();
 
-    return ratings.map((r: any) => {
-      const likes = (r.likes || []).map((id: any) => id.toString());
-      const dislikes = (r.dislikes || []).map((id: any) => id.toString());
-
-      let userVote: 'LIKE' | 'DISLIKE' | null = null;
-      if (currentUserId) {
-        if (likes.includes(currentUserId)) {
-          userVote = 'LIKE';
-        } else if (dislikes.includes(currentUserId)) {
-          userVote = 'DISLIKE';
-        }
-      }
-
-      return {
-        id: r._id.toString(),
-        _id: r._id.toString(),
-        rating: r.rating,
-        review: r.review || '',
-        photos: r.photos || [],
-        likesCount: likes.length,
-        dislikesCount: dislikes.length,
-        userVote,
-        createdAt: r.createdAt,
-        updatedAt: r.updatedAt,
-        user: {
-          id: r.userId?._id ? r.userId._id.toString() : (r.userId?.toString() || 'anonymous'),
-          name: r.userId?.name || 'Verified Shopper',
-        },
-      };
-    });
+    return formatStoreReviews(ratings, currentUserId);
   }
 
   async vote(ratingId: string, userId: string, type: 'LIKE' | 'DISLIKE') {
-    if (!Types.ObjectId.isValid(ratingId)) {
-      throw new NotFoundException('Review not found');
-    }
+    return this.socialService.handleVote(this.ratingModel, ratingId, userId, type);
+  }
 
-    const rating = await this.ratingModel.findById(ratingId).exec();
-    if (!rating) {
-      throw new NotFoundException('Review not found');
-    }
-
-    if (rating.userId.toString() === userId) {
-      throw new BadRequestException('You cannot vote on your own review');
-    }
-
-    const userObjId = new Types.ObjectId(userId);
-    if (!rating.likes) rating.likes = [];
-    if (!rating.dislikes) rating.dislikes = [];
-
-    const likes = rating.likes.map((id) => id.toString());
-    const dislikes = rating.dislikes.map((id) => id.toString());
-
-    let userVote: 'LIKE' | 'DISLIKE' | null = null;
-
-    if (type === 'LIKE') {
-      if (likes.includes(userId)) {
-        // Toggle off
-        rating.likes = rating.likes.filter((id) => id.toString() !== userId);
-        userVote = null;
-      } else {
-        // Add like, remove from dislikes
-        rating.likes.push(userObjId);
-        rating.dislikes = rating.dislikes.filter((id) => id.toString() !== userId);
-        userVote = 'LIKE';
-      }
-    } else if (type === 'DISLIKE') {
-      if (dislikes.includes(userId)) {
-        // Toggle off
-        rating.dislikes = rating.dislikes.filter((id) => id.toString() !== userId);
-        userVote = null;
-      } else {
-        // Add dislike, remove from likes
-        rating.dislikes.push(userObjId);
-        rating.likes = rating.likes.filter((id) => id.toString() !== userId);
-        userVote = 'DISLIKE';
-      }
-    }
-
-    await rating.save();
-
-    return {
-      ratingId: rating._id.toString(),
-      likesCount: rating.likes.length,
-      dislikesCount: rating.dislikes.length,
-      userVote,
-    };
+  async reportReview(ratingId: string, userId: string, reason?: string) {
+    return this.socialService.handleReport(this.ratingModel, ratingId, userId, reason);
   }
 
   async getMyRatingForStore(storeId: string, userId: string) {
@@ -252,17 +154,7 @@ export class RatingsService {
       return { rating: null, review: '', photos: [] };
     }
 
-    return {
-      id: rating._id.toString(),
-      _id: rating._id.toString(),
-      storeId: rating.storeId.toString(),
-      userId: rating.userId.toString(),
-      rating: rating.rating,
-      review: rating.review || '',
-      photos: rating.photos || [],
-      createdAt: rating.createdAt,
-      updatedAt: rating.updatedAt,
-    };
+    return formatRatingResponse(rating);
   }
 
   async getMyRatings(userId: string) {
@@ -273,67 +165,7 @@ export class RatingsService {
       .lean()
       .exec();
 
-    return ratings.map((r: any) => ({
-      id: r._id.toString(),
-      _id: r._id.toString(),
-      rating: r.rating,
-      review: r.review || '',
-      photos: r.photos || [],
-      likesCount: Array.isArray(r.likes) ? r.likes.length : 0,
-      dislikesCount: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
-      createdAt: r.createdAt,
-      updatedAt: r.updatedAt,
-      store: r.storeId
-        ? {
-            id: r.storeId._id ? r.storeId._id.toString() : r.storeId.toString(),
-            name: r.storeId.name,
-            address: r.storeId.address,
-            category: r.storeId.category || 'General',
-            photos: r.storeId.photos || [],
-          }
-        : null,
-    }));
-  }
-
-  async reportReview(ratingId: string, userId: string, reason?: string) {
-    if (!Types.ObjectId.isValid(ratingId)) {
-      throw new NotFoundException('Review not found');
-    }
-
-    const rating = await this.ratingModel.findById(ratingId).exec();
-    if (!rating) {
-      throw new NotFoundException('Review not found');
-    }
-
-    if (!rating.reports) {
-      rating.reports = [];
-    }
-
-    const alreadyReported = rating.reports.some(
-      (rep) => rep.userId && rep.userId.toString() === userId,
-    );
-
-    if (alreadyReported) {
-      return {
-        success: true,
-        message: 'You have already reported this review. Our moderation team is reviewing it.',
-        reported: true,
-      };
-    }
-
-    rating.reports.push({
-      userId: new Types.ObjectId(userId),
-      reason: reason ? reason.trim() : 'Inappropriate or fake review',
-      createdAt: new Date(),
-    });
-
-    await rating.save();
-
-    return {
-      success: true,
-      message: 'Review reported successfully. Our moderation team reviews flagged content within 24 hours.',
-      reported: true,
-    };
+    return formatMyRatings(ratings);
   }
 
   async count(): Promise<number> {

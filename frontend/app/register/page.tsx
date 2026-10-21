@@ -108,18 +108,18 @@ export default function RegisterPage() {
   return (
     <div className="flex-1 min-h-[calc(100vh-4rem)] w-full grid grid-cols-1 lg:grid-cols-12">
       {/* LEFT COLUMN: Brand, Onboarding & Trust Canvas (5 Cols) */}
-      <section className="lg:col-span-5 bg-[#fffde7] dark:bg-zinc-900 border-b lg:border-b-0 lg:border-r border-zinc-300 dark:border-zinc-800 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+      <section className="lg:col-span-5 bg-surface border-b lg:border-b-0 lg:border-r border-border p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
         <div className="space-y-8">
           {/* Logo & Brand */}
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white shrink-0">
+            <div className="w-9 h-9 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
               <Store className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight text-zinc-950 dark:text-white leading-none">
+              <span className="font-extrabold text-lg tracking-tight text-foreground leading-none">
                 StoreRank
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mt-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-muted mt-1">
                 Verified Store Rating Platform
               </span>
             </div>
@@ -127,34 +127,34 @@ export default function RegisterPage() {
 
           {/* Value Proposition */}
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-xs font-mono uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
-              <span className="w-1.5 h-1.5 bg-amber-500 inline-block shrink-0" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border text-xs font-mono uppercase tracking-wider text-foreground">
+              <span className="w-1.5 h-1.5 bg-accent inline-block shrink-0" />
               <span>Consumer &amp; Community Network</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
               Start rating stores and discover top local spots.
             </h1>
 
-            <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+            <p className="text-sm text-muted leading-relaxed">
               Create a free account to bookmark favorites, submit detailed customer ratings, upload store photos, and earn verified community badges.
             </p>
           </div>
 
           {/* Store Owner Callout Banner */}
-          <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 space-y-2">
+          <div className="p-4 bg-surface border border-border space-y-2">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-white border border-zinc-300 dark:border-zinc-700 shrink-0">
-                <StorefrontIcon className="w-4 h-4 text-amber-500" />
+              <div className="p-2 bg-muted-fill text-foreground border border-border shrink-0">
+                <StorefrontIcon className="w-4 h-4 text-accent" />
               </div>
               <div className="space-y-1">
-                <p className="text-xs font-semibold text-zinc-950 dark:text-white">
+                <p className="text-xs font-semibold text-foreground">
                   Looking to list or manage your retail business?
                 </p>
                 <button
                   type="button"
                   onClick={() => setRole('OWNER')}
-                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white underline hover:no-underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-foreground underline hover:no-underline"
                 >
                   <span>Select Store Owner account</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -165,35 +165,35 @@ export default function RegisterPage() {
 
           {/* Why Join Community Perks */}
           <div className="space-y-4 pt-2">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-bold">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-muted font-bold">
               Why Join Our Reviewer Community
             </h2>
             <ul className="space-y-3.5">
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center shrink-0">
-                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                <div className="w-7 h-7 bg-surface border border-border flex items-center justify-center shrink-0">
+                  <Star className="w-3.5 h-3.5 text-rating fill-rating" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-zinc-950 dark:text-white">Share verified ratings</p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Help thousands of shoppers discover authentic, top-rated neighborhood stores.</p>
+                  <p className="text-xs font-bold text-foreground">Share verified ratings</p>
+                  <p className="text-xs text-muted">Help thousands of shoppers discover authentic, top-rated neighborhood stores.</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center shrink-0">
-                  <Shield className="w-3.5 h-3.5 text-amber-500" />
+                <div className="w-7 h-7 bg-surface border border-border flex items-center justify-center shrink-0">
+                  <Shield className="w-3.5 h-3.5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-zinc-950 dark:text-white">Protect your privacy</p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Verified credentials with privacy-respecting community profiles.</p>
+                  <p className="text-xs font-bold text-foreground">Protect your privacy</p>
+                  <p className="text-xs text-muted">Verified credentials with privacy-respecting community profiles.</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
+                <div className="w-7 h-7 bg-surface border border-border flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-zinc-950 dark:text-white">Access store analytics &amp; direct responses</p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Receive verified merchant replies and dispute resolutions directly.</p>
+                  <p className="text-xs font-bold text-foreground">Access store analytics &amp; direct responses</p>
+                  <p className="text-xs text-muted">Receive verified merchant replies and dispute resolutions directly.</p>
                 </div>
               </li>
             </ul>
@@ -201,14 +201,14 @@ export default function RegisterPage() {
         </div>
 
         {/* Bottom Stat Highlight Badge */}
-        <div className="pt-6 mt-8 border-t border-zinc-300 dark:border-zinc-800">
+        <div className="pt-6 mt-8 border-t border-border">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-amber-500 shrink-0">
+            <div className="p-2 bg-surface border border-border text-accent shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-sm font-bold text-zinc-950 dark:text-white font-mono">12,400+ Verified Stores</div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400">Registered across 45 cities with real customer validation</div>
+              <div className="text-sm font-bold text-foreground font-mono">12,400+ Verified Stores</div>
+              <div className="text-xs text-muted">Registered across 45 cities with real customer validation</div>
             </div>
           </div>
         </div>
@@ -217,13 +217,13 @@ export default function RegisterPage() {
       {/* RIGHT COLUMN: Clean Registration Card (7 Cols) */}
       <section className="lg:col-span-7 flex items-center justify-center p-6 sm:p-10 lg:p-12 overflow-y-auto">
         <div className="w-full max-w-lg my-auto">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 p-6 sm:p-8 space-y-6">
+          <div className="bg-surface border border-border p-6 sm:p-8 space-y-6">
             {/* Card Header */}
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
                 Create your account
               </h2>
-              <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted">
                 Join the verified community of trusted shoppers and merchants
               </p>
             </div>
@@ -243,7 +243,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Account Type Selection */}
               <div>
-                <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200 mb-1.5">
+                <label className="block text-xs font-mono uppercase font-bold text-foreground mb-1.5">
                   Select Account Role
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -252,14 +252,14 @@ export default function RegisterPage() {
                     onClick={() => setRole('USER')}
                     className={`p-3 border text-left transition-colors flex items-center gap-2.5 ${
                       role === 'USER'
-                        ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
-                        : 'border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 hover:border-zinc-950 dark:hover:border-white'
+                        ? 'border-foreground bg-foreground text-background font-bold'
+                        : 'border-border bg-surface text-muted hover:border-foreground'
                     }`}
                   >
                     <UserIcon className="w-4 h-4 shrink-0" />
                     <div>
                       <div className="text-xs font-mono uppercase">Shopper</div>
-                      <div className={`text-[10px] ${role === 'USER' ? 'opacity-80' : 'text-zinc-400'}`}>Rate &amp; review stores</div>
+                      <div className={`text-[10px] ${role === 'USER' ? 'opacity-80' : 'text-muted'}`}>Rate &amp; review stores</div>
                     </div>
                   </button>
 
@@ -268,14 +268,14 @@ export default function RegisterPage() {
                     onClick={() => setRole('OWNER')}
                     className={`p-3 border text-left transition-colors flex items-center gap-2.5 ${
                       role === 'OWNER'
-                        ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
-                        : 'border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 hover:border-zinc-950 dark:hover:border-white'
+                        ? 'border-foreground bg-foreground text-background font-bold'
+                        : 'border-border bg-surface text-muted hover:border-foreground'
                     }`}
                   >
-                    <Store className="w-4 h-4 shrink-0 text-amber-500" />
+                    <Store className="w-4 h-4 shrink-0 text-accent" />
                     <div>
                       <div className="text-xs font-mono uppercase">Store Owner</div>
-                      <div className={`text-[10px] ${role === 'OWNER' ? 'opacity-80' : 'text-zinc-400'}`}>Manage store listings</div>
+                      <div className={`text-[10px] ${role === 'OWNER' ? 'opacity-80' : 'text-muted'}`}>Manage store listings</div>
                     </div>
                   </button>
                 </div>
@@ -284,13 +284,13 @@ export default function RegisterPage() {
               {/* Full Name */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200" htmlFor="full_name">
-                    Full Name <span className="text-zinc-400 font-normal lowercase">(5–60 chars)</span>
+                  <label className="block text-xs font-mono uppercase font-bold text-foreground" htmlFor="full_name">
+                    Full Name <span className="text-muted font-normal lowercase">(5–60 chars)</span>
                   </label>
-                  <span className="text-[10px] font-mono text-zinc-400">{name.length}/60</span>
+                  <span className="text-[10px] font-mono text-muted">{name.length}/60</span>
                 </div>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                     <UserIcon className="w-4 h-4" />
                   </div>
                   <input
@@ -301,18 +301,18 @@ export default function RegisterPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Alex Carter"
-                    className="w-full h-10 pl-9 pr-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
               </div>
 
               {/* Email Address */}
               <div>
-                <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200 mb-1" htmlFor="email">
+                <label className="block text-xs font-mono uppercase font-bold text-foreground mb-1" htmlFor="email">
                   Email Address
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                     <Mail className="w-4 h-4" />
                   </div>
                   <input
@@ -323,7 +323,7 @@ export default function RegisterPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex.carter@example.com"
-                    className="w-full h-10 pl-9 pr-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
               </div>
@@ -331,13 +331,13 @@ export default function RegisterPage() {
               {/* Address / City */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200" htmlFor="address">
-                    Address / City <span className="text-zinc-400 font-normal lowercase">(max 400 chars)</span>
+                  <label className="block text-xs font-mono uppercase font-bold text-foreground" htmlFor="address">
+                    Address / City <span className="text-muted font-normal lowercase">(max 400 chars)</span>
                   </label>
-                  <span className="text-[10px] font-mono text-zinc-400">{address.length}/400</span>
+                  <span className="text-[10px] font-mono text-muted">{address.length}/400</span>
                 </div>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                     <MapPin className="w-4 h-4" />
                   </div>
                   <input
@@ -348,22 +348,22 @@ export default function RegisterPage() {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Station Road, Kolhapur, Maharashtra"
-                    className="w-full h-10 pl-9 pr-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
-                <p className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 flex items-center gap-1 mt-1">
-                  <Info className="w-3 h-3 text-zinc-400 shrink-0" />
+                <p className="text-[11px] font-mono text-muted flex items-center gap-1 mt-1">
+                  <Info className="w-3 h-3 text-muted shrink-0" />
                   <span>Used to show relevant local store recommendations</span>
                 </p>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200 mb-1" htmlFor="password">
+                <label className="block text-xs font-mono uppercase font-bold text-foreground mb-1" htmlFor="password">
                   Password
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                     <Lock className="w-4 h-4" />
                   </div>
                   <input
@@ -374,13 +374,13 @@ export default function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-10 pl-9 pr-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors tracking-wider"
+                    className="w-full h-10 pl-9 pr-10 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                   />
                   <button
                     type="button"
                     aria-label="Toggle password visibility"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-900 dark:hover:text-white focus:outline-none transition-colors"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted hover:text-foreground focus:outline-none transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -388,34 +388,34 @@ export default function RegisterPage() {
               </div>
 
               {/* Password Requirements Checklist (Live Validation Component) */}
-              <div className="p-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 space-y-1.5 text-xs font-mono">
-                <p className="font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 text-[11px]">
+              <div className="p-3 bg-muted-fill border border-border space-y-1.5 text-xs font-mono">
+                <p className="font-bold uppercase tracking-wider text-foreground text-[11px]">
                   Password requirements:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[11px]">
-                  <div className={`flex items-center gap-1.5 ${hasLength ? 'text-zinc-950 dark:text-white font-bold' : 'text-zinc-400'}`}>
-                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasLength ? 'bg-amber-500 border-amber-500 text-white' : 'border-zinc-300 dark:border-zinc-700'}`}>
+                  <div className={`flex items-center gap-1.5 ${hasLength ? 'text-foreground font-bold' : 'text-muted'}`}>
+                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasLength ? 'bg-accent border-accent text-background' : 'border-border'}`}>
                       <Check className="w-2.5 h-2.5" />
                     </div>
                     <span>8–16 characters</span>
                   </div>
 
-                  <div className={`flex items-center gap-1.5 ${hasUppercase ? 'text-zinc-950 dark:text-white font-bold' : 'text-zinc-400'}`}>
-                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasUppercase ? 'bg-amber-500 border-amber-500 text-white' : 'border-zinc-300 dark:border-zinc-700'}`}>
+                  <div className={`flex items-center gap-1.5 ${hasUppercase ? 'text-foreground font-bold' : 'text-muted'}`}>
+                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasUppercase ? 'bg-accent border-accent text-background' : 'border-border'}`}>
                       <Check className="w-2.5 h-2.5" />
                     </div>
                     <span>1 uppercase letter</span>
                   </div>
 
-                  <div className={`flex items-center gap-1.5 ${hasSpecial ? 'text-zinc-950 dark:text-white font-bold' : 'text-zinc-400'}`}>
-                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasSpecial ? 'bg-amber-500 border-amber-500 text-white' : 'border-zinc-300 dark:border-zinc-700'}`}>
+                  <div className={`flex items-center gap-1.5 ${hasSpecial ? 'text-foreground font-bold' : 'text-muted'}`}>
+                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasSpecial ? 'bg-accent border-accent text-background' : 'border-border'}`}>
                       <Check className="w-2.5 h-2.5" />
                     </div>
                     <span>1 special character</span>
                   </div>
 
-                  <div className={`flex items-center gap-1.5 ${hasNumber ? 'text-zinc-950 dark:text-white font-bold' : 'text-zinc-400'}`}>
-                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasNumber ? 'bg-amber-500 border-amber-500 text-white' : 'border-zinc-300 dark:border-zinc-700'}`}>
+                  <div className={`flex items-center gap-1.5 ${hasNumber ? 'text-foreground font-bold' : 'text-muted'}`}>
+                    <div className={`w-3.5 h-3.5 border flex items-center justify-center shrink-0 ${hasNumber ? 'bg-accent border-accent text-background' : 'border-border'}`}>
                       <Check className="w-2.5 h-2.5" />
                     </div>
                     <span>1 number</span>
@@ -426,7 +426,7 @@ export default function RegisterPage() {
               {/* Confirm Password */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-mono uppercase font-bold text-zinc-800 dark:text-zinc-200" htmlFor="confirm_password">
+                  <label className="block text-xs font-mono uppercase font-bold text-foreground" htmlFor="confirm_password">
                     Confirm Password
                   </label>
                   {passwordsMatch && (
@@ -437,7 +437,7 @@ export default function RegisterPage() {
                   )}
                 </div>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
                     <Lock className="w-4 h-4" />
                   </div>
                   <input
@@ -448,7 +448,7 @@ export default function RegisterPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-10 pl-9 pr-3 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors tracking-wider"
+                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                   />
                 </div>
               </div>
@@ -460,9 +460,9 @@ export default function RegisterPage() {
                     type="checkbox"
                     checked={agreeTerms}
                     onChange={(e) => setAgreeTerms(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 border border-zinc-300 dark:border-zinc-700 accent-zinc-950"
+                    className="mt-0.5 w-4 h-4 border border-border accent-foreground"
                   />
-                  <span className="text-xs text-zinc-600 dark:text-zinc-400 leading-snug">
+                  <span className="text-xs text-muted leading-snug">
                     I agree to the StoreRank terms of service and community guidelines, and confirm I will provide truthful store ratings.
                   </span>
                 </label>
@@ -473,7 +473,7 @@ export default function RegisterPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-11 px-4 bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 text-white font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-zinc-950 dark:border-white transition-colors disabled:opacity-50"
+                  className="w-full h-11 px-4 bg-foreground text-background hover:bg-accent-hover font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-foreground transition-colors disabled:opacity-50"
                 >
                   {isLoading ? (
                     <>
@@ -491,29 +491,29 @@ export default function RegisterPage() {
             </form>
 
             {/* Card Footer */}
-            <div className="pt-4 border-t border-zinc-300 dark:border-zinc-700 text-center space-y-2">
-              <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            <div className="pt-4 border-t border-border text-center space-y-2">
+              <p className="text-xs text-muted">
                 Already have an account?{' '}
                 <Link
                   href="/login"
-                  className="font-bold text-zinc-950 dark:text-white underline hover:no-underline font-mono uppercase tracking-wider ml-1"
+                  className="font-bold text-foreground underline hover:no-underline font-mono uppercase tracking-wider ml-1"
                 >
                   Log in
                 </Link>
               </p>
-              <p className="text-[11px] font-mono text-zinc-400">
+              <p className="text-[11px] font-mono text-muted">
                 By registering, you agree to our Community Guidelines on fair rating practices.
               </p>
             </div>
           </div>
 
           {/* External Quick Assist Links */}
-          <div className="mt-4 flex items-center justify-center gap-4 text-xs font-mono text-zinc-500 dark:text-zinc-400">
-            <span className="hover:text-zinc-950 dark:hover:text-white cursor-pointer">Help Center</span>
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs font-mono text-muted">
+            <span className="hover:text-foreground cursor-pointer">Help Center</span>
             <span>•</span>
-            <span className="hover:text-zinc-950 dark:hover:text-white cursor-pointer">Trust &amp; Safety</span>
+            <span className="hover:text-foreground cursor-pointer">Trust &amp; Safety</span>
             <span>•</span>
-            <span className="hover:text-zinc-950 dark:hover:text-white cursor-pointer">Contact Support</span>
+            <span className="hover:text-foreground cursor-pointer">Contact Support</span>
           </div>
         </div>
       </section>

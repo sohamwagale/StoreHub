@@ -54,14 +54,14 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#fefce8] dark:bg-zinc-950 text-zinc-950 dark:text-zinc-100 font-sans transition-colors duration-150">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans transition-colors duration-150">
         <ThemeProvider>
           <AuthProvider>
-            <Suspense fallback={<div className="h-16 border-b border-zinc-200 dark:border-zinc-800" />}>
+            <Suspense fallback={<div className="h-16 border-b border-border" />}>
               <Navbar />
             </Suspense>
             <div className="flex-1 flex flex-col">{children}</div>
-            <footer className="border-t border-zinc-300 dark:border-zinc-800 bg-[#fefce8] dark:bg-zinc-950 py-8 px-4 text-center text-xs text-zinc-600 dark:text-zinc-400 font-mono transition-colors">
+            <footer className="border-t border-border bg-background py-8 px-4 text-center text-xs text-muted font-mono transition-colors">
               <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p>© 2026 StoreRank Platform. All rights reserved.</p>
                 <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider">

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Rating, RatingSchema } from './schemas/rating.schema.js';
 import { RatingsService } from './ratings.service.js';
+import { RatingsSocialService } from './ratings-social.service.js';
 import { RatingsController } from './ratings.controller.js';
 import { Store, StoreSchema } from '../stores/schemas/store.schema.js';
 
@@ -13,7 +14,7 @@ import { Store, StoreSchema } from '../stores/schemas/store.schema.js';
     ]),
   ],
   controllers: [RatingsController],
-  providers: [RatingsService],
-  exports: [RatingsService, MongooseModule],
+  providers: [RatingsService, RatingsSocialService],
+  exports: [RatingsService, RatingsSocialService, MongooseModule],
 })
 export class RatingsModule {}

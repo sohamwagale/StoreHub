@@ -157,16 +157,16 @@ export default function UserDashboardPage() {
   return (
     <div className="flex-1 w-full flex flex-col">
       {/* ================= TOP HEADER ================= */}
-      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur px-4 sm:px-6 lg:px-8 py-5">
+      <header className="border-b border-border bg-surface/60 px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted">
               Personal Account
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight mt-0.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mt-0.5">
               My Ratings &amp; Reviews
             </h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <p className="text-xs text-muted mt-0.5">
               Manage your submitted store evaluations, track helpful votes, and access saved favorites.
             </p>
           </div>
@@ -175,9 +175,9 @@ export default function UserDashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/stores"
-              className="h-9 px-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase font-bold flex items-center gap-1.5 border border-zinc-950 dark:border-white hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shrink-0"
+              className="h-9 px-4 bg-foreground text-background text-xs font-mono uppercase font-bold flex items-center gap-1.5 border border-foreground hover:bg-accent-hover transition-colors shrink-0"
             >
-              <Plus className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+              <Plus className="w-3.5 h-3.5" />
               <span>Rate a Store</span>
             </Link>
           </div>
@@ -197,60 +197,60 @@ export default function UserDashboardPage() {
         {/* ================= 1. QUICK METRICS CARDS (4 COLUMNS) ================= */}
         <section aria-label="Reviewer Metrics" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Ratings Given */}
-          <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 mb-2">
+          <div className="p-5 bg-surface border border-border flex flex-col justify-between">
+            <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Ratings Given</span>
-              <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
+                <Star className="w-4 h-4 fill-rating text-rating" />
               </div>
             </div>
             <div className="mt-2">
-              <span className="text-3xl font-extrabold text-zinc-950 dark:text-white font-mono leading-none">
+              <span className="text-3xl font-extrabold text-foreground font-mono leading-none">
                 {myRatings.length}
               </span>
             </div>
           </div>
 
           {/* Card 2: Helpful Votes Received */}
-          <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 mb-2">
+          <div className="p-5 bg-surface border border-border flex flex-col justify-between">
+            <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Helpful Votes</span>
-              <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white">
-                <ThumbsUp className="w-4 h-4 text-amber-400" />
+              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
+                <ThumbsUp className="w-4 h-4 text-accent" />
               </div>
             </div>
             <div className="mt-2">
-              <span className="text-3xl font-extrabold text-zinc-950 dark:text-white font-mono leading-none">
+              <span className="text-3xl font-extrabold text-foreground font-mono leading-none">
                 {totalHelpfulVotes}
               </span>
             </div>
           </div>
 
           {/* Card 3: Bookmarked Stores */}
-          <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 mb-2">
+          <div className="p-5 bg-surface border border-border flex flex-col justify-between">
+            <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Saved Stores</span>
-              <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white">
-                <Bookmark className="w-4 h-4 text-amber-400 fill-current" />
+              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
+                <Bookmark className="w-4 h-4 text-accent fill-current" />
               </div>
             </div>
             <div className="mt-2">
-              <span className="text-3xl font-extrabold text-zinc-950 dark:text-white font-mono leading-none">
+              <span className="text-3xl font-extrabold text-foreground font-mono leading-none">
                 {dashboardStats ? dashboardStats.bookmarkedCount : bookmarkedStores.length}
               </span>
             </div>
           </div>
 
           {/* Card 4: Reviewer Rank */}
-          <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 mb-2">
+          <div className="p-5 bg-surface border border-border flex flex-col justify-between">
+            <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Reviewer Tier</span>
-              <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white">
-                <Award className="w-4 h-4 text-amber-400" />
+              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
+                <Award className="w-4 h-4 text-accent" />
               </div>
             </div>
             <div className="mt-2">
-              <span className="text-lg font-extrabold text-zinc-950 dark:text-white font-mono leading-none truncate max-w-[170px]" title={currentRank}>
+              <span className="text-lg font-extrabold text-foreground font-mono leading-none truncate max-w-[170px]" title={currentRank}>
                 {currentRank}
               </span>
             </div>
@@ -262,35 +262,35 @@ export default function UserDashboardPage() {
           {/* ================= LEFT COLUMN (8 COLS) ================= */}
           <div className="lg:col-span-8 space-y-6">
             {/* Recent Ratings & Reviews List Card */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
+            <div className="bg-surface border border-border">
               {/* Header with Search & Filter Tabs */}
-              <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="p-4 sm:p-5 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                  <h2 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-zinc-950 dark:text-white font-mono">
+                  <h2 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-foreground font-mono">
                     My Ratings ({myRatings.length})
                   </h2>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="relative flex-1 sm:w-52">
-                    <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+                    <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Filter reviews..."
-                      className="w-full h-8 pl-8 pr-2 text-xs font-mono bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                      className="w-full h-8 pl-8 pr-2 text-xs font-mono bg-muted-fill border border-border text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                     />
                   </div>
 
-                  <div className="inline-flex border border-zinc-300 dark:border-zinc-700 text-xs font-mono">
+                  <div className="inline-flex border border-border text-xs font-mono">
                     <button
                       type="button"
                       onClick={() => setFilterTab('all')}
                       className={`px-3 py-1 font-bold uppercase transition-colors ${
                         filterTab === 'all'
-                          ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
-                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                          ? 'bg-foreground text-background'
+                          : 'text-muted hover:text-foreground'
                       }`}
                     >
                       All
@@ -298,10 +298,10 @@ export default function UserDashboardPage() {
                     <button
                       type="button"
                       onClick={() => setFilterTab('photos')}
-                      className={`px-3 py-1 font-bold uppercase border-l border-zinc-300 dark:border-zinc-700 transition-colors ${
+                      className={`px-3 py-1 font-bold uppercase border-l border-border transition-colors ${
                         filterTab === 'photos'
-                          ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
-                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                          ? 'bg-foreground text-background'
+                          : 'text-muted hover:text-foreground'
                       }`}
                     >
                       With Photos
@@ -312,32 +312,32 @@ export default function UserDashboardPage() {
 
               {/* Review Items List */}
               {isLoading ? (
-                <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+                <div className="divide-y divide-border">
                   {[1, 2, 3].map((i) => (
                     <ReviewItemSkeleton key={i} />
                   ))}
                 </div>
               ) : filteredRatings.length === 0 ? (
                 <div className="p-12 text-center space-y-4">
-                  <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center mx-auto text-zinc-400">
-                    <Star className="w-6 h-6 text-amber-500" />
+                  <div className="w-12 h-12 bg-muted-fill border border-border flex items-center justify-center mx-auto text-muted">
+                    <Star className="w-6 h-6 text-rating" />
                   </div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-white font-mono">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-foreground font-mono">
                     No ratings found
                   </h3>
-                  <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                  <p className="text-xs text-muted max-w-sm mx-auto">
                     {searchQuery ? 'No reviews match your search query.' : "You haven't submitted any reviews yet. Explore local stores to share your experience!"}
                   </p>
                   <Link
                     href="/stores"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase font-bold border border-zinc-950 dark:border-white transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background text-xs font-mono uppercase font-bold border border-foreground transition-colors"
                   >
                     <span>Explore Stores</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               ) : (
-                <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+                <div className="divide-y divide-border">
                   {filteredRatings.map((item) => {
                     const initials = item.store?.name
                       ? item.store.name
@@ -349,25 +349,25 @@ export default function UserDashboardPage() {
                       : 'ST';
 
                     return (
-                      <article key={item.id} className="p-5 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 transition-colors space-y-3">
+                      <article key={item.id} className="p-5 hover:bg-muted-fill/50 transition-colors space-y-3">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                           <div className="flex items-start gap-3">
-                            <div className="w-9 h-9 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-mono font-bold text-xs shrink-0 border border-zinc-950 dark:border-white">
+                            <div className="w-9 h-9 bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs shrink-0 border border-foreground">
                               {initials}
                             </div>
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
                                 <Link
                                   href={`/stores/${item.store?.id}`}
-                                  className="text-sm font-bold text-zinc-950 dark:text-white hover:underline font-mono"
+                                  className="text-sm font-bold text-foreground hover:underline font-mono"
                                 >
                                   {item.store?.name || 'Store'}
                                 </Link>
-                                <span className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 text-[10px] font-mono uppercase">
+                                <span className="px-2 py-0.5 bg-muted-fill text-muted border border-border text-[10px] font-mono uppercase">
                                   {item.store?.category || 'Retail'}
                                 </span>
                               </div>
-                              <span className="text-xs text-zinc-500 dark:text-zinc-400 block mt-0.5">
+                              <span className="text-xs text-muted block mt-0.5">
                                 {item.store?.address}
                               </span>
                             </div>
@@ -377,18 +377,18 @@ export default function UserDashboardPage() {
                           <div className="flex flex-col sm:items-end">
                             <div className="flex items-center gap-1.5">
                               <StarRating rating={item.rating} size="sm" />
-                              <span className="font-bold text-xs font-mono text-zinc-950 dark:text-white">
+                              <span className="font-bold text-xs font-mono text-foreground">
                                 {item.rating.toFixed(1)}
                               </span>
                             </div>
-                            <span className="text-[11px] font-mono text-zinc-500 mt-0.5">
+                            <span className="text-[11px] font-mono text-muted mt-0.5">
                               {new Date(item.createdAt).toLocaleDateString()}
                             </span>
                           </div>
                         </div>
 
                         {/* Review Content */}
-                        <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed italic">
+                        <p className="text-xs sm:text-sm text-foreground leading-relaxed italic">
                           "{item.review || 'Rating submitted with no commentary.'}"
                         </p>
 
@@ -400,16 +400,16 @@ export default function UserDashboardPage() {
                                 key={pIdx}
                                 src={pUrl}
                                 alt="Review attachment"
-                                className="w-14 h-14 object-cover border border-zinc-300 dark:border-zinc-700"
+                                className="w-14 h-14 object-cover border border-border"
                               />
                             ))}
                           </div>
                         )}
 
                         {/* Footer & Actions */}
-                        <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                          <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-500">
-                            <ThumbsUp className="w-3.5 h-3.5 text-amber-500" />
+                        <div className="flex items-center justify-between pt-2 border-t border-border">
+                          <div className="flex items-center gap-1.5 text-xs font-mono text-muted">
+                            <ThumbsUp className="w-3.5 h-3.5 text-accent" />
                             <span>{item.likesCount || 0} helpful votes</span>
                           </div>
 
@@ -417,14 +417,14 @@ export default function UserDashboardPage() {
                             <button
                               type="button"
                               onClick={() => handleOpenEdit(item)}
-                              className="px-3 py-1 text-xs font-mono uppercase font-bold text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white transition-colors"
+                              className="px-3 py-1 text-xs font-mono uppercase font-bold text-foreground bg-surface border border-border hover:border-foreground transition-colors"
                             >
                               Edit Review
                             </button>
                             <button
                               type="button"
                               onClick={() => handleShareStore(item.store?.id)}
-                              className="p-1 text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
+                              className="p-1 text-muted hover:text-foreground transition-colors"
                               title="Share store link"
                             >
                               <Share2 className="w-3.5 h-3.5" />
@@ -442,12 +442,12 @@ export default function UserDashboardPage() {
           {/* ================= RIGHT COLUMN (4 COLS - SIDEBAR WIDGETS) ================= */}
           <div className="lg:col-span-4 space-y-6">
             {/* Widget 1: Quick Access Favorites / Bookmarks */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-5 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <h2 className="text-xs font-extrabold uppercase tracking-wider text-zinc-950 dark:text-white font-mono">
+            <div className="bg-surface border border-border p-5 space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-border">
+                <h2 className="text-xs font-extrabold uppercase tracking-wider text-foreground font-mono">
                   Saved Favorites
                 </h2>
-                <Link href="/stores" className="text-xs font-mono uppercase font-bold text-zinc-950 dark:text-white underline hover:no-underline">
+                <Link href="/stores" className="text-xs font-mono uppercase font-bold text-foreground underline hover:no-underline">
                   Browse Stores
                 </Link>
               </div>
@@ -455,7 +455,7 @@ export default function UserDashboardPage() {
               <div className="space-y-2">
                 {isLoading ? (
                   [1, 2, 3].map((i) => (
-                    <div key={i} className="p-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 space-y-1.5 animate-pulse">
+                    <div key={i} className="p-3 border border-border bg-muted-fill space-y-1.5 animate-pulse">
                       <div className="flex items-center justify-between">
                         <Skeleton className="h-3 w-28" />
                         <Skeleton className="h-3 w-8" />
@@ -464,7 +464,7 @@ export default function UserDashboardPage() {
                     </div>
                   ))
                 ) : displayedBookmarks.length === 0 ? (
-                  <div className="p-4 text-center text-xs font-mono text-zinc-400 bg-zinc-50 dark:bg-zinc-950 border border-dashed border-zinc-300 dark:border-zinc-700">
+                  <div className="p-4 text-center text-xs font-mono text-muted bg-muted-fill border border-dashed border-border">
                     No stores bookmarked yet.
                   </div>
                 ) : (
@@ -472,18 +472,18 @@ export default function UserDashboardPage() {
                     <Link
                       key={s.id}
                       href={`/stores/${s.id}`}
-                      className="p-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 hover:border-zinc-950 dark:hover:border-white transition-colors flex items-center justify-between block group"
+                      className="p-3 border border-border bg-muted-fill hover:border-foreground transition-colors flex items-center justify-between block group"
                     >
                       <div className="min-w-0 pr-2">
-                        <h4 className="text-xs font-mono font-bold uppercase text-zinc-950 dark:text-white truncate group-hover:underline">
+                        <h4 className="text-xs font-mono font-bold uppercase text-foreground truncate group-hover:underline">
                           {s.name}
                         </h4>
-                        <span className="text-[10px] font-mono text-zinc-500 truncate block">
+                        <span className="text-[10px] font-mono text-muted truncate block">
                           {s.category || 'Retail'} · {s.address}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-mono font-bold text-zinc-950 dark:text-white shrink-0">
-                        <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                      <div className="flex items-center gap-1 text-xs font-mono font-bold text-foreground shrink-0">
+                        <Star className="w-3 h-3 text-rating fill-rating" />
                         <span>{s.averageRating !== null && s.averageRating !== undefined ? s.averageRating.toFixed(1) : 'New'}</span>
                       </div>
                     </Link>
@@ -493,34 +493,34 @@ export default function UserDashboardPage() {
             </div>
 
             {/* Widget 2: Reputation Status */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-5 space-y-4">
+            <div className="bg-surface border border-border p-5 space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-wider">
                     Reputation Status
                   </span>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-white font-mono mt-0.5">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-foreground font-mono mt-0.5">
                     {currentRank}
                   </h3>
                 </div>
-                <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white shrink-0">
-                  <Award className="w-4 h-4 text-amber-400" />
+                <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
+                  <Award className="w-4 h-4 text-accent" />
                 </div>
               </div>
 
               {/* Progress Meter */}
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+                  <span className="text-foreground font-bold">
                     {progressPercent}% to {nextRank}
                   </span>
-                  <span className="text-zinc-500">
+                  <span className="text-muted">
                     {reviewCount} / {targetReviews} reviews
                   </span>
                 </div>
-                <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+                <div className="w-full h-1.5 bg-muted-fill overflow-hidden">
                   <div
-                    className="h-full bg-zinc-950 dark:bg-white transition-all duration-500"
+                    className="h-full bg-foreground transition-all duration-500"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -528,14 +528,14 @@ export default function UserDashboardPage() {
             </div>
 
             {/* Store Owner Quick Link */}
-            <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 text-xs font-mono">
-              <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 truncate">
-                <StoreIcon className="w-4 h-4 text-amber-500 shrink-0" />
+            <div className="p-4 bg-muted-fill border border-border flex items-center justify-between gap-3 text-xs font-mono">
+              <div className="flex items-center gap-2 text-muted truncate">
+                <StoreIcon className="w-4 h-4 text-accent shrink-0" />
                 <span className="truncate">Store Owner Account</span>
               </div>
               <Link
                 href={user.role === 'OWNER' ? '/owner' : '/register?role=OWNER'}
-                className="font-bold uppercase text-zinc-950 dark:text-white underline hover:no-underline shrink-0 text-[11px]"
+                className="font-bold uppercase text-foreground underline hover:no-underline shrink-0 text-[11px]"
               >
                 {user.role === 'OWNER' ? 'Owner Portal' : 'Register Store'} &rarr;
               </Link>
@@ -564,16 +564,16 @@ export default function UserDashboardPage() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 max-w-sm bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 p-4 border border-zinc-800 dark:border-zinc-200 z-50 flex items-start gap-3">
-          <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="fixed bottom-6 right-6 max-w-sm bg-foreground text-background p-4 border border-foreground z-50 flex items-start gap-3">
+          <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
           <div className="flex-1">
             <h5 className="text-xs font-mono uppercase font-bold tracking-wider">{toastMessage.title}</h5>
-            <p className="text-xs text-zinc-300 dark:text-zinc-700 mt-0.5">{toastMessage.body}</p>
+            <p className="text-xs text-background/70 mt-0.5">{toastMessage.body}</p>
           </div>
           <button
             type="button"
             onClick={() => setToastMessage(null)}
-            className="text-zinc-400 hover:text-white dark:hover:text-black"
+            className="text-muted hover:text-background"
           >
             <X className="w-3.5 h-3.5" />
           </button>

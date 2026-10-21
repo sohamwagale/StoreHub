@@ -9,7 +9,7 @@ export function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`animate-pulse bg-zinc-200 dark:bg-zinc-800 ${className}`}
+      className={`animate-pulse bg-muted-fill ${className}`}
       {...props}
     />
   );
@@ -20,10 +20,10 @@ export function Skeleton({
  */
 export function StoreCardSkeleton() {
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between overflow-hidden">
+    <div className="bg-surface border border-border flex flex-col justify-between overflow-hidden">
       {/* Cover Skeleton */}
-      <div className="relative aspect-[16/9] w-full bg-zinc-200 dark:bg-zinc-800 animate-pulse border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-        <div className="w-8 h-8 bg-zinc-300 dark:bg-zinc-700 animate-pulse" />
+      <div className="relative aspect-[16/9] w-full bg-muted-fill animate-pulse border-b border-border flex items-center justify-center">
+        <div className="w-8 h-8 bg-muted-fill animate-pulse" />
       </div>
 
       {/* Body Content */}
@@ -49,7 +49,7 @@ export function StoreCardSkeleton() {
         </div>
 
         {/* Action Button Row */}
-        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
+        <div className="pt-3 border-t border-border flex items-center gap-2">
           <Skeleton className="h-8 flex-1" />
           <Skeleton className="h-8 w-10" />
         </div>
@@ -76,7 +76,7 @@ export function StoreCardSkeletonGrid({ count = 6 }: { count?: number }) {
  */
 export function MetricCardSkeleton() {
   return (
-    <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex flex-col justify-between space-y-3">
+    <div className="p-5 bg-surface border border-border flex flex-col justify-between space-y-3">
       <div className="flex items-center justify-between">
         <Skeleton className="h-3 w-24" />
         <Skeleton className="w-8 h-8" />
@@ -93,7 +93,7 @@ export function MetricCardSkeleton() {
  */
 export function ReviewItemSkeleton() {
   return (
-    <div className="p-5 space-y-3.5 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="p-5 space-y-3.5 bg-surface border-b border-border">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <Skeleton className="w-9 h-9 shrink-0" />
@@ -116,7 +116,7 @@ export function ReviewItemSkeleton() {
         <Skeleton className="h-3.5 w-4/5" />
       </div>
 
-      <div className="pt-2 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/60">
+      <div className="pt-2 flex items-center justify-between border-t border-border">
         <Skeleton className="h-4 w-28" />
         <div className="flex items-center gap-2">
           <Skeleton className="h-6 w-20" />
@@ -134,7 +134,7 @@ export function DashboardSkeleton() {
   return (
     <div className="flex-1 w-full flex flex-col">
       {/* Header Skeleton */}
-      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 px-4 sm:px-6 lg:px-8 py-5">
+      <header className="border-b border-border bg-surface/60 px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-2">
             <Skeleton className="h-2.5 w-24" />
@@ -158,15 +158,15 @@ export function DashboardSkeleton() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column (8 cols): Reviews List */}
           <div className="lg:col-span-8 space-y-6">
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
-              <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3">
+            <div className="bg-surface border border-border">
+              <div className="p-4 sm:p-5 border-b border-border flex items-center justify-between gap-3">
                 <Skeleton className="h-5 w-36" />
                 <div className="flex items-center gap-2">
                   <Skeleton className="h-8 w-44" />
                   <Skeleton className="h-8 w-28" />
                 </div>
               </div>
-              <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <div className="divide-y divide-border">
                 {[1, 2, 3].map((i) => (
                   <ReviewItemSkeleton key={i} />
                 ))}
@@ -177,14 +177,14 @@ export function DashboardSkeleton() {
           {/* Right Column (4 cols): Sidebar Widgets */}
           <div className="lg:col-span-4 space-y-6">
             {/* Saved Favorites Widget Skeleton */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-5 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="bg-surface border border-border p-5 space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-border">
                 <Skeleton className="h-4 w-28" />
                 <Skeleton className="h-3.5 w-20" />
               </div>
               <div className="space-y-2">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 space-y-1.5">
+                  <div key={i} className="p-3 border border-border bg-muted-fill space-y-1.5">
                     <div className="flex items-center justify-between">
                       <Skeleton className="h-3.5 w-32" />
                       <Skeleton className="h-3.5 w-8" />
@@ -196,7 +196,7 @@ export function DashboardSkeleton() {
             </div>
 
             {/* Reputation Widget Skeleton */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-5 space-y-4">
+            <div className="bg-surface border border-border p-5 space-y-4">
               <div className="flex items-start justify-between">
                 <div className="space-y-1.5">
                   <Skeleton className="h-2.5 w-24" />
@@ -228,15 +228,15 @@ export function StoreDetailSkeleton() {
       {/* Breadcrumb Skeleton */}
       <div className="flex items-center gap-2">
         <Skeleton className="h-3.5 w-20" />
-        <span className="text-zinc-300 dark:text-zinc-700">/</span>
+        <span className="text-border">/</span>
         <Skeleton className="h-3.5 w-16" />
-        <span className="text-zinc-300 dark:text-zinc-700">/</span>
+        <span className="text-border">/</span>
         <Skeleton className="h-3.5 w-32" />
       </div>
 
       {/* Main Header Card */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-6 sm:p-8 space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="bg-surface border border-border p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 pb-6 border-b border-border">
           <div className="space-y-3 flex-1">
             <div className="flex items-center gap-2">
               <Skeleton className="h-5 w-24" />
@@ -254,7 +254,7 @@ export function StoreDetailSkeleton() {
 
         {/* Rating Breakdown Section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          <div className="md:col-span-4 flex flex-col items-center justify-center p-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 space-y-2">
+          <div className="md:col-span-4 flex flex-col items-center justify-center p-6 bg-muted-fill border border-border space-y-2">
             <Skeleton className="h-12 w-24" />
             <Skeleton className="h-5 w-32" />
             <Skeleton className="h-3.5 w-28" />
@@ -274,12 +274,12 @@ export function StoreDetailSkeleton() {
       {/* 2-Column Content Skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-6">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
-            <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+          <div className="bg-surface border border-border">
+            <div className="p-5 border-b border-border flex items-center justify-between">
               <Skeleton className="h-5 w-40" />
               <Skeleton className="h-8 w-32" />
             </div>
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="divide-y divide-border">
               {[1, 2, 3].map((i) => (
                 <ReviewItemSkeleton key={i} />
               ))}
@@ -288,7 +288,7 @@ export function StoreDetailSkeleton() {
         </div>
 
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-5 space-y-4">
+          <div className="bg-surface border border-border p-5 space-y-4">
             <Skeleton className="h-4 w-32" />
             <Skeleton className="h-44 w-full" />
             <div className="space-y-3 pt-2">
@@ -310,7 +310,7 @@ export function OwnerDashboardSkeleton() {
   return (
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6">
       {/* Header Skeleton */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border">
         <div className="space-y-2">
           <Skeleton className="h-3 w-36" />
           <Skeleton className="h-8 w-72" />
@@ -330,15 +330,15 @@ export function OwnerDashboardSkeleton() {
       </div>
 
       {/* Store Content Card */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-6 space-y-6">
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="bg-surface border border-border p-6 space-y-6">
+        <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="space-y-2">
             <Skeleton className="h-6 w-48" />
             <Skeleton className="h-3.5 w-64" />
           </div>
           <Skeleton className="h-8 w-32" />
         </div>
-        <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+        <div className="divide-y divide-border">
           {[1, 2, 3].map((i) => (
             <ReviewItemSkeleton key={i} />
           ))}
@@ -354,8 +354,8 @@ export function OwnerDashboardSkeleton() {
 export function ProfileSkeleton() {
   return (
     <div className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-6">
-      <div className="bg-white dark:bg-zinc-900 p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 space-y-6">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="bg-surface p-6 sm:p-8 border border-border space-y-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 pb-6 border-b border-border">
           <Skeleton className="w-16 h-16 shrink-0" />
           <div className="space-y-2 text-center sm:text-left flex-1">
             <div className="flex items-center gap-2 justify-center sm:justify-start">
@@ -381,13 +381,13 @@ export function ProfileSkeleton() {
 export function OnboardingSkeleton() {
   return (
     <div className="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6">
-      <div className="space-y-2 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="space-y-2 pb-4 border-b border-border">
         <Skeleton className="h-3 w-32" />
         <Skeleton className="h-8 w-64" />
         <Skeleton className="h-3.5 w-80" />
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 p-6 sm:p-8 border border-zinc-300 dark:border-zinc-800 space-y-6">
+      <div className="bg-surface p-6 sm:p-8 border border-border space-y-6">
         <div className="space-y-2">
           <Skeleton className="h-3.5 w-24" />
           <Skeleton className="h-10 w-full" />

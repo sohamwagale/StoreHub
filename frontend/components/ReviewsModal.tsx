@@ -154,46 +154,46 @@ export default function ReviewsModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
-      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-surface border border-border overflow-hidden">
         {/* Modal Header */}
-        <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-start justify-between gap-4">
+        <div className="p-5 border-b border-border flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-700">
+              <span className="text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.5 bg-muted-fill text-foreground border border-border">
                 {store.category || 'Store'}
               </span>
-              <span className="text-xs text-zinc-400">•</span>
-              <div className="flex items-center gap-1 text-xs font-bold font-mono text-zinc-950 dark:text-white">
-                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              <span className="text-xs text-muted">•</span>
+              <div className="flex items-center gap-1 text-xs font-bold font-mono text-foreground">
+                <Star className="w-3.5 h-3.5 fill-rating text-rating" />
                 <span>{store.averageRating !== null ? store.averageRating.toFixed(1) : 'New'}</span>
-                <span className="text-zinc-400 font-normal">({store.totalRatings} ratings)</span>
+                <span className="text-muted font-normal">({store.totalRatings} ratings)</span>
               </div>
             </div>
-            <h2 className="text-lg font-bold text-zinc-950 dark:text-white line-clamp-1">
+            <h2 className="text-lg font-bold text-foreground line-clamp-1">
               {store.name}
             </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+            <p className="text-xs text-muted truncate">
               {store.address}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shrink-0"
+            className="p-1.5 text-muted hover:text-foreground border border-transparent hover:border-border transition-colors shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1 px-5 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+        <div className="flex items-center gap-1 px-5 py-2 border-b border-border bg-muted-fill">
           <button
             type="button"
             onClick={() => setActiveTab('reviews')}
             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
               activeTab === 'reviews'
-                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border-transparent hover:border-zinc-300 dark:hover:border-zinc-700'
+                ? 'bg-foreground text-background border-foreground'
+                : 'text-muted hover:text-foreground border-transparent hover:border-border'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
@@ -205,8 +205,8 @@ export default function ReviewsModal({
             onClick={() => setActiveTab('photos')}
             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
               activeTab === 'photos'
-                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border-transparent hover:border-zinc-300 dark:hover:border-zinc-700'
+                ? 'bg-foreground text-background border-foreground'
+                : 'text-muted hover:text-foreground border-transparent hover:border-border'
             }`}
           >
             <Camera className="w-3.5 h-3.5" />
@@ -216,14 +216,14 @@ export default function ReviewsModal({
 
         {/* Status Messages */}
         {error && (
-          <div className="m-5 mb-0 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-red-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+          <div className="m-5 mb-0 p-3 bg-muted-fill border-l-2 border-red-500 flex items-center gap-2 text-foreground text-xs">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{error}</span>
           </div>
         )}
 
         {uploadSuccess && (
-          <div className="m-5 mb-0 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-emerald-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+          <div className="m-5 mb-0 p-3 bg-muted-fill border-l-2 border-emerald-500 flex items-center gap-2 text-foreground text-xs">
             <CheckCircle className="w-4 h-4 shrink-0 text-emerald-500" />
             <span>{uploadSuccess}</span>
           </div>
@@ -236,29 +236,29 @@ export default function ReviewsModal({
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="p-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 space-y-2.5 animate-pulse"
+                  className="p-4 bg-muted-fill border border-border space-y-2.5 animate-pulse"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 bg-zinc-200 dark:bg-zinc-700" />
-                      <div className="h-3.5 w-24 bg-zinc-200 dark:bg-zinc-700" />
+                      <div className="w-7 h-7 bg-muted-fill" />
+                      <div className="h-3.5 w-24 bg-muted-fill" />
                     </div>
-                    <div className="h-3.5 w-16 bg-zinc-200 dark:bg-zinc-700" />
+                    <div className="h-3.5 w-16 bg-muted-fill" />
                   </div>
-                  <div className="h-3 w-full bg-zinc-200 dark:bg-zinc-700" />
-                  <div className="h-3 w-3/4 bg-zinc-200 dark:bg-zinc-700" />
+                  <div className="h-3 w-full bg-muted-fill" />
+                  <div className="h-3 w-3/4 bg-muted-fill" />
                 </div>
               ))}
             </div>
           ) : activeTab === 'reviews' ? (
             /* Reviews Tab Content */
             reviews.length === 0 ? (
-              <div className="text-center py-12 text-zinc-400">
+              <div className="text-center py-12 text-muted">
                 <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                <h4 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
+                <h4 className="text-sm font-bold text-muted">
                   No reviews yet
                 </h4>
-                <p className="text-xs text-zinc-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Be the first shopper to share your experience with {store.name}.
                 </p>
               </div>
@@ -266,26 +266,26 @@ export default function ReviewsModal({
               reviews.map((rev) => (
                 <div
                   key={rev.id}
-                  className="p-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800"
+                  className="p-4 bg-muted-fill border border-border"
                 >
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-300 dark:border-zinc-600">
+                      <div className="w-7 h-7 bg-muted-fill text-foreground font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-border">
                         {rev.user?.name ? rev.user.name.charAt(0).toUpperCase() : 'U'}
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-zinc-950 dark:text-white">
+                        <div className="text-xs font-bold text-foreground">
                           {rev.user?.name || 'Verified Customer'}
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400">
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted">
                           <Clock className="w-3 h-3" />
                           <span>{new Date(rev.createdAt).toLocaleDateString()}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-900 px-2 py-0.5 border border-zinc-200 dark:border-zinc-700">
-                      <span className="text-xs font-mono font-bold text-amber-500">
+                    <div className="flex items-center gap-1.5 bg-surface px-2 py-0.5 border border-border">
+                      <span className="text-xs font-mono font-bold text-rating">
                         ★ {rev.rating}
                       </span>
                       <StarRating rating={rev.rating} size="sm" />
@@ -293,11 +293,11 @@ export default function ReviewsModal({
                   </div>
 
                   {rev.review ? (
-                    <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 pl-9 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-foreground pl-9 leading-relaxed">
                       "{rev.review}"
                     </p>
                   ) : (
-                    <p className="text-xs text-zinc-400 italic pl-9">
+                    <p className="text-xs text-muted italic pl-9">
                       Rated {rev.rating} stars without written comment.
                     </p>
                   )}
@@ -309,7 +309,7 @@ export default function ReviewsModal({
                         <div
                           key={pIdx}
                           onClick={() => setLightboxImage(photoUrl)}
-                          className="relative group w-16 h-16 shrink-0 border border-zinc-300 dark:border-zinc-700 cursor-pointer bg-zinc-100 dark:bg-zinc-800"
+                          className="relative group w-16 h-16 shrink-0 border border-border cursor-pointer bg-muted-fill"
                         >
                           <img
                             src={photoUrl}
@@ -325,8 +325,8 @@ export default function ReviewsModal({
                   )}
 
                   {/* Like / Dislike Community Voting Footer */}
-                  <div className="mt-3 pt-2.5 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500 pl-9">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Helpful review?</span>
+                  <div className="mt-3 pt-2.5 border-t border-border flex items-center justify-between text-xs text-muted pl-9">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted">Helpful review?</span>
 
                     <div className="flex items-center gap-2">
                       <button
@@ -334,11 +334,11 @@ export default function ReviewsModal({
                         onClick={() => handleVote(rev.id, 'LIKE')}
                         className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border transition-colors ${
                           rev.userVote === 'LIKE'
-                            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
-                            : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
+                            ? 'bg-foreground text-background border-foreground font-bold'
+                            : 'bg-surface text-muted border-border hover:border-foreground'
                         }`}
                       >
-                        <ThumbsUp className={`w-3 h-3 ${rev.userVote === 'LIKE' ? 'fill-current text-amber-400' : ''}`} />
+                        <ThumbsUp className={`w-3 h-3 ${rev.userVote === 'LIKE' ? 'fill-current text-accent' : ''}`} />
                         <span>{rev.likesCount || 0}</span>
                       </button>
 
@@ -347,8 +347,8 @@ export default function ReviewsModal({
                         onClick={() => handleVote(rev.id, 'DISLIKE')}
                         className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border transition-colors ${
                           rev.userVote === 'DISLIKE'
-                            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
-                            : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
+                            ? 'bg-foreground text-background border-foreground font-bold'
+                            : 'bg-surface text-muted border-border hover:border-foreground'
                         }`}
                       >
                         <ThumbsDown className="w-3 h-3" />
@@ -363,16 +363,16 @@ export default function ReviewsModal({
             /* Photos & Gallery Tab Content */
             <div className="space-y-5">
               {/* Upload Action Toolbar */}
-              <div className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-                <div className="flex items-center gap-2 text-xs text-zinc-800 dark:text-zinc-200">
-                  <Camera className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center justify-between p-3 bg-muted-fill border border-border">
+                <div className="flex items-center gap-2 text-xs text-foreground">
+                  <Camera className="w-4 h-4 text-accent" />
                   <span className="font-semibold">Visited {store.name}?</span>
-                  <span className="hidden sm:inline text-zinc-500">
+                  <span className="hidden sm:inline text-muted">
                     Share photos of store front or interior.
                   </span>
                 </div>
 
-                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors">
+                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-background bg-foreground hover:bg-accent-hover border border-foreground transition-colors">
                   {isUploadingPhoto ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
@@ -392,12 +392,12 @@ export default function ReviewsModal({
 
               {/* All Photos Grid */}
               {totalPhotos === 0 ? (
-                <div className="text-center py-12 text-zinc-400">
+                <div className="text-center py-12 text-muted">
                   <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                  <h4 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
+                  <h4 className="text-sm font-bold text-muted">
                     No photos added yet
                   </h4>
-                  <p className="text-xs text-zinc-500 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     Upload the first photo of {store.name} above!
                   </p>
                 </div>
@@ -406,9 +406,9 @@ export default function ReviewsModal({
                   {/* Store / Owner Photos */}
                   {gallery?.ownerPhotos && gallery.ownerPhotos.length > 0 && (
                     <div>
-                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2 flex items-center gap-1.5">
+                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted mb-2 flex items-center gap-1.5">
                         <span>Official Store Photos</span>
-                        <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-800 text-[10px]">
+                        <span className="px-1.5 py-0.2 bg-muted-fill text-[10px]">
                           {gallery.ownerPhotos.length}
                         </span>
                       </h4>
@@ -417,7 +417,7 @@ export default function ReviewsModal({
                           <div
                             key={idx}
                             onClick={() => setLightboxImage(url)}
-                            className="relative group aspect-square overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800"
+                            className="relative group aspect-square overflow-hidden cursor-pointer border border-border bg-muted-fill"
                           >
                             <img
                               src={url}
@@ -436,9 +436,9 @@ export default function ReviewsModal({
                   {/* Customer Photos */}
                   {gallery?.customerPhotos && gallery.customerPhotos.length > 0 && (
                     <div>
-                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2 flex items-center gap-1.5">
+                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted mb-2 flex items-center gap-1.5">
                         <span>Customer Photos</span>
-                        <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-800 text-[10px]">
+                        <span className="px-1.5 py-0.2 bg-muted-fill text-[10px]">
                           {gallery.customerPhotos.length}
                         </span>
                       </h4>
@@ -447,7 +447,7 @@ export default function ReviewsModal({
                           <div
                             key={idx}
                             onClick={() => setLightboxImage(cp.url)}
-                            className="relative group aspect-square overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800"
+                            className="relative group aspect-square overflow-hidden cursor-pointer border border-border bg-muted-fill"
                           >
                             <img
                               src={cp.url}
@@ -456,13 +456,13 @@ export default function ReviewsModal({
                             />
                             {/* Info overlay */}
                             <div className="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 p-2.5 flex flex-col justify-between text-white transition-opacity">
-                              <span className="self-end text-[10px] font-mono font-bold bg-zinc-950 px-1.5 py-0.5 border border-amber-500/80 text-amber-400">
+                              <span className="self-end text-[10px] font-mono font-bold bg-black px-1.5 py-0.5 border border-rating text-rating">
                                 ★ {cp.rating}
                               </span>
                               <div>
                                 <div className="text-[11px] font-bold line-clamp-1">{cp.userName}</div>
                                 {cp.review && (
-                                  <div className="text-[10px] text-zinc-300 line-clamp-1 italic">
+                                  <div className="text-[10px] text-muted line-clamp-1 italic">
                                     "{cp.review}"
                                   </div>
                                 )}
@@ -480,8 +480,8 @@ export default function ReviewsModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3">
-          <span className="text-xs text-zinc-500 hidden sm:inline">
+        <div className="p-3.5 bg-muted-fill border-t border-border flex items-center justify-between gap-3">
+          <span className="text-xs text-muted hidden sm:inline">
             Rate {store.name} to help shoppers discover quality local stores
           </span>
 
@@ -489,7 +489,7 @@ export default function ReviewsModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-muted border border-border hover:bg-muted-fill transition-colors"
             >
               Close
             </button>
@@ -499,7 +499,7 @@ export default function ReviewsModal({
                 onClose();
                 onRateClick(store);
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-background bg-foreground hover:bg-accent-hover border border-foreground transition-colors"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>{store.userRating ? 'Update Rating' : 'Rate & Add Photos'}</span>
@@ -514,7 +514,7 @@ export default function ReviewsModal({
           onClick={() => setLightboxImage(null)}
           className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4"
         >
-          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden border border-zinc-700 bg-black">
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden border border-white/20 bg-black">
             <button
               type="button"
               onClick={() => setLightboxImage(null)}
