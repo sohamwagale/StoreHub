@@ -26,9 +26,52 @@ export class StoresService {
       latitude: createStoreDto.latitude ?? 40.7128,
       longitude: createStoreDto.longitude ?? -74.0060,
       photos: createStoreDto.photos || [],
+      description: createStoreDto.description ? createStoreDto.description.trim() : '',
+      phone: createStoreDto.phone ? createStoreDto.phone.trim() : '',
+      website: createStoreDto.website ? createStoreDto.website.trim() : '',
+      openingHours: createStoreDto.openingHours ? createStoreDto.openingHours.trim() : '',
+      schedule: createStoreDto.schedule || {},
+      highlights: createStoreDto.highlights || [],
+      parkingInfo: createStoreDto.parkingInfo ? createStoreDto.parkingInfo.trim() : '',
+      supportEmail: createStoreDto.supportEmail ? createStoreDto.supportEmail.trim() : '',
+      merchantNotice: createStoreDto.merchantNotice ? createStoreDto.merchantNotice.trim() : '',
       ownerId: new Types.ObjectId(ownerId),
     });
     return store.save();
+  }
+
+  async update(id: string, updateStoreDto: Partial<CreateStoreDto>, ownerId: string) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const store = await this.storeModel.findById(id);
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    if (store.ownerId.toString() !== ownerId) {
+      throw new ForbiddenException('You do not have permission to modify this store');
+    }
+
+    if (updateStoreDto.name !== undefined) store.name = updateStoreDto.name.trim();
+    if (updateStoreDto.address !== undefined) store.address = updateStoreDto.address.trim();
+    if (updateStoreDto.category !== undefined) store.category = updateStoreDto.category.trim();
+    if (updateStoreDto.latitude !== undefined) store.latitude = updateStoreDto.latitude;
+    if (updateStoreDto.longitude !== undefined) store.longitude = updateStoreDto.longitude;
+    if (updateStoreDto.photos !== undefined) store.photos = updateStoreDto.photos;
+    if (updateStoreDto.description !== undefined) store.description = updateStoreDto.description.trim();
+    if (updateStoreDto.phone !== undefined) store.phone = updateStoreDto.phone.trim();
+    if (updateStoreDto.website !== undefined) store.website = updateStoreDto.website.trim();
+    if (updateStoreDto.openingHours !== undefined) store.openingHours = updateStoreDto.openingHours.trim();
+    if (updateStoreDto.schedule !== undefined) store.schedule = updateStoreDto.schedule;
+    if (updateStoreDto.highlights !== undefined) store.highlights = updateStoreDto.highlights;
+    if (updateStoreDto.parkingInfo !== undefined) store.parkingInfo = updateStoreDto.parkingInfo.trim();
+    if (updateStoreDto.supportEmail !== undefined) store.supportEmail = updateStoreDto.supportEmail.trim();
+    if (updateStoreDto.merchantNotice !== undefined) store.merchantNotice = updateStoreDto.merchantNotice.trim();
+
+    await store.save();
+    return this.findById(id, ownerId);
   }
 
   async findAll(search?: string, category?: string, currentUserId?: string) {
@@ -102,6 +145,11 @@ export class StoresService {
         phone: (store as any).phone || '',
         website: (store as any).website || '',
         openingHours: (store as any).openingHours || '',
+        schedule: (store as any).schedule || {},
+        highlights: (store as any).highlights || [],
+        parkingInfo: (store as any).parkingInfo || '',
+        supportEmail: (store as any).supportEmail || '',
+        merchantNotice: (store as any).merchantNotice || '',
         ownerId: store.ownerId.toString(),
         averageRating: stats ? stats.averageRating : null,
         totalRatings: stats ? stats.totalRatings : 0,
@@ -165,6 +213,11 @@ export class StoresService {
       phone: (store as any).phone || '',
       website: (store as any).website || '',
       openingHours: (store as any).openingHours || '',
+      schedule: (store as any).schedule || {},
+      highlights: (store as any).highlights || [],
+      parkingInfo: (store as any).parkingInfo || '',
+      supportEmail: (store as any).supportEmail || '',
+      merchantNotice: (store as any).merchantNotice || '',
       ownerId: store.ownerId.toString(),
       averageRating: stats ? Math.round(stats.averageRating * 10) / 10 : null,
       totalRatings: stats ? stats.totalRatings : 0,
@@ -246,6 +299,15 @@ export class StoresService {
           latitude: (store as any).latitude ?? 40.7128,
           longitude: (store as any).longitude ?? -74.0060,
           photos: (store as any).photos || [],
+          description: (store as any).description || '',
+          phone: (store as any).phone || '',
+          website: (store as any).website || '',
+          openingHours: (store as any).openingHours || '',
+          schedule: (store as any).schedule || {},
+          highlights: (store as any).highlights || [],
+          parkingInfo: (store as any).parkingInfo || '',
+          supportEmail: (store as any).supportEmail || '',
+          merchantNotice: (store as any).merchantNotice || '',
           averageRating:
             storeStats.averageRating !== null
               ? Math.round(storeStats.averageRating * 10) / 10
@@ -281,6 +343,33 @@ export class StoresService {
     }
     store.photos.push(...validPhotos);
     return store.save();
+  }
+
+  async deletePhoto(storeId: string, photoUrl: string, ownerId: string) {
+    if (!Types.ObjectId.isValid(storeId)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const store = await this.storeModel.findById(storeId).exec();
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    if (store.ownerId.toString() !== ownerId) {
+      throw new ForbiddenException('You do not have permission to delete photos for this store');
+    }
+
+    const targetUrl = (photoUrl || '').trim();
+    if (store.photos && Array.isArray(store.photos)) {
+      store.photos = store.photos.filter((p) => p !== targetUrl && !p.endsWith(targetUrl));
+      await store.save();
+    }
+
+    return {
+      success: true,
+      photos: store.photos || [],
+      message: 'Store photo deleted successfully',
+    };
   }
 
   async getStoreGallery(storeId: string) {

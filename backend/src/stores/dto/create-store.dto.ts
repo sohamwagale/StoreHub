@@ -36,4 +36,46 @@ export class CreateStoreDto {
   @IsArray({ message: 'Photos must be an array of image URLs' })
   @IsString({ each: true, message: 'Each photo must be a valid string URL' })
   photos?: string[];
+
+  @IsOptional()
+  @IsString({ message: 'Description must be a string' })
+  @MaxLength(2000, { message: 'Description cannot exceed 2000 characters' })
+  description?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Phone must be a string' })
+  @MaxLength(50, { message: 'Phone cannot exceed 50 characters' })
+  phone?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Website must be a string' })
+  @MaxLength(255, { message: 'Website cannot exceed 255 characters' })
+  website?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Opening hours summary must be a string' })
+  @MaxLength(100, { message: 'Opening hours cannot exceed 100 characters' })
+  openingHours?: string;
+
+  @IsOptional()
+  schedule?: Record<string, string>;
+
+  @IsOptional()
+  @IsArray({ message: 'Highlights must be an array' })
+  highlights?: Array<{ title: string; description: string }>;
+
+  @IsOptional()
+  @IsString({ message: 'Parking info must be a string' })
+  @MaxLength(255, { message: 'Parking info cannot exceed 255 characters' })
+  parkingInfo?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Support email must be a string' })
+  @MaxLength(100, { message: 'Support email cannot exceed 100 characters' })
+  supportEmail?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Merchant notice must be a string' })
+  @MaxLength(500, { message: 'Merchant notice cannot exceed 500 characters' })
+  merchantNotice?: string;
 }

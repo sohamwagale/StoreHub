@@ -82,6 +82,44 @@ export class Store {
   })
   openingHours?: string;
 
+  @Prop({
+    type: Object,
+    default: {},
+  })
+  schedule?: Record<string, string>;
+
+  @Prop({
+    type: [
+      {
+        title: { type: String, trim: true },
+        description: { type: String, trim: true },
+      },
+    ],
+    default: [],
+  })
+  highlights?: Array<{ title: string; description: string }>;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  parkingInfo?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  supportEmail?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  merchantNotice?: string;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

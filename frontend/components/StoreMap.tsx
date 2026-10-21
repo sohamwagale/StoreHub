@@ -3,6 +3,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+// Ensure MapLibre Web Worker resolves correctly in Next.js / Turbopack
+if (typeof window !== 'undefined') {
+  maplibregl.setWorkerUrl('/maplibre-gl-worker.mjs');
+}
 import { Store } from '@/types';
 import {
   MapPin,

@@ -79,25 +79,29 @@ export default function StoreHero({
                   <span className="animate-ping absolute inline-flex h-full w-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 bg-emerald-500" />
                 </span>
-                <span>{store.openingHours || 'Open Now · 9:30 AM – 9:00 PM'}</span>
+                <span>{store.openingHours || 'Open Daily · Check Hours Below'}</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-muted" />
-                <a href={`tel:${store.phone || '+919823045678'}`} className="hover:text-foreground">
-                  {store.phone || '+91 98230 45678'}
-                </a>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Globe className="w-3.5 h-3.5 text-muted" />
-                <a
-                  href={store.website || `https://storerank.platform`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground underline"
-                >
-                  {store.website ? store.website.replace(/^https?:\/\//, '') : `storerank.in/${store.name?.toLowerCase().replace(/\s+/g, '')}`}
-                </a>
-              </div>
+              {store.phone ? (
+                <div className="flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-muted" />
+                  <a href={`tel:${store.phone}`} className="hover:text-foreground">
+                    {store.phone}
+                  </a>
+                </div>
+              ) : null}
+              {store.website ? (
+                <div className="flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5 text-muted" />
+                  <a
+                    href={store.website.startsWith('http') ? store.website : `https://${store.website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground underline"
+                  >
+                    {store.website.replace(/^https?:\/\//, '')}
+                  </a>
+                </div>
+              ) : null}
             </div>
           </div>
 

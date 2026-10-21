@@ -16,6 +16,11 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface StoreHighlight {
+  title: string;
+  description: string;
+}
+
 export interface Store {
   id: string;
   _id?: string;
@@ -29,6 +34,11 @@ export interface Store {
   phone?: string;
   website?: string;
   openingHours?: string;
+  schedule?: Record<string, string>;
+  highlights?: StoreHighlight[];
+  parkingInfo?: string;
+  supportEmail?: string;
+  merchantNotice?: string;
   ownerId: string;
   averageRating: number | null;
   totalRatings: number;
@@ -149,6 +159,15 @@ export interface OwnerStoreData {
   latitude?: number;
   longitude?: number;
   photos?: string[];
+  description?: string;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
+  schedule?: Record<string, string>;
+  highlights?: StoreHighlight[];
+  parkingInfo?: string;
+  supportEmail?: string;
+  merchantNotice?: string;
   averageRating: number | null;
   totalRatings: number;
   ratings: OwnerRatingEntry[];

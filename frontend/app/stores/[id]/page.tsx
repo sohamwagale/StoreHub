@@ -215,6 +215,32 @@ function StoreDetailContent({
     }
   };
 
+  const handleDeletePhoto = async (photoUrl: string) => {
+    if (!confirm('Are you sure you want to remove this store image?')) return;
+    try {
+      await api.stores.deletePhoto(storeId, photoUrl);
+      triggerToast('Photo Deleted', 'The store photo was successfully removed.');
+      setStore((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          photos: (prev.photos || []).filter((p) => p !== photoUrl),
+        };
+      });
+      if (gallery) {
+        setGallery((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            customerPhotos: (prev.customerPhotos || []).filter((p) => p.url !== photoUrl),
+          };
+        });
+      }
+    } catch (err: any) {
+      triggerToast('Delete Failed', err?.message || 'Failed to delete photo.');
+    }
+  };
+
   const handleRatingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -491,6 +517,8 @@ function StoreDetailContent({
                 isUploadingPhoto={isUploadingPhoto}
                 onUploadPhotos={handleUploadPhotos}
                 onOpenLightbox={setLightboxImage}
+                isOwner={user?.role === 'OWNER' && user?.id === store.ownerId}
+                onDeletePhoto={handleDeletePhoto}
               />
 
               <StoreSidebarInfo

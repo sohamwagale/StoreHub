@@ -2,6 +2,8 @@ import {
   Controller,
   Get,
   Post,
+  Put,
+  Delete,
   Param,
   Query,
   Body,
@@ -57,6 +59,20 @@ export class StoresController {
     return this.storesService.addPhotos(id, list);
   }
 
+  @Delete(':id/photos')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.OWNER)
+  @HttpCode(HttpStatus.OK)
+  async deletePhoto(
+    @Param('id') id: string,
+    @Body('photoUrl') photoUrlFromBody: string,
+    @Query('photoUrl') photoUrlFromQuery: string,
+    @CurrentUser('id') ownerId: string,
+  ) {
+    const photoUrl = photoUrlFromBody || photoUrlFromQuery;
+    return this.storesService.deletePhoto(id, photoUrl, ownerId);
+  }
+
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.OWNER)
@@ -66,5 +82,17 @@ export class StoresController {
     @CurrentUser('id') ownerId: string,
   ) {
     return this.storesService.create(createStoreDto, ownerId);
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.OWNER)
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateStoreDto: Partial<CreateStoreDto>,
+    @CurrentUser('id') ownerId: string,
+  ) {
+    return this.storesService.update(id, updateStoreDto, ownerId);
   }
 }

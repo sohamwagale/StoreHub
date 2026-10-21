@@ -29,10 +29,24 @@ interface StoreSidebarInfoProps {
   similarStores: Store[];
 }
 
+const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 export default function StoreSidebarInfo({
   store,
   similarStores,
 }: StoreSidebarInfoProps) {
+  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const schedule = store.schedule || {};
+
+  const getHoursForDay = (day: string) => {
+    if (schedule && schedule[day]) return schedule[day];
+    if (store.openingHours) return store.openingHours;
+    return day === 'Sunday' ? '10:00 AM – 8:30 PM' : '9:30 AM – 9:00 PM';
+  };
+
+  const todayHours = getHoursForDay(todayName);
+  const isClosedToday = todayHours.toLowerCase().includes('closed');
+
   return (
     <aside className="lg:col-span-5 flex flex-col gap-6">
       {/* 1. HOURS OF OPERATION TABLE */}
@@ -42,14 +56,21 @@ export default function StoreSidebarInfo({
             <Clock className="w-3.5 h-3.5 text-accent" />
             <span>Hours of Operation</span>
           </h3>
-          <span className="text-[10px] font-mono uppercase font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 border border-emerald-300 dark:border-emerald-800">
-            Open Today
+          <span
+            className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 border ${
+              isClosedToday
+                ? 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-800'
+                : 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800'
+            }`}
+          >
+            {isClosedToday ? 'Closed Today' : 'Open Today'}
           </span>
         </div>
 
         <div className="divide-y divide-border text-xs font-mono">
-          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => {
-            const isToday = new Date().toLocaleDateString('en-US', { weekday: 'long' }) === day;
+          {DAYS_OF_WEEK.map((day) => {
+            const isToday = todayName === day;
+            const hours = getHoursForDay(day);
             return (
               <div
                 key={day}
@@ -58,7 +79,7 @@ export default function StoreSidebarInfo({
                 }`}
               >
                 <span>{day}{isToday ? ' (Today)' : ''}</span>
-                <span>{day === 'Sunday' ? '10:00 AM – 8:30 PM' : '9:30 AM – 9:00 PM'}</span>
+                <span>{hours}</span>
               </div>
             );
           })}
@@ -78,14 +99,14 @@ export default function StoreSidebarInfo({
         </div>
 
         {/* Map Preview */}
-        <div className="relative h-48 bg-muted-fill">
+        <div className="relative h-80 bg-muted-fill">
           {store.latitude !== undefined && store.longitude !== undefined ? (
             <StoreMap
               stores={[store]}
               selectedStoreId={store.id}
               centerCoordinates={[store.longitude, store.latitude]}
               zoomLevel={15}
-              heightClass="h-48"
+              heightClass="h-80"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-xs font-mono text-muted">
@@ -94,13 +115,15 @@ export default function StoreSidebarInfo({
           )}
         </div>
 
-        <div className="p-4 flex items-center justify-between gap-3 text-xs font-mono">
-          <span className="text-muted">Free 2-hour parking available</span>
+        <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+          <span className="text-muted">
+            {store.parkingInfo || 'Free customer parking available on premises'}
+          </span>
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${store.name} ${store.address}`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-3 py-1.5 bg-foreground text-background font-bold border border-foreground transition-colors"
+            className="inline-flex items-center gap-1 px-3 py-1.5 bg-foreground text-background font-bold border border-foreground transition-colors shrink-0"
           >
             <span>Get Directions</span>
             <ExternalLink className="w-3 h-3" />
@@ -119,8 +142,19 @@ export default function StoreSidebarInfo({
             <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
           </div>
           <p className="text-xs text-muted">
-            Verified Merchant Account on StoreRank platform with direct customer dispute resolution.
+            {store.merchantNotice ||
+              'Verified Merchant Account on StoreRank platform with direct customer dispute resolution.'}
           </p>
+          {store.supportEmail && (
+            <div className="pt-0.5">
+              <a
+                href={`mailto:${store.supportEmail}`}
+                className="text-[11px] font-mono text-accent hover:underline flex items-center gap-1"
+              >
+                <span>Support Contact: {store.supportEmail}</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

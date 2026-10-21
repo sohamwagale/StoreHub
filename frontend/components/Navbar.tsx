@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
@@ -22,7 +22,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [mounted, setMounted] = useState(false);
   const [navSearch, setNavSearch] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleNavSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +88,7 @@ export default function Navbar() {
               <span>Explore</span>
             </Link>
 
-            {user?.role === 'USER' && (
+            {mounted && user?.role === 'USER' && (
               <Link
                 href="/dashboard"
                 className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors flex items-center gap-1.5 border ${
@@ -104,7 +109,7 @@ export default function Navbar() {
               </Link>
             )}
 
-            {user?.role === 'OWNER' && (
+            {mounted && user?.role === 'OWNER' && (
               <Link
                 href="/owner"
                 className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors flex items-center gap-1.5 border ${
@@ -130,7 +135,7 @@ export default function Navbar() {
             </div>
 
             {/* Auth Actions */}
-            {isLoading ? (
+            {!mounted || isLoading ? (
               <div className="flex items-center gap-2 pl-2 sm:pl-3 ml-1 sm:ml-2 border-l border-zinc-300 dark:border-zinc-800">
                 <div className="w-20 h-7 bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
               </div>

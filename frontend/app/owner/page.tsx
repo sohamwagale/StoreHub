@@ -24,6 +24,8 @@ import {
   Navigation,
   ThumbsUp,
   ThumbsDown,
+  Edit3,
+  Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -35,6 +37,7 @@ export default function OwnerDashboardPage() {
   const [selectedStoreIndex, setSelectedStoreIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState<boolean>(false);
+  const [deletingPhotoUrl, setDeletingPhotoUrl] = useState<string | null>(null);
   const [photoSuccessMsg, setPhotoSuccessMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,6 +77,34 @@ export default function OwnerDashboardPage() {
     } finally {
       setIsUploadingPhoto(false);
       e.target.value = '';
+    }
+  };
+
+  const handleDeleteOwnerPhoto = async (photoUrl: string) => {
+    const activeStore = stores[selectedStoreIndex];
+    if (!activeStore) return;
+
+    if (!confirm('Are you sure you want to delete this store photo?')) {
+      return;
+    }
+
+    setDeletingPhotoUrl(photoUrl);
+    setError(null);
+    setPhotoSuccessMsg(null);
+    try {
+      await api.stores.deletePhoto(activeStore.id, photoUrl);
+      setPhotoSuccessMsg('Store photo deleted successfully.');
+      setStores((prevStores) =>
+        prevStores.map((s, idx) =>
+          idx === selectedStoreIndex
+            ? { ...s, photos: (s.photos || []).filter((p) => p !== photoUrl) }
+            : s
+        )
+      );
+    } catch (err: any) {
+      setError(err?.message || 'Failed to delete store photo');
+    } finally {
+      setDeletingPhotoUrl(null);
     }
   };
 
@@ -256,6 +287,12 @@ export default function OwnerDashboardPage() {
                       <MapPin className="w-3.5 h-3.5 text-muted shrink-0 mt-0.5" />
                       <span>{activeStore.address}</span>
                     </div>
+                    {activeStore.openingHours && (
+                      <div className="flex items-center gap-1.5 text-muted text-[11px] font-mono mt-1.5">
+                        <Clock className="w-3 h-3 text-muted shrink-0" />
+                        <span className="truncate">{activeStore.openingHours}</span>
+                      </div>
+                    )}
                     {activeStore.latitude !== undefined && activeStore.longitude !== undefined && (
                       <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-border text-[10px] font-mono text-muted">
                         <Navigation className="w-3 h-3" />
@@ -264,13 +301,22 @@ export default function OwnerDashboardPage() {
                     )}
                   </div>
                   <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs text-muted">
-                    <Link
-                      href={`/stores/${activeStore.id}`}
-                      className="text-xs font-mono uppercase font-bold text-foreground hover:underline flex items-center gap-1"
-                    >
-                      <Navigation className="w-3 h-3" />
-                      <span>View Public Page</span>
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`/stores/${activeStore.id}`}
+                        className="text-xs font-mono uppercase font-bold text-foreground hover:underline flex items-center gap-1"
+                      >
+                        <Navigation className="w-3 h-3" />
+                        <span>Public Page</span>
+                      </Link>
+                      <Link
+                        href={`/owner/onboarding?edit=${activeStore.id}`}
+                        className="text-xs font-mono uppercase font-bold text-accent hover:underline flex items-center gap-1"
+                      >
+                        <Edit3 className="w-3 h-3" />
+                        <span>Edit Details</span>
+                      </Link>
+                    </div>
                     <span className="font-mono text-[10px] text-muted">
                       ID: {activeStore.id.slice(-6)}
                     </span>
@@ -368,6 +414,22 @@ export default function OwnerDashboardPage() {
                         <div className="absolute bottom-1 right-1 px-1.5 py-0.2 bg-black text-[9px] font-mono font-bold text-white border border-white/20">
                           #{pIdx + 1}
                         </div>
+                        <button
+                          type="button"
+                          disabled={deletingPhotoUrl === url}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteOwnerPhoto(url);
+                          }}
+                          title="Delete this store photo"
+                          className="absolute top-1.5 right-1.5 p-1 bg-black/80 hover:bg-red-600 text-white border border-white/20 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer disabled:opacity-50"
+                        >
+                          {deletingPhotoUrl === url ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-3.5 h-3.5" />
+                          )}
+                        </button>
                       </div>
                     ))}
                   </div>

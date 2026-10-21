@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera } from 'lucide-react';
+import { Camera, Trash2 } from 'lucide-react';
 import { Store } from '@/types';
 
 interface StorePhotoGalleryProps {
@@ -8,6 +8,8 @@ interface StorePhotoGalleryProps {
   isUploadingPhoto: boolean;
   onUploadPhotos: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOpenLightbox: (imageUrl: string) => void;
+  isOwner?: boolean;
+  onDeletePhoto?: (photoUrl: string) => void;
 }
 
 export default function StorePhotoGallery({
@@ -16,6 +18,8 @@ export default function StorePhotoGallery({
   isUploadingPhoto,
   onUploadPhotos,
   onOpenLightbox,
+  isOwner = false,
+  onDeletePhoto,
 }: StorePhotoGalleryProps) {
   return (
     <div className="bg-surface border border-border p-6 space-y-4">
@@ -58,6 +62,19 @@ export default function StorePhotoGallery({
               <span className="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/80 text-white text-[9px] font-mono uppercase font-bold">
                 {idx === 0 ? 'Showroom' : idx === 1 ? 'Display' : idx === 2 ? 'Entrance' : `+${allPhotos.length - 3} more`}
               </span>
+              {isOwner && onDeletePhoto && (
+                <button
+                  type="button"
+                  title="Delete this store photo"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeletePhoto(img);
+                  }}
+                  className="absolute top-1 right-1 p-1 bg-black/80 hover:bg-red-600 text-white transition-opacity opacity-0 group-hover:opacity-100 border border-white/20"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              )}
             </div>
           ))}
         </div>

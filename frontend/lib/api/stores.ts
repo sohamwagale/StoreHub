@@ -33,16 +33,27 @@ export class StoresApi {
     });
   };
 
-  create = (payload: {
+  deletePhoto = (storeId: string, photoUrl: string): Promise<any> => {
+    return this.client.request(`/stores/${storeId}/photos`, {
+      method: 'DELETE',
+      body: JSON.stringify({ photoUrl }),
+    });
+  };
+
+  create = (payload: Partial<Store> & {
     name: string;
     address: string;
-    category: string;
-    latitude?: number;
-    longitude?: number;
-    photos?: string[];
+    category?: string;
   }): Promise<Store> => {
     return this.client.request<Store>('/stores', {
       method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  };
+
+  update = (id: string, payload: Partial<Store>): Promise<Store> => {
+    return this.client.request<Store>(`/stores/${id}`, {
+      method: 'PUT',
       body: JSON.stringify(payload),
     });
   };
