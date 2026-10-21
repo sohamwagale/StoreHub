@@ -27,7 +27,6 @@ export default function LoginPage() {
 
     try {
       const user = await login(email.trim(), password);
-      // Redirect based on role according to Section 14
       if (user.role === 'OWNER') {
         router.push('/owner');
       } else {
@@ -48,87 +47,87 @@ export default function LoginPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-lg shadow-orange-500/25 mb-4">
-            <Store className="w-7 h-7" />
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border border-zinc-950 dark:border-white mb-3">
+            <Store className="w-6 h-6" />
           </div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
             Welcome back
           </h2>
-          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
             Sign in to rate stores or manage your store dashboard
           </p>
         </div>
 
         {/* Demo Quick-Login Pills */}
-        <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-900/40 text-xs">
-          <p className="font-semibold text-amber-900 dark:text-amber-200 mb-2">
-            Quick Fill Demo Accounts (Password: Password@123):
+        <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs font-mono">
+          <p className="font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200 mb-2 text-[10px]">
+            Quick Fill Demo Accounts:
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             <button
               type="button"
               onClick={() => handleFillDemo('alice@example.com')}
-              className="px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-800 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-medium hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
+              className="px-2 py-0.5 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 transition-colors"
             >
-              👤 Alice (USER)
+              Alice (USER)
             </button>
             <button
               type="button"
               onClick={() => handleFillDemo('bob@example.com')}
-              className="px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-800 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-medium hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
+              className="px-2 py-0.5 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 transition-colors"
             >
-              👤 Bob (USER)
+              Bob (USER)
             </button>
             <button
               type="button"
               onClick={() => handleFillDemo('owner@example.com')}
-              className="px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-800 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+              className="px-2 py-0.5 text-[11px] bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 transition-colors"
             >
-              🏪 Owner (OWNER)
+              Owner (OWNER)
             </button>
           </div>
         </div>
 
         {error && (
-          <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex items-start gap-3 text-rose-700 dark:text-rose-300 text-sm">
-            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div className="p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-red-500 flex items-start gap-3 text-zinc-900 dark:text-zinc-100 text-xs font-mono">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
             <p>{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
+                className="w-full pl-9 pr-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
+                className="w-full pl-9 pr-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
               />
             </div>
           </div>
@@ -136,17 +135,17 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all transform active:scale-95 disabled:opacity-50"
+            className="w-full py-2.5 px-4 text-xs font-mono font-bold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 <span>Signing in...</span>
               </>
             ) : (
               <>
                 <span>Sign in</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </>
             )}
           </button>
@@ -156,7 +155,7 @@ export default function LoginPage() {
           Don't have an account yet?{' '}
           <Link
             href="/register"
-            className="font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+            className="font-bold uppercase tracking-wider text-zinc-950 dark:text-white underline hover:no-underline"
           >
             Register now
           </Link>

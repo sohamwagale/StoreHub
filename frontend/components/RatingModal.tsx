@@ -118,45 +118,45 @@ export default function RatingModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-6 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+      <div className="relative w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 p-6 overflow-hidden">
         {/* Close Button */}
         <button
           onClick={onClose}
           disabled={isSubmitting}
-          className="absolute top-4 right-4 p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="absolute top-4 right-4 p-1.5 text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         <div className="mb-4">
-          <span className="text-xs font-semibold tracking-wider uppercase text-amber-600 dark:text-amber-400">
+          <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-600 dark:text-amber-400">
             {isUpdating ? 'Update Feedback' : 'Rate Experience'}
           </span>
-          <h3 className="text-xl font-bold text-zinc-900 dark:text-white mt-1">
+          <h3 className="text-lg font-bold text-zinc-950 dark:text-white mt-0.5">
             {store.name}
           </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
             {store.address}
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-4 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-red-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{error}</span>
           </div>
         )}
 
         {successMessage && (
-          <div className="mb-4 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-2 text-emerald-700 dark:text-emerald-300 text-xs">
-            <CheckCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-4 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-emerald-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+            <CheckCircle className="w-4 h-4 shrink-0 text-emerald-500" />
             <span>{successMessage}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex flex-col items-center justify-center py-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="flex flex-col items-center justify-center py-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
             <StarRating
               rating={selectedRating}
               interactive={true}
@@ -173,33 +173,33 @@ export default function RatingModal({
                   type="button"
                   onClick={() => setSelectedRating(val)}
                   disabled={isSubmitting}
-                  className={`w-9 h-9 rounded-lg font-bold text-sm transition-all ${
+                  className={`w-9 h-9 font-mono font-bold text-xs border transition-colors ${
                     selectedRating === val
-                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30 scale-105'
-                      : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:border-amber-400'
+                      ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
+                      : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
                   }`}
                 >
-                  {val}
+                  {val}★
                 </button>
               ))}
             </div>
 
-            <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-2">
-              {selectedRating === 5 && '🌟 Outstanding experience'}
-              {selectedRating === 4 && '👍 Very good'}
-              {selectedRating === 3 && '😐 Average'}
-              {selectedRating === 2 && '👎 Poor'}
-              {selectedRating === 1 && '⚠️ Terrible experience'}
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 mt-2 uppercase">
+              {selectedRating === 5 && 'Outstanding experience'}
+              {selectedRating === 4 && 'Very good'}
+              {selectedRating === 3 && 'Average'}
+              {selectedRating === 2 && 'Poor'}
+              {selectedRating === 1 && 'Terrible experience'}
             </span>
           </div>
 
           {/* Written Review Input */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                Your Review <span className="text-zinc-400 font-normal">(Optional)</span>
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                Your Review <span className="text-zinc-400 font-normal lowercase">(optional)</span>
               </label>
-              <span className="text-[11px] text-zinc-400">{reviewText.length}/1000</span>
+              <span className="text-[10px] font-mono text-zinc-400">{reviewText.length}/1000</span>
             </div>
             <textarea
               rows={3}
@@ -208,19 +208,19 @@ export default function RatingModal({
               maxLength={1000}
               placeholder="Tell other shoppers what you loved, service quality, recommendations..."
               disabled={isSubmitting}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all resize-none"
+              className="w-full px-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors resize-none"
             />
           </div>
 
           {/* Photos Upload & Attachment Section */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                 <Camera className="w-3.5 h-3.5 text-amber-500" />
-                <span>Shop Photos</span>
-                <span className="text-zinc-400 font-normal">({photos.length})</span>
+                <span>Photos</span>
+                <span className="text-zinc-400 font-mono text-[10px]">({photos.length})</span>
               </label>
-              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 transition">
+              <label className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium uppercase tracking-wider bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 transition-colors">
                 <Upload className="w-3 h-3" />
                 <span>Upload Photos</span>
                 <input
@@ -236,20 +236,20 @@ export default function RatingModal({
 
             {/* Photo Previews */}
             {photos.length > 0 && (
-              <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-thin">
+              <div className="flex items-center gap-2 overflow-x-auto py-1">
                 {photos.map((url, idx) => (
                   <div
                     key={idx}
-                    className="relative group w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700 bg-zinc-100"
+                    className="relative group w-16 h-16 shrink-0 border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800"
                   >
                     <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => handleRemovePhoto(idx)}
                       title="Remove photo"
-                      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                      className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity"
                     >
-                      <Trash2 className="w-4 h-4 text-rose-400" />
+                      <Trash2 className="w-4 h-4 text-white" />
                     </button>
                   </div>
                 ))}
@@ -257,8 +257,8 @@ export default function RatingModal({
             )}
 
             {isUploading && (
-              <div className="flex items-center gap-2 p-2 bg-amber-50/60 dark:bg-amber-950/30 rounded-xl text-amber-700 dark:text-amber-300 text-xs">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <div className="flex items-center gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" />
                 <span>Uploading photos...</span>
               </div>
             )}
@@ -269,37 +269,37 @@ export default function RatingModal({
                 type="url"
                 value={photoUrlInput}
                 onChange={(e) => setPhotoUrlInput(e.target.value)}
-                placeholder="Or paste an image URL (https://...)"
-                className="flex-1 px-3 py-1.5 text-xs rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                placeholder="Or paste image URL (https://...)"
+                className="flex-1 px-2.5 py-1.5 text-xs bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white"
               />
               <button
                 type="button"
                 onClick={handleAddPhotoUrl}
                 disabled={!photoUrlInput.trim()}
-                className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 disabled:opacity-40 transition"
+                className="px-3 py-1.5 text-xs font-medium uppercase tracking-wider bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 disabled:opacity-40 transition-colors"
               >
                 Add URL
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-200 dark:border-zinc-800">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting || isUploading}
-              className="px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+              className="px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl shadow-md shadow-orange-500/25 transition-all transform active:scale-95 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   <span>Saving...</span>
                 </>
               ) : (

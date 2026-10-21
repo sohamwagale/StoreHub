@@ -14,8 +14,6 @@ import {
   Search,
   Compass,
   Trophy,
-  Star,
-  Sparkles,
   ShoppingBag,
   Building2,
   Shirt,
@@ -27,21 +25,17 @@ import {
   MapPin,
   RefreshCw,
   AlertCircle,
-  Filter,
-  UserCheck,
-  ArrowRight,
-  TrendingUp,
   LogIn,
+  ArrowRight,
 } from 'lucide-react';
 
-// Dynamically import StoreMap to avoid SSR WebGL context issues
 const StoreMap = dynamic(() => import('@/components/StoreMap'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[540px] rounded-3xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 animate-pulse border border-zinc-200 dark:border-zinc-700">
-      <div className="flex items-center gap-2">
-        <MapPin className="w-5 h-5 text-amber-500 animate-bounce" />
-        <span className="text-sm font-semibold">Loading interactive store map...</span>
+    <div className="w-full h-[540px] bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-400 border border-zinc-300 dark:border-zinc-700">
+      <div className="flex items-center gap-2 font-mono text-xs uppercase">
+        <MapPin className="w-4 h-4 text-amber-500" />
+        <span>Loading map...</span>
       </div>
     </div>
   ),
@@ -98,14 +92,12 @@ export default function StoresPage() {
   const filteredAndSortedStores = useMemo(() => {
     let result = [...stores];
 
-    // Category Filter
     if (selectedCategory !== 'All') {
       result = result.filter(
         (store) => store.category?.toLowerCase() === selectedCategory.toLowerCase(),
       );
     }
 
-    // Search Query (name, address, category)
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(
@@ -116,7 +108,6 @@ export default function StoresPage() {
       );
     }
 
-    // Sorting
     result.sort((a, b) => {
       switch (sortOrder) {
         case 'highest':
@@ -137,7 +128,6 @@ export default function StoresPage() {
     return result;
   }, [stores, selectedCategory, searchQuery, sortOrder]);
 
-  // Top rated featured highlights for top banner
   const topRatedStores = useMemo(() => {
     return [...stores]
       .filter((s) => s.averageRating !== null && s.averageRating > 0)
@@ -175,34 +165,34 @@ export default function StoresPage() {
   };
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Guest Mode Discovery Notice */}
       {!isAuthenticated && (
-        <div className="relative overflow-hidden p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 border border-amber-200/60 dark:border-amber-900/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">
-              <Compass className="w-5 h-5" />
+            <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center shrink-0 border border-zinc-950 dark:border-white">
+              <Compass className="w-4 h-4 text-amber-400 dark:text-amber-600" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
-                Browsing as a Guest
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
+                Guest Access Active
               </h3>
               <p className="text-xs text-zinc-600 dark:text-zinc-400">
-                You can browse verified stores, check live GPS coordinates, and read community reviews freely. Log in anytime to submit your own ratings!
+                Browse stores, check coordinates, and read community reviews freely. Log in anytime to submit your own ratings.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors"
             >
-              <LogIn className="w-3.5 h-3.5" />
+              <LogIn className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span>Sign In to Rate</span>
             </Link>
             <Link
               href="/register"
-              className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition"
+              className="px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-wider bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               Register
             </Link>
@@ -210,30 +200,29 @@ export default function StoresPage() {
         </div>
       )}
 
-      {/* Header & Search Banner */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-2">
+      {/* Header & View Mode Switcher */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 text-xs font-semibold mb-2 border border-amber-200 dark:border-amber-900/40">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Store Directory & Discovery</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+            Directory & Discovery
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight mt-0.5">
             Explore Verified Stores
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-2xl">
-            Browse verified local shops, compare ratings from 1 to 5 stars, examine customer photos, and navigate with interactive GPS mapping.
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 max-w-2xl">
+            Browse verified local shops, compare ratings from 1 to 5 stars, inspect customer photos, and navigate with GPS mapping.
           </p>
         </div>
 
         {/* View Mode Controls */}
-        <div className="flex items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 self-stretch sm:self-auto">
+        <div className="flex items-center border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 p-0.5 self-stretch sm:self-auto">
           <button
             type="button"
             onClick={() => setViewMode('grid')}
-            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl transition ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-semibold transition ${
               viewMode === 'grid'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border border-zinc-950 dark:border-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent'
             }`}
           >
             <LayoutGrid className="w-3.5 h-3.5" />
@@ -242,10 +231,10 @@ export default function StoresPage() {
           <button
             type="button"
             onClick={() => setViewMode('map')}
-            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl transition ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-semibold transition ${
               viewMode === 'map'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border border-zinc-950 dark:border-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent'
             }`}
           >
             <MapIcon className="w-3.5 h-3.5" />
@@ -254,24 +243,24 @@ export default function StoresPage() {
           <button
             type="button"
             onClick={() => setViewMode('split')}
-            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl transition ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-semibold transition ${
               viewMode === 'split'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border border-zinc-950 dark:border-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent'
             }`}
           >
             <Columns className="w-3.5 h-3.5" />
-            <span>Split View</span>
+            <span>Split</span>
           </button>
         </div>
       </div>
 
-      {/* Top Rated Leaderboard Strip */}
+      {/* Top Rated Strip */}
       {topRatedStores.length > 0 && selectedCategory === 'All' && !searchQuery && (
-        <div className="bg-gradient-to-r from-amber-500/5 via-orange-500/5 to-rose-500/5 border border-amber-200/40 dark:border-amber-900/30 rounded-2xl p-4 sm:p-5">
+        <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Trophy className="w-4 h-4 text-amber-500" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            <Trophy className="w-3.5 h-3.5 text-amber-500" />
+            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Community Top Picks
             </h3>
           </div>
@@ -280,24 +269,24 @@ export default function StoresPage() {
               <Link
                 key={s.id}
                 href={`/stores/${s.id}`}
-                className="group flex items-center gap-3 p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800 hover:border-amber-400/60 transition shadow-sm"
+                className="group flex items-center gap-3 p-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-950 dark:hover:border-zinc-100 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 font-extrabold text-sm flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-300 dark:border-zinc-700">
                   #{idx + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-zinc-900 dark:text-white truncate group-hover:text-amber-600 transition">
+                  <h4 className="text-xs font-bold text-zinc-950 dark:text-white truncate group-hover:underline transition">
                     {s.name}
                   </h4>
-                  <div className="flex items-center gap-2 text-[11px] text-zinc-500">
-                    <span className="flex items-center text-amber-500 font-semibold">
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
+                    <span className="text-amber-500 font-bold">
                       ★ {s.averageRating}
                     </span>
                     <span>•</span>
                     <span>{s.category || 'Shop'}</span>
                   </div>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-1 group-hover:text-amber-500 transition-all shrink-0" />
+                <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-1 transition-transform shrink-0" />
               </Link>
             ))}
           </div>
@@ -305,16 +294,16 @@ export default function StoresPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
             <input
               type="text"
               placeholder="Search stores by name, category, or address..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition"
+              className="w-full pl-9 pr-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
             />
           </div>
 
@@ -322,7 +311,7 @@ export default function StoresPage() {
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="px-3.5 py-2.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 cursor-pointer"
+              className="px-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs font-mono uppercase font-semibold text-zinc-700 dark:text-zinc-300 focus:outline-none focus:border-zinc-950 cursor-pointer"
             >
               <option value="highest">★ Highest Rated</option>
               <option value="lowest">Lowest Rated</option>
@@ -336,15 +325,15 @@ export default function StoresPage() {
               onClick={fetchStores}
               disabled={isLoading}
               title="Refresh store listings"
-              className="p-2.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 transition"
+              className="p-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-amber-500' : ''}`} />
             </button>
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {/* Category Buttons */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             const isSelected = selectedCategory === cat.id;
@@ -353,13 +342,13 @@ export default function StoresPage() {
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0 transition-all ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-semibold shrink-0 transition-colors border ${
                   isSelected
-                    ? 'bg-amber-500 text-white shadow-sm shadow-amber-500/20 scale-[1.02]'
-                    : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:border-amber-300 dark:hover:border-zinc-700'
+                    ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
+                    : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-zinc-400'}`} />
+                <Icon className="w-3.5 h-3.5" />
                 <span>{cat.label}</span>
               </button>
             );
@@ -369,27 +358,27 @@ export default function StoresPage() {
 
       {/* Main Content Area based on View Mode */}
       {error && (
-        <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex items-start gap-3 text-rose-700 dark:text-rose-300 text-sm">
-          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-red-500 flex items-start gap-3 text-zinc-900 dark:text-zinc-100 text-xs">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
           <p>{error}</p>
         </div>
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-80 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
+              className="h-72 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse"
             />
           ))}
         </div>
       ) : filteredAndSortedStores.length === 0 ? (
-        <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 p-8">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center text-amber-500 mb-3">
-            <Compass className="w-7 h-7" />
+        <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 p-8">
+          <div className="w-10 h-10 mx-auto bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-500 mb-3">
+            <Compass className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-zinc-900 dark:text-white">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
             No matching stores found
           </h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -401,7 +390,7 @@ export default function StoresPage() {
               setSearchQuery('');
               setSelectedCategory('All');
             }}
-            className="mt-4 px-4 py-2 text-xs font-semibold rounded-xl bg-amber-500 hover:bg-amber-600 text-white transition shadow-sm"
+            className="mt-4 px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors"
           >
             Clear Filters
           </button>
@@ -410,12 +399,12 @@ export default function StoresPage() {
         <>
           {/* 1. Grid View */}
           {viewMode === 'grid' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-xs text-zinc-500 px-1">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
                 <span>Showing {filteredAndSortedStores.length} stores</span>
-                <span>Click any store to view full page, ratings & photo gallery</span>
+                <span>Click store card for complete profile & gallery</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredAndSortedStores.map((store) => (
                   <StoreCard
                     key={store.id}
@@ -434,12 +423,12 @@ export default function StoresPage() {
 
           {/* 2. Full Map View */}
           {viewMode === 'map' && (
-            <div id="store-map-container" className="space-y-4">
-              <div className="flex items-center justify-between text-xs text-zinc-500 px-1">
+            <div id="store-map-container" className="space-y-3">
+              <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
                 <span>Map view • {filteredAndSortedStores.length} stores mapped</span>
-                <span>Click markers to view details, photos, and ratings</span>
+                <span>Click markers to view details</span>
               </div>
-              <div className="w-full h-[620px] rounded-3xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800">
+              <div className="w-full h-[620px] overflow-hidden border border-zinc-300 dark:border-zinc-700">
                 <StoreMap
                   stores={filteredAndSortedStores}
                   selectedStoreId={selectedMapStoreId}
@@ -451,12 +440,12 @@ export default function StoresPage() {
             </div>
           )}
 
-          {/* 3. Split View (Side-by-side Map and List) */}
+          {/* 3. Split View */}
           {viewMode === 'split' && (
-            <div id="store-map-container" className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div id="store-map-container" className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               {/* Store Cards Column */}
-              <div className="lg:col-span-5 space-y-4 order-2 lg:order-1 max-h-[720px] overflow-y-auto pr-1">
-                <div className="text-xs text-zinc-500 px-1">
+              <div className="lg:col-span-5 space-y-3 order-2 lg:order-1 max-h-[720px] overflow-y-auto pr-1">
+                <div className="text-[11px] font-mono text-zinc-500">
                   Showing {filteredAndSortedStores.length} stores
                 </div>
                 <div className="grid grid-cols-1 gap-4">
@@ -476,7 +465,7 @@ export default function StoresPage() {
               </div>
 
               {/* Map Column (Sticky) */}
-              <div className="lg:col-span-7 lg:sticky lg:top-24 order-1 lg:order-2 h-[500px] lg:h-[720px] rounded-3xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800">
+              <div className="lg:col-span-7 lg:sticky lg:top-20 order-1 lg:order-2 h-[500px] lg:h-[720px] overflow-hidden border border-zinc-300 dark:border-zinc-700">
                 <StoreMap
                   stores={filteredAndSortedStores}
                   selectedStoreId={selectedMapStoreId}

@@ -47,9 +47,9 @@ export default function StarRating({
               onClick={() => interactive && onChange && onChange(starValue)}
               onMouseEnter={() => interactive && !disabled && setHoverRating(starValue)}
               onMouseLeave={() => interactive && !disabled && setHoverRating(null)}
-              className={`p-0.5 rounded transition-transform ${
+              className={`p-0.5 transition-transform ${
                 interactive && !disabled
-                  ? 'hover:scale-125 cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500'
+                  ? 'hover:scale-125 cursor-pointer focus:outline-none'
                   : 'cursor-default'
               }`}
               title={interactive ? `Rate ${starValue} star${starValue > 1 ? 's' : ''}` : undefined}
@@ -57,7 +57,7 @@ export default function StarRating({
               <Star
                 className={`${starSizes[size]} transition-colors duration-150 ${
                   isFilled
-                    ? 'fill-amber-400 text-amber-400 drop-shadow-[0_1px_3px_rgba(251,191,36,0.4)]'
+                    ? 'fill-amber-500 text-amber-500'
                     : 'fill-zinc-200 text-zinc-300 dark:fill-zinc-800 dark:text-zinc-700'
                 }`}
               />

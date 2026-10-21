@@ -153,47 +153,47 @@ export default function ReviewsModal({
   const totalPhotos = gallery ? gallery.totalPhotos : (store.photos ? store.photos.length : 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 overflow-hidden">
         {/* Modal Header */}
-        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-start justify-between gap-4">
+        <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+              <span className="text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-700">
                 {store.category || 'Store'}
               </span>
               <span className="text-xs text-zinc-400">•</span>
-              <div className="flex items-center gap-1 text-xs font-bold text-zinc-900 dark:text-white">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <div className="flex items-center gap-1 text-xs font-bold font-mono text-zinc-950 dark:text-white">
+                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                 <span>{store.averageRating !== null ? store.averageRating.toFixed(1) : 'New'}</span>
                 <span className="text-zinc-400 font-normal">({store.totalRatings} ratings)</span>
               </div>
             </div>
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-white line-clamp-1">
+            <h2 className="text-lg font-bold text-zinc-950 dark:text-white line-clamp-1">
               {store.name}
             </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 line-clamp-1">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
               {store.address}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
+            className="p-1.5 text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-transparent hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shrink-0"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-2 px-6 pt-3 pb-2 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+        <div className="flex items-center gap-1 px-5 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
           <button
             type="button"
             onClick={() => setActiveTab('reviews')}
-            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl transition ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
               activeTab === 'reviews'
-                ? 'bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border-transparent hover:border-zinc-300 dark:hover:border-zinc-700'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
@@ -203,10 +203,10 @@ export default function ReviewsModal({
           <button
             type="button"
             onClick={() => setActiveTab('photos')}
-            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl transition ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
               activeTab === 'photos'
-                ? 'bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border-transparent hover:border-zinc-300 dark:hover:border-zinc-700'
             }`}
           >
             <Camera className="w-3.5 h-3.5" />
@@ -216,31 +216,31 @@ export default function ReviewsModal({
 
         {/* Status Messages */}
         {error && (
-          <div className="m-6 mb-0 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="m-5 mb-0 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-red-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{error}</span>
           </div>
         )}
 
         {uploadSuccess && (
-          <div className="m-6 mb-0 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-2 text-emerald-700 dark:text-emerald-300 text-xs">
-            <CheckCircle className="w-4 h-4 shrink-0" />
+          <div className="m-5 mb-0 p-3 bg-zinc-100 dark:bg-zinc-800 border-l-2 border-emerald-500 flex items-center gap-2 text-zinc-900 dark:text-zinc-100 text-xs">
+            <CheckCircle className="w-4 h-4 shrink-0 text-emerald-500" />
             <span>{uploadSuccess}</span>
           </div>
         )}
 
         {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-5 space-y-3">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-16 text-zinc-400">
-              <Loader2 className="w-8 h-8 animate-spin text-amber-500 mb-2" />
-              <p className="text-xs font-medium">Loading store details...</p>
+              <Loader2 className="w-7 h-7 animate-spin text-amber-500 mb-2" />
+              <p className="text-xs font-mono uppercase tracking-wider">Loading store details...</p>
             </div>
           ) : activeTab === 'reviews' ? (
             /* Reviews Tab Content */
             reviews.length === 0 ? (
               <div className="text-center py-12 text-zinc-400">
-                <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-30" />
                 <h4 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
                   No reviews yet
                 </h4>
@@ -252,26 +252,26 @@ export default function ReviewsModal({
               reviews.map((rev) => (
                 <div
                   key={rev.id}
-                  className="p-4 rounded-2xl bg-zinc-50/80 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 transition-colors"
+                  className="p-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800"
                 >
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-300 dark:border-zinc-600">
                         {rev.user?.name ? rev.user.name.charAt(0).toUpperCase() : 'U'}
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-zinc-900 dark:text-white">
+                        <div className="text-xs font-bold text-zinc-950 dark:text-white">
                           {rev.user?.name || 'Verified Customer'}
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400">
                           <Clock className="w-3 h-3" />
                           <span>{new Date(rev.createdAt).toLocaleDateString()}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-800 px-2.5 py-1 rounded-full border border-zinc-200 dark:border-zinc-700">
-                      <span className="text-xs font-bold text-amber-500">
+                    <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-900 px-2 py-0.5 border border-zinc-200 dark:border-zinc-700">
+                      <span className="text-xs font-mono font-bold text-amber-500">
                         ★ {rev.rating}
                       </span>
                       <StarRating rating={rev.rating} size="sm" />
@@ -279,30 +279,30 @@ export default function ReviewsModal({
                   </div>
 
                   {rev.review ? (
-                    <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 pl-10 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 pl-9 leading-relaxed">
                       "{rev.review}"
                     </p>
                   ) : (
-                    <p className="text-xs text-zinc-400 italic pl-10">
+                    <p className="text-xs text-zinc-400 italic pl-9">
                       Rated {rev.rating} stars without written comment.
                     </p>
                   )}
 
                   {/* Attached Review Photos */}
                   {rev.photos && rev.photos.length > 0 && (
-                    <div className="mt-3 pl-10 flex items-center gap-2 overflow-x-auto py-1">
+                    <div className="mt-3 pl-9 flex items-center gap-2 overflow-x-auto py-1">
                       {rev.photos.map((photoUrl, pIdx) => (
                         <div
                           key={pIdx}
                           onClick={() => setLightboxImage(photoUrl)}
-                          className="relative group w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700 cursor-pointer shadow-sm"
+                          className="relative group w-16 h-16 shrink-0 border border-zinc-300 dark:border-zinc-700 cursor-pointer bg-zinc-100 dark:bg-zinc-800"
                         >
                           <img
                             src={photoUrl}
                             alt="Review photo"
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                           />
-                          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
                             <Maximize2 className="w-3.5 h-3.5" />
                           </div>
                         </div>
@@ -311,33 +311,33 @@ export default function ReviewsModal({
                   )}
 
                   {/* Like / Dislike Community Voting Footer */}
-                  <div className="mt-3 pt-2.5 border-t border-zinc-200/60 dark:border-zinc-700/60 flex items-center justify-between text-xs text-zinc-500 pl-10">
-                    <span className="text-[11px] text-zinc-400">Helpful review?</span>
+                  <div className="mt-3 pt-2.5 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500 pl-9">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Helpful review?</span>
 
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => handleVote(rev.id, 'LIKE')}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition active:scale-95 ${
+                        className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border transition-colors ${
                           rev.userVote === 'LIKE'
-                            ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-700 font-bold'
-                            : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-amber-400'
+                            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
+                            : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
                         }`}
                       >
-                        <ThumbsUp className={`w-3 h-3 ${rev.userVote === 'LIKE' ? 'fill-amber-500 text-amber-500' : ''}`} />
+                        <ThumbsUp className={`w-3 h-3 ${rev.userVote === 'LIKE' ? 'fill-current text-amber-400' : ''}`} />
                         <span>{rev.likesCount || 0}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleVote(rev.id, 'DISLIKE')}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition active:scale-95 ${
+                        className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border transition-colors ${
                           rev.userVote === 'DISLIKE'
-                            ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-700 font-bold'
-                            : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-rose-400'
+                            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
+                            : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
                         }`}
                       >
-                        <ThumbsDown className={`w-3 h-3 ${rev.userVote === 'DISLIKE' ? 'fill-rose-500 text-rose-500' : ''}`} />
+                        <ThumbsDown className="w-3 h-3" />
                         <span>{rev.dislikesCount || 0}</span>
                       </button>
                     </div>
@@ -347,18 +347,18 @@ export default function ReviewsModal({
             )
           ) : (
             /* Photos & Gallery Tab Content */
-            <div className="space-y-6">
+            <div className="space-y-5">
               {/* Upload Action Toolbar */}
-              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40">
-                <div className="flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200">
-                  <Camera className="w-4 h-4 text-amber-600" />
+              <div className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
+                <div className="flex items-center gap-2 text-xs text-zinc-800 dark:text-zinc-200">
+                  <Camera className="w-4 h-4 text-amber-500" />
                   <span className="font-semibold">Visited {store.name}?</span>
-                  <span className="hidden sm:inline text-zinc-500 dark:text-zinc-400">
-                    Share photos of the store front, interior, or menu!
+                  <span className="hidden sm:inline text-zinc-500">
+                    Share photos of store front or interior.
                   </span>
                 </div>
 
-                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 shadow-sm transition active:scale-95">
+                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors">
                   {isUploadingPhoto ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
@@ -379,39 +379,39 @@ export default function ReviewsModal({
               {/* All Photos Grid */}
               {totalPhotos === 0 ? (
                 <div className="text-center py-12 text-zinc-400">
-                  <ImageIcon className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                  <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-30" />
                   <h4 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
                     No photos added yet
                   </h4>
                   <p className="text-xs text-zinc-500 mt-1">
-                    Upload the very first photo of {store.name} above!
+                    Upload the first photo of {store.name} above!
                   </p>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-5">
                   {/* Store / Owner Photos */}
                   {gallery?.ownerPhotos && gallery.ownerPhotos.length > 0 && (
                     <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1.5">
+                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2 flex items-center gap-1.5">
                         <span>Official Store Photos</span>
-                        <span className="px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px]">
+                        <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-800 text-[10px]">
                           {gallery.ownerPhotos.length}
                         </span>
                       </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         {gallery.ownerPhotos.map((url, idx) => (
                           <div
                             key={idx}
                             onClick={() => setLightboxImage(url)}
-                            className="relative group aspect-square rounded-2xl overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 shadow-sm bg-zinc-100"
+                            className="relative group aspect-square overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800"
                           >
                             <img
                               src={url}
                               alt={`Store photo ${idx + 1}`}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                             />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
-                              <Maximize2 className="w-5 h-5" />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
+                              <Maximize2 className="w-4 h-4" />
                             </div>
                           </div>
                         ))}
@@ -422,33 +422,33 @@ export default function ReviewsModal({
                   {/* Customer Photos */}
                   {gallery?.customerPhotos && gallery.customerPhotos.length > 0 && (
                     <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1.5">
-                        <span>Community & Customer Photos</span>
-                        <span className="px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px]">
+                      <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2 flex items-center gap-1.5">
+                        <span>Customer Photos</span>
+                        <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-800 text-[10px]">
                           {gallery.customerPhotos.length}
                         </span>
                       </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         {gallery.customerPhotos.map((cp, idx) => (
                           <div
                             key={idx}
                             onClick={() => setLightboxImage(cp.url)}
-                            className="relative group aspect-square rounded-2xl overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 shadow-sm bg-zinc-100"
+                            className="relative group aspect-square overflow-hidden cursor-pointer border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800"
                           >
                             <img
                               src={cp.url}
                               alt="Customer review photo"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                             />
-                            {/* Hover info badge */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 p-2.5 flex flex-col justify-between text-white transition-opacity">
-                              <span className="self-end text-xs font-bold bg-amber-500/90 px-1.5 py-0.5 rounded">
+                            {/* Info overlay */}
+                            <div className="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 p-2.5 flex flex-col justify-between text-white transition-opacity">
+                              <span className="self-end text-[10px] font-mono font-bold bg-zinc-950 px-1.5 py-0.5 border border-amber-500/80 text-amber-400">
                                 ★ {cp.rating}
                               </span>
                               <div>
                                 <div className="text-[11px] font-bold line-clamp-1">{cp.userName}</div>
                                 {cp.review && (
-                                  <div className="text-[10px] text-white/80 line-clamp-1 italic">
+                                  <div className="text-[10px] text-zinc-300 line-clamp-1 italic">
                                     "{cp.review}"
                                   </div>
                                 )}
@@ -466,16 +466,16 @@ export default function ReviewsModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3">
-          <span className="text-xs text-zinc-500 dark:text-zinc-400 hidden sm:inline">
-            Rate {store.name} to help other raters discover great shops
+        <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3">
+          <span className="text-xs text-zinc-500 hidden sm:inline">
+            Rate {store.name} to help shoppers discover quality local stores
           </span>
 
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors"
+              className="px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               Close
             </button>
@@ -485,10 +485,10 @@ export default function ReviewsModal({
                 onClose();
                 onRateClick(store);
               }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>{store.userRating ? 'Update My Rating' : 'Rate & Add Photos'}</span>
+              <span>{store.userRating ? 'Update Rating' : 'Rate & Add Photos'}</span>
             </button>
           </div>
         </div>
@@ -498,20 +498,20 @@ export default function ReviewsModal({
       {lightboxImage && (
         <div
           onClick={() => setLightboxImage(null)}
-          className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in"
+          className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4"
         >
-          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl">
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden border border-zinc-700 bg-black">
             <button
               type="button"
               onClick={() => setLightboxImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition"
+              className="absolute top-3 right-3 z-10 p-2 bg-black/80 text-white hover:bg-black border border-white/20 transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
             <img
               src={lightboxImage}
               alt="Full size view"
-              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain"
             />
           </div>
         </div>
