@@ -8,12 +8,12 @@ import { Store } from '@/types';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import StoreCard from '@/components/StoreCard';
+import { StoreCardSkeletonGrid } from '@/components/Skeleton';
 import RatingModal from '@/components/RatingModal';
 import ReviewsModal from '@/components/ReviewsModal';
 import {
   Search,
   Compass,
-  Trophy,
   ShoppingBag,
   Building2,
   Shirt,
@@ -26,7 +26,6 @@ import {
   RefreshCw,
   AlertCircle,
   LogIn,
-  ArrowRight,
 } from 'lucide-react';
 
 const StoreMap = dynamic(() => import('@/components/StoreMap'), {
@@ -88,6 +87,17 @@ export default function StoresPage() {
     fetchStores();
   }, [fetchStores]);
 
+  // Read initial search query or category from URL if present
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('search');
+      if (q) setSearchQuery(q);
+      const cat = params.get('category');
+      if (cat) setSelectedCategory(cat);
+    }
+  }, []);
+
   // Filter & Sort stores
   const filteredAndSortedStores = useMemo(() => {
     let result = [...stores];
@@ -128,13 +138,6 @@ export default function StoresPage() {
     return result;
   }, [stores, selectedCategory, searchQuery, sortOrder]);
 
-  const topRatedStores = useMemo(() => {
-    return [...stores]
-      .filter((s) => s.averageRating !== null && s.averageRating > 0)
-      .sort((a, b) => (b.averageRating ?? 0) - (a.averageRating ?? 0))
-      .slice(0, 3);
-  }, [stores]);
-
   const handleOpenRating = (store: Store) => {
     if (!isAuthenticated) {
       router.push('/login');
@@ -166,51 +169,33 @@ export default function StoresPage() {
 
   return (
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      {/* Guest Mode Discovery Notice */}
+      {/* Guest Mode Notice */}
       {!isAuthenticated && (
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center shrink-0 border border-zinc-950 dark:border-white">
-              <Compass className="w-4 h-4 text-amber-400 dark:text-amber-600" />
-            </div>
-            <div>
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
-                Guest Access Active
-              </h3>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400">
-                Browse stores, check coordinates, and read community reviews freely. Log in anytime to submit your own ratings.
-              </p>
-            </div>
+        <div className="px-3.5 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex items-center justify-between gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 truncate">
+            <Compass className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span className="truncate">Guest mode: Browse stores freely. Sign in to submit ratings.</span>
           </div>
-          <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors"
-            >
-              <LogIn className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
-              <span>Sign In to Rate</span>
-            </Link>
-            <Link
-              href="/register"
-              className="px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-wider bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            >
-              Register
-            </Link>
-          </div>
+          <Link
+            href="/login"
+            className="font-bold uppercase tracking-wider text-zinc-950 dark:text-white underline hover:no-underline shrink-0 text-[11px]"
+          >
+            Sign In &rarr;
+          </Link>
         </div>
       )}
 
       {/* Header & View Mode Switcher */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
         <div>
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-            Directory & Discovery
+            Directory
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight mt-0.5">
-            Explore Verified Stores
+            Explore Stores
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 max-w-2xl">
-            Browse verified local shops, compare ratings from 1 to 5 stars, inspect customer photos, and navigate with GPS mapping.
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            Verified local shops, authentic customer evaluations, and real-time community ratings.
           </p>
         </div>
 
@@ -254,44 +239,6 @@ export default function StoresPage() {
           </button>
         </div>
       </div>
-
-      {/* Top Rated Strip */}
-      {topRatedStores.length > 0 && selectedCategory === 'All' && !searchQuery && (
-        <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Trophy className="w-3.5 h-3.5 text-amber-500" />
-            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-              Community Top Picks
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {topRatedStores.map((s, idx) => (
-              <Link
-                key={s.id}
-                href={`/stores/${s.id}`}
-                className="group flex items-center gap-3 p-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-950 dark:hover:border-zinc-100 transition-colors"
-              >
-                <div className="w-7 h-7 bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-300 dark:border-zinc-700">
-                  #{idx + 1}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-zinc-950 dark:text-white truncate group-hover:underline transition">
-                    {s.name}
-                  </h4>
-                  <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
-                    <span className="text-amber-500 font-bold">
-                      ★ {s.averageRating}
-                    </span>
-                    <span>•</span>
-                    <span>{s.category || 'Shop'}</span>
-                  </div>
-                </div>
-                <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-1 transition-transform shrink-0" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Filter and Search Bar */}
       <div className="space-y-3">
@@ -365,14 +312,7 @@ export default function StoresPage() {
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="h-72 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse"
-            />
-          ))}
-        </div>
+        <StoreCardSkeletonGrid count={6} />
       ) : filteredAndSortedStores.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 p-8">
           <div className="w-10 h-10 mx-auto bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-500 mb-3">
@@ -399,10 +339,9 @@ export default function StoresPage() {
         <>
           {/* 1. Grid View */}
           {viewMode === 'grid' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
-                <span>Showing {filteredAndSortedStores.length} stores</span>
-                <span>Click store card for complete profile & gallery</span>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
+                <span>{filteredAndSortedStores.length} {filteredAndSortedStores.length === 1 ? 'store' : 'stores'} found</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredAndSortedStores.map((store) => (
@@ -424,9 +363,9 @@ export default function StoresPage() {
           {/* 2. Full Map View */}
           {viewMode === 'map' && (
             <div id="store-map-container" className="space-y-3">
-              <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
-                <span>Map view • {filteredAndSortedStores.length} stores mapped</span>
-                <span>Click markers to view details</span>
+              <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
+                <span>{filteredAndSortedStores.length} stores mapped</span>
+                <span>Click pin to view details</span>
               </div>
               <div className="w-full h-[620px] overflow-hidden border border-zinc-300 dark:border-zinc-700">
                 <StoreMap
@@ -445,8 +384,8 @@ export default function StoresPage() {
             <div id="store-map-container" className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               {/* Store Cards Column */}
               <div className="lg:col-span-5 space-y-3 order-2 lg:order-1 max-h-[720px] overflow-y-auto pr-1">
-                <div className="text-[11px] font-mono text-zinc-500">
-                  Showing {filteredAndSortedStores.length} stores
+                <div className="text-xs font-mono text-zinc-500 pb-1">
+                  {filteredAndSortedStores.length} {filteredAndSortedStores.length === 1 ? 'store' : 'stores'} found
                 </div>
                 <div className="grid grid-cols-1 gap-4">
                   {filteredAndSortedStores.map((store) => (

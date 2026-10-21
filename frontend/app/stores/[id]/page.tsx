@@ -8,6 +8,7 @@ import { Store, StoreReview, StoreGallery } from '@/types';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import StarRating from '@/components/StarRating';
+import { StoreDetailSkeleton } from '@/components/Skeleton';
 import {
   ArrowLeft,
   MapPin,
@@ -426,12 +427,7 @@ function StoreDetailContent({
   const CategoryIconComponent = categoryIcon;
 
   if (isLoading) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center py-28 text-zinc-400">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500 mb-3" />
-        <p className="text-xs font-mono uppercase tracking-wider">Loading store details...</p>
-      </div>
-    );
+    return <StoreDetailSkeleton />;
   }
 
   if (error && !store) {
@@ -1288,13 +1284,7 @@ export default function StoreDetailPage({
   params: Promise<{ id: string }>;
 }) {
   return (
-    <Suspense
-      fallback={
-        <div className="flex-1 flex items-center justify-center py-20 text-zinc-400 font-mono text-xs">
-          Loading store profile...
-        </div>
-      }
-    >
+    <Suspense fallback={<StoreDetailSkeleton />}>
       <StoreDetailContent params={params} />
     </Suspense>
   );

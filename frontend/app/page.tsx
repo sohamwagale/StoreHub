@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Store } from '@/types';
 import { api } from '@/lib/api';
+import { StoreCardSkeletonGrid } from '@/components/Skeleton';
 import {
   Compass,
   Star,
@@ -181,11 +182,7 @@ export default function LandingPage() {
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-64 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
-              ))}
-            </div>
+            <StoreCardSkeletonGrid count={3} />
           ) : topStores.length === 0 ? (
             <div className="text-center py-12 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <StoreIcon className="w-8 h-8 text-zinc-400 mx-auto mb-2" />

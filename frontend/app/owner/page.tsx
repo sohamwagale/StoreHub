@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { OwnerStoreData } from '@/types';
 import { api } from '@/lib/api';
 import StarRating from '@/components/StarRating';
+import { OwnerDashboardSkeleton, MetricCardSkeleton, ReviewItemSkeleton } from '@/components/Skeleton';
 import {
   Shield,
   Store as StoreIcon,
@@ -90,11 +91,7 @@ export default function OwnerDashboardPage() {
   }, [user, isAuthLoading, router, fetchDashboard]);
 
   if (isAuthLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
-      </div>
-    );
+    return <OwnerDashboardSkeleton />;
   }
 
   // Unauthorized screen for normal users
@@ -183,8 +180,18 @@ export default function OwnerDashboardPage() {
       )}
 
       {isLoading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <MetricCardSkeleton />
+            <MetricCardSkeleton />
+            <MetricCardSkeleton />
+          </div>
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-6 space-y-4">
+            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <ReviewItemSkeleton />
+              <ReviewItemSkeleton />
+            </div>
+          </div>
         </div>
       ) : stores.length === 0 ? (
         <div className="text-center py-16 px-4 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 max-w-xl mx-auto space-y-4">

@@ -232,9 +232,23 @@ export default function ReviewsModal({
         {/* Modal Content */}
         <div className="flex-1 overflow-y-auto p-5 space-y-3">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-16 text-zinc-400">
-              <Loader2 className="w-7 h-7 animate-spin text-amber-500 mb-2" />
-              <p className="text-xs font-mono uppercase tracking-wider">Loading store details...</p>
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="p-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 space-y-2.5 animate-pulse"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 bg-zinc-200 dark:bg-zinc-700" />
+                      <div className="h-3.5 w-24 bg-zinc-200 dark:bg-zinc-700" />
+                    </div>
+                    <div className="h-3.5 w-16 bg-zinc-200 dark:bg-zinc-700" />
+                  </div>
+                  <div className="h-3 w-full bg-zinc-200 dark:bg-zinc-700" />
+                  <div className="h-3 w-3/4 bg-zinc-200 dark:bg-zinc-700" />
+                </div>
+              ))}
             </div>
           ) : activeTab === 'reviews' ? (
             /* Reviews Tab Content */

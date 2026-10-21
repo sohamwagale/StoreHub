@@ -14,6 +14,7 @@ import {
   LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
+import { ProfileSkeleton } from '@/components/Skeleton';
 
 export default function ProfilePage() {
   const { user, isLoading: isAuthLoading, logout } = useAuth();
@@ -51,11 +52,7 @@ export default function ProfilePage() {
   }, [user, isAuthLoading, router, fetchStats]);
 
   if (isAuthLoading || (!user && isLoadingStats)) {
-    return (
-      <div className="flex-1 flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   if (!user) return null;

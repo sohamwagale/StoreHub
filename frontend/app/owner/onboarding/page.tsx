@@ -16,6 +16,7 @@ import {
   Navigation,
   X,
 } from 'lucide-react';
+import { OnboardingSkeleton } from '@/components/Skeleton';
 
 const CATEGORIES = [
   'Grocery',
@@ -152,11 +153,7 @@ export default function OwnerOnboardingPage() {
   };
 
   if (isAuthLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
-      </div>
-    );
+    return <OnboardingSkeleton />;
   }
 
   return (

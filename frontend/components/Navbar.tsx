@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -116,7 +116,11 @@ export default function Navbar() {
             </div>
 
             {/* Auth Actions */}
-            {user ? (
+            {isLoading ? (
+              <div className="flex items-center gap-2 pl-2 sm:pl-3 ml-1 sm:ml-2 border-l border-zinc-300 dark:border-zinc-800">
+                <div className="w-20 h-7 bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
+              </div>
+            ) : user ? (
               <div className="flex items-center gap-2 pl-2 sm:pl-3 ml-1 sm:ml-2 border-l border-zinc-300 dark:border-zinc-800">
                 <Link
                   href="/profile"

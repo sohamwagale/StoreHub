@@ -70,11 +70,10 @@ export default function StoreCard({
         )}
 
         {/* Category Tag Over Image */}
-        <div className="absolute top-2.5 left-2.5 flex items-center gap-1">
-          <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-mono uppercase font-bold tracking-wider bg-zinc-950 text-white border border-white/20">
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+          <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-mono uppercase font-bold tracking-wider bg-zinc-950/90 text-white border border-white/20">
             {store.category || 'General'}
           </span>
-
           {hasPhotos && (
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono bg-zinc-950/90 text-white border border-white/20">
               <Camera className="w-3 h-3 text-amber-400" />
@@ -93,7 +92,7 @@ export default function StoreCard({
               onLocateOnMap(store);
             }}
             title="Locate store on Map"
-            className="absolute top-2.5 right-2.5 p-1.5 bg-zinc-950 text-white hover:bg-zinc-800 border border-white/20 transition-colors z-10"
+            className="absolute top-2.5 right-2.5 p-1.5 bg-zinc-950/90 text-white hover:bg-zinc-800 border border-white/20 transition-colors z-10"
           >
             <Navigation className="w-3.5 h-3.5" />
           </button>
@@ -110,55 +109,31 @@ export default function StoreCard({
 
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          {/* Store Name linking to dedicated store page */}
-          <Link href={`/stores/${store.id}`} className="block group/link">
-            <h3 className="text-base font-bold text-zinc-950 dark:text-white group-hover/link:underline transition-all line-clamp-1 mb-1 flex items-center gap-1.5">
+          {/* Store Name */}
+          <Link href={`/stores/${store.id}`} className="block group/link mb-1">
+            <h3 className="text-base font-bold text-zinc-950 dark:text-white group-hover/link:underline transition-all line-clamp-1 flex items-center gap-1.5">
               <span className="truncate">{store.name}</span>
               <CheckCircle2 className="w-3.5 h-3.5 text-amber-500 shrink-0" />
             </h3>
           </Link>
 
-          {/* Address & Coordinates */}
-          <div className="space-y-0.5 mb-3">
-            <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-xs">
-              <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-              <span className="line-clamp-1">{store.address}</span>
-            </div>
-            {store.latitude !== undefined && store.longitude !== undefined && (
-              <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 pl-5">
-                GPS: {store.latitude.toFixed(4)}°, {store.longitude.toFixed(4)}°
-              </div>
-            )}
+          {/* Address */}
+          <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-xs mb-3">
+            <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+            <span className="line-clamp-1">{store.address}</span>
           </div>
 
-          {/* Rating Overview Box */}
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 mb-3">
-            {hasRatings ? (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-xl font-bold font-mono text-zinc-950 dark:text-white">
-                      {store.averageRating?.toFixed(1)}
-                    </span>
-                    <span className="text-xs font-mono text-zinc-400">/ 5</span>
-                  </div>
-                  <StarRating rating={store.averageRating} size="sm" />
-                </div>
-                <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
-                  {store.totalRatings} {store.totalRatings === 1 ? 'review' : 'reviews'}
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-                <div className="flex items-center gap-1.5">
-                  <Star className="w-3.5 h-3.5 text-zinc-400" />
-                  <span className="text-xs font-mono">No ratings yet</span>
-                </div>
-                <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 uppercase">
-                  First to rate
-                </span>
-              </div>
-            )}
+          {/* Rating Row (Clean & Integrated) */}
+          <div className="flex items-center justify-between text-xs font-mono py-2 border-t border-zinc-100 dark:border-zinc-800 mb-3">
+            <div className="flex items-center gap-1.5">
+              <StarRating rating={store.averageRating || 0} size="sm" />
+              <span className="font-bold text-zinc-950 dark:text-white ml-0.5">
+                {hasRatings ? store.averageRating?.toFixed(1) : 'New'}
+              </span>
+            </div>
+            <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              {hasRatings ? `${store.totalRatings} ${store.totalRatings === 1 ? 'review' : 'reviews'}` : 'Be first to rate'}
+            </span>
           </div>
         </div>
 
@@ -168,10 +143,10 @@ export default function StoreCard({
             <button
               type="button"
               onClick={() => onViewReviews(store)}
-              className="flex-1 py-1.5 px-2 text-xs font-medium uppercase tracking-wider bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center gap-1.5 transition-colors"
-              title="Read customer reviews & photos"
+              className="flex-1 py-1.5 px-2 text-xs font-mono uppercase font-semibold bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center gap-1.5 transition-colors"
+              title="Read customer reviews"
             >
-              <MessageSquare className="w-3 h-3 text-zinc-500" />
+              <MessageSquare className="w-3 h-3 text-zinc-400" />
               <span>Reviews ({store.totalRatings})</span>
             </button>
           )}
@@ -183,7 +158,7 @@ export default function StoreCard({
           ) : (
             <button
               onClick={handleActionClick}
-              className={`flex-1 py-1.5 px-2 text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border ${
+              className={`flex-1 py-1.5 px-2 text-xs font-mono uppercase font-semibold flex items-center justify-center gap-1.5 transition-colors border ${
                 userHasRated
                   ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 hover:bg-amber-100/50'
                   : 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200'
@@ -196,7 +171,7 @@ export default function StoreCard({
                 </>
               ) : (
                 <>
-                  <PlusCircle className="w-3 h-3" />
+                  <PlusCircle className="w-3 h-3 text-amber-400 dark:text-amber-600" />
                   <span>{isAuthenticated ? 'Rate' : 'Log in'}</span>
                 </>
               )}
