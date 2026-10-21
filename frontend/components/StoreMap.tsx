@@ -21,9 +21,13 @@ interface StoreMapProps {
   centerCoordinates?: [number, number] | number[];
   zoomLevel?: number;
   onSelectStore?: (store: Store) => void;
+  onStoreSelect?: (store: Store) => void;
   onOpenRating?: (store: Store) => void;
+  onRate?: (store: Store) => void;
   onOpenReviews?: (store: Store) => void;
+  onViewReviews?: (store: Store) => void;
   heightClass?: string;
+  height?: string;
   className?: string;
 }
 
@@ -66,17 +70,25 @@ export default function StoreMap({
   centerCoordinates,
   zoomLevel,
   onSelectStore,
+  onStoreSelect,
   onOpenRating,
+  onRate,
   onOpenReviews,
+  onViewReviews,
   heightClass = 'h-[540px]',
+  height,
   className = '',
 }: StoreMapProps) {
+  const handleSelectStore = onSelectStore || onStoreSelect;
+  const handleRating = onOpenRating || onRate;
+  const handleReviews = onOpenReviews || onViewReviews;
+  const effectiveHeightClass = heightClass || (height ? 'h-full' : 'h-[540px]');
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, { marker: maplibregl.Marker; popup: maplibregl.Popup }>>(
     new Map(),
   );
-  const [currentStyle, setCurrentStyle] = useState<keyof typeof TILE_STYLES>('light');
+  const [currentStyle, setCurrentStyle] = useState<keyof typeof TILE_STYLES>('osm');
   const [mapLoaded, setMapLoaded] = useState(false);
   const [activeStore, setActiveStore] = useState<Store | null>(null);
 
@@ -271,13 +283,13 @@ export default function StoreMap({
         if (reviewBtn) {
           reviewBtn.onclick = (e) => {
             e.stopPropagation();
-            onOpenReviews?.(store);
+            handleReviews?.(store);
           };
         }
         if (rateBtn) {
           rateBtn.onclick = (e) => {
             e.stopPropagation();
-            onOpenRating?.(store);
+            handleRating?.(store);
           };
         }
       });
@@ -288,7 +300,7 @@ export default function StoreMap({
         .addTo(map);
 
       el.addEventListener('click', () => {
-        onSelectStore?.(store);
+        handleSelectStore?.(store);
       });
 
       markersRef.current.set(store.id, { marker, popup });
@@ -322,7 +334,7 @@ export default function StoreMap({
   return (
     <div className={`relative border border-border ${className}`}>
       {/* Map Canvas */}
-      <div ref={mapContainer} className={`w-full ${heightClass}`} />
+      <div ref={mapContainer} className={`w-full ${effectiveHeightClass}`} />
 
       {/* Floating Map Controls Toolbar */}
       <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-surface px-2.5 py-1.5 border border-border">

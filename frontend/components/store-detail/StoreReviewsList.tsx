@@ -177,13 +177,19 @@ export default function StoreReviewsList({
                 <button
                   type="button"
                   onClick={() => onVote(r.id, 'LIKE')}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 border transition-colors ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 border transition-colors text-xs font-mono uppercase font-semibold ${
                     r.userVote === 'LIKE'
-                      ? 'bg-foreground text-background border-foreground font-bold'
-                      : 'bg-muted-fill text-muted border-border hover:border-foreground'
+                      ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white font-bold'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700 hover:border-zinc-950 dark:hover:border-white'
                   }`}
                 >
-                  <ThumbsUp className="w-3 h-3 text-accent" />
+                  <ThumbsUp
+                    className={`w-3 h-3 transition-colors ${
+                      r.userVote === 'LIKE'
+                        ? 'text-amber-400 dark:text-amber-600 fill-amber-400 dark:fill-amber-600'
+                        : 'text-amber-600 dark:text-amber-400'
+                    }`}
+                  />
                   <span>Helpful ({r.likesCount || 0})</span>
                 </button>
                 <span className="text-[11px] text-muted">Purchased in-store</span>

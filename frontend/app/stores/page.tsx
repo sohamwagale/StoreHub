@@ -144,14 +144,14 @@ export default function StoresPage() {
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Guest Mode Notice */}
       {!isAuthenticated && (
-        <div className="px-3.5 py-2 bg-muted-fill border border-border flex items-center justify-between gap-3 text-xs font-mono">
-          <div className="flex items-center gap-2 text-muted truncate">
-            <Compass className="w-3.5 h-3.5 text-accent shrink-0" />
+        <div className="px-3.5 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 flex items-center justify-between gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 truncate">
+            <Compass className="w-3.5 h-3.5 text-amber-500 shrink-0" />
             <span className="truncate">Guest mode: Browse stores freely. Sign in to submit ratings.</span>
           </div>
           <Link
             href="/login"
-            className="font-bold uppercase tracking-wider text-foreground underline hover:no-underline shrink-0 text-[11px]"
+            className="font-bold uppercase tracking-wider text-zinc-950 dark:text-white underline hover:no-underline shrink-0 text-[11px]"
           >
             Sign In &rarr;
           </Link>
@@ -244,12 +244,13 @@ export default function StoresPage() {
                 <StoreMap
                   stores={filteredAndSortedStores}
                   selectedStoreId={selectedMapStoreId || undefined}
-                  onStoreSelect={(store) => {
+                  onSelectStore={(store) => {
                     setSelectedMapStoreId(store.id);
                   }}
-                  onRate={handleOpenRating}
-                  onViewReviews={handleOpenReviews}
-                  height="100%"
+                  onOpenRating={handleOpenRating}
+                  onOpenReviews={handleOpenReviews}
+                  heightClass="h-full"
+                  className="h-full"
                 />
               </div>
             </div>
@@ -285,12 +286,13 @@ export default function StoresPage() {
                 <StoreMap
                   stores={filteredAndSortedStores}
                   selectedStoreId={selectedMapStoreId || undefined}
-                  onStoreSelect={(store) => {
+                  onSelectStore={(store) => {
                     setSelectedMapStoreId(store.id);
                   }}
-                  onRate={handleOpenRating}
-                  onViewReviews={handleOpenReviews}
-                  height="100%"
+                  onOpenRating={handleOpenRating}
+                  onOpenReviews={handleOpenReviews}
+                  heightClass="h-full"
+                  className="h-full"
                 />
               </div>
             </div>

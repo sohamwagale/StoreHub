@@ -108,29 +108,29 @@ export default function StoreHero({
               onClick={onToggleBookmark}
               className={`inline-flex items-center gap-1.5 px-3.5 h-10 border text-xs font-mono uppercase font-bold transition-colors ${
                 isBookmarked
-                  ? 'border-foreground bg-foreground text-background'
-                  : 'border-border bg-surface text-foreground hover:border-foreground'
+                  ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
+                  : 'border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-950 dark:hover:border-white'
               }`}
             >
-              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'text-accent fill-current' : 'text-muted'}`} />
+              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'text-amber-400 dark:text-amber-600 fill-current' : 'text-zinc-500'}`} />
               <span>{isBookmarked ? 'Saved' : 'Bookmark'}</span>
             </button>
 
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex items-center gap-1.5 px-3.5 h-10 border border-border bg-surface hover:bg-muted-fill text-foreground text-xs font-mono uppercase font-bold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 h-10 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-mono uppercase font-bold transition-colors"
             >
-              <Share2 className="w-3.5 h-3.5 text-muted" />
+              <Share2 className="w-3.5 h-3.5 text-zinc-500" />
               <span>Share</span>
             </button>
 
             <a
               href="#user-rating-section"
               onClick={onWriteReviewClick}
-              className="inline-flex items-center gap-1.5 px-4 h-10 bg-foreground text-background hover:bg-accent-hover border border-foreground text-xs font-mono uppercase font-bold transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 h-10 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white text-xs font-mono uppercase font-bold transition-colors shadow-none"
             >
-              <Edit3 className="w-3.5 h-3.5 text-accent" />
+              <Edit3 className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span>{userHasRated ? 'Update Rating' : 'Write a Review'}</span>
             </a>
           </div>

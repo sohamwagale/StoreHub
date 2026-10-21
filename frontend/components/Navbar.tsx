@@ -47,9 +47,6 @@ export default function Navbar() {
                 <span className="text-lg font-bold tracking-tight text-foreground">
                   StoreRank
                 </span>
-                <span className="hidden sm:inline-block ml-2 text-[10px] font-mono uppercase font-bold px-1.5 py-0.5 border border-accent text-accent">
-                  PRO
-                </span>
               </div>
             </Link>
 

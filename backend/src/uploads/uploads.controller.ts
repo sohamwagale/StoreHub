@@ -65,9 +65,18 @@ export class UploadsController {
   @Get(':filename')
   serveFile(@Param('filename') filename: string, @Res() res: Response) {
     const filePath = this.uploadsService.getLocalFilePath(filename);
-    if (!filePath) {
-      throw new NotFoundException('Image not found');
+    if (filePath) {
+      return res.sendFile(filePath);
     }
-    return res.sendFile(filePath);
+    const s3Url = this.uploadsService.getS3Url(filename);
+    if (s3Url) {
+      return res.redirect(302, s3Url);
+    }
+    throw new NotFoundException('Image not found');
+  }
+
+  @Post('migrate-to-s3')
+  async triggerMigration() {
+    return this.uploadsService.migrateLocalUploadsToS3();
   }
 }

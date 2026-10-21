@@ -35,4 +35,18 @@ export class AuthApi {
       // ignore logout server error
     }
   };
+
+  forgotPassword = (email: string): Promise<{ success: boolean; message: string; simulated?: boolean; previewUrl?: string }> => {
+    return this.client.request('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  };
+
+  resetPassword = (token: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
+    return this.client.request('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword }),
+    });
+  };
 }

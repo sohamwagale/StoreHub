@@ -21,6 +21,8 @@ import {
   Share2,
   ArrowRight,
   CheckCircle2,
+  Trash2,
+  Shield,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -44,6 +46,10 @@ export default function UserDashboardPage() {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // Delete Review Modal State
+  const [ratingToDelete, setRatingToDelete] = useState<MyRating | null>(null);
+  const [isDeletingReview, setIsDeletingReview] = useState<boolean>(false);
+
   // Toast Notification
   const [toastMessage, setToastMessage] = useState<{ title: string; body: string } | null>(null);
 
@@ -57,7 +63,17 @@ export default function UserDashboardPage() {
     setError(null);
     try {
       const [ratingsData, storesData, bookmarksData, statsData] = await Promise.all([
-        api.ratings.getMyRatings(),
+        api.ratings.getMyRatings().catch((err: any) => {
+          // Gracefully handle if account does not have USER role (e.g. OWNER role)
+          if (
+            err?.status === 403 ||
+            err?.message?.includes('Requires one of the following roles') ||
+            err?.message?.includes('Access denied')
+          ) {
+            return [];
+          }
+          throw err;
+        }),
         api.stores.getAll().catch(() => []),
         api.users.getBookmarks().catch(() => []),
         api.users.getDashboardStats().catch(() => null),
@@ -147,6 +163,21 @@ export default function UserDashboardPage() {
     }
   };
 
+  const confirmDeleteReview = async () => {
+    if (!ratingToDelete?.store?.id) return;
+    setIsDeletingReview(true);
+    try {
+      await api.ratings.delete(ratingToDelete.store.id);
+      triggerToast('Rating Deleted', 'Your evaluation and rating score were permanently removed.');
+      setRatingToDelete(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast('Error', err?.message || 'Failed to delete rating.');
+    } finally {
+      setIsDeletingReview(false);
+    }
+  };
+
   // Reviewer Level calculation
   const reviewCount = dashboardStats ? dashboardStats.totalRatings : myRatings.length;
   const currentRank = dashboardStats?.reviewerRank || (reviewCount >= 10 ? 'Level 4 Master Reviewer' : reviewCount >= 5 ? 'Level 3 Connoisseur' : reviewCount >= 2 ? 'Level 2 Contributor' : 'Level 1 Explorer');
@@ -177,7 +208,7 @@ export default function UserDashboardPage() {
               href="/stores"
               className="h-9 px-4 bg-foreground text-background text-xs font-mono uppercase font-bold flex items-center gap-1.5 border border-foreground hover:bg-accent-hover transition-colors shrink-0"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span>Rate a Store</span>
             </Link>
           </div>
@@ -194,6 +225,24 @@ export default function UserDashboardPage() {
           </div>
         )}
 
+        {/* Owner Account Notice Banner */}
+        {user.role === 'OWNER' && (
+          <div className="p-4 bg-surface border border-accent flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex items-center gap-2.5">
+              <Shield className="w-4 h-4 text-accent shrink-0" />
+              <div className="text-foreground">
+                <span className="font-bold">Store Owner Account Active.</span> Looking to manage your registered storefronts, view incoming customer feedback, or upload location photos?
+              </div>
+            </div>
+            <Link
+              href="/owner"
+              className="px-3.5 py-1.5 bg-foreground text-background font-mono text-xs uppercase font-bold tracking-wider border border-foreground hover:bg-accent-hover transition-colors shrink-0"
+            >
+              Go to Owner Portal &rarr;
+            </Link>
+          </div>
+        )}
+
         {/* ================= 1. QUICK METRICS CARDS (4 COLUMNS) ================= */}
         <section aria-label="Reviewer Metrics" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Ratings Given */}
@@ -201,7 +250,7 @@ export default function UserDashboardPage() {
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Ratings Given</span>
               <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Star className="w-4 h-4 fill-rating text-rating" />
+                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
               </div>
             </div>
             <div className="mt-2">
@@ -216,7 +265,7 @@ export default function UserDashboardPage() {
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Helpful Votes</span>
               <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <ThumbsUp className="w-4 h-4 text-accent" />
+                <ThumbsUp className="w-4 h-4 text-amber-400 dark:text-amber-600" />
               </div>
             </div>
             <div className="mt-2">
@@ -231,7 +280,7 @@ export default function UserDashboardPage() {
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Saved Stores</span>
               <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Bookmark className="w-4 h-4 text-accent fill-current" />
+                <Bookmark className="w-4 h-4 text-amber-400 dark:text-amber-600 fill-current" />
               </div>
             </div>
             <div className="mt-2">
@@ -246,7 +295,7 @@ export default function UserDashboardPage() {
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Reviewer Tier</span>
               <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Award className="w-4 h-4 text-accent" />
+                <Award className="w-4 h-4 text-amber-400 dark:text-amber-600" />
               </div>
             </div>
             <div className="mt-2">
@@ -319,8 +368,8 @@ export default function UserDashboardPage() {
                 </div>
               ) : filteredRatings.length === 0 ? (
                 <div className="p-12 text-center space-y-4">
-                  <div className="w-12 h-12 bg-muted-fill border border-border flex items-center justify-center mx-auto text-muted">
-                    <Star className="w-6 h-6 text-rating" />
+                  <div className="w-12 h-12 bg-muted-fill border border-border flex items-center justify-center mx-auto">
+                    <Star className="w-6 h-6 text-amber-600 dark:text-amber-400 fill-amber-600/10 dark:fill-amber-400/10" />
                   </div>
                   <h3 className="text-sm font-bold uppercase tracking-wider text-foreground font-mono">
                     No ratings found
@@ -330,10 +379,10 @@ export default function UserDashboardPage() {
                   </p>
                   <Link
                     href="/stores"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background text-xs font-mono uppercase font-bold border border-foreground transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background text-xs font-mono uppercase font-bold border border-foreground hover:bg-accent-hover transition-colors"
                   >
                     <span>Explore Stores</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
                   </Link>
                 </div>
               ) : (
@@ -409,7 +458,7 @@ export default function UserDashboardPage() {
                         {/* Footer & Actions */}
                         <div className="flex items-center justify-between pt-2 border-t border-border">
                           <div className="flex items-center gap-1.5 text-xs font-mono text-muted">
-                            <ThumbsUp className="w-3.5 h-3.5 text-accent" />
+                            <ThumbsUp className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                             <span>{item.likesCount || 0} helpful votes</span>
                           </div>
 
@@ -420,6 +469,15 @@ export default function UserDashboardPage() {
                               className="px-3 py-1 text-xs font-mono uppercase font-bold text-foreground bg-surface border border-border hover:border-foreground transition-colors"
                             >
                               Edit Review
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setRatingToDelete(item)}
+                              className="px-2.5 py-1 text-xs font-mono uppercase font-bold text-red-600 dark:text-red-400 bg-surface border border-border hover:border-red-500 transition-colors flex items-center gap-1"
+                              title="Delete this rating"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Delete</span>
                             </button>
                             <button
                               type="button"
@@ -483,7 +541,7 @@ export default function UserDashboardPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-xs font-mono font-bold text-foreground shrink-0">
-                        <Star className="w-3 h-3 text-rating fill-rating" />
+                        <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                         <span>{s.averageRating !== null && s.averageRating !== undefined ? s.averageRating.toFixed(1) : 'New'}</span>
                       </div>
                     </Link>
@@ -496,7 +554,7 @@ export default function UserDashboardPage() {
             <div className="bg-surface border border-border p-5 space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider">
                     Reputation Status
                   </span>
                   <h3 className="text-sm font-bold uppercase tracking-wider text-foreground font-mono mt-0.5">
@@ -504,7 +562,7 @@ export default function UserDashboardPage() {
                   </h3>
                 </div>
                 <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
-                  <Award className="w-4 h-4 text-accent" />
+                  <Award className="w-4 h-4 text-amber-400 dark:text-amber-600" />
                 </div>
               </div>
 
@@ -530,7 +588,7 @@ export default function UserDashboardPage() {
             {/* Store Owner Quick Link */}
             <div className="p-4 bg-muted-fill border border-border flex items-center justify-between gap-3 text-xs font-mono">
               <div className="flex items-center gap-2 text-muted truncate">
-                <StoreIcon className="w-4 h-4 text-accent shrink-0" />
+                <StoreIcon className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                 <span className="truncate">Store Owner Account</span>
               </div>
               <Link
@@ -562,10 +620,59 @@ export default function UserDashboardPage() {
         />
       )}
 
+      {/* Delete Review Confirmation Modal */}
+      {ratingToDelete && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-none z-50 flex items-center justify-center p-4">
+          <div className="bg-surface border border-border max-w-sm w-full p-6 space-y-4">
+            <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+              <Trash2 className="w-5 h-5 shrink-0" />
+              <h3 className="text-sm font-bold uppercase tracking-wider font-mono">
+                Delete Review?
+              </h3>
+            </div>
+
+            <p className="text-xs text-foreground font-mono leading-relaxed">
+              Are you sure you want to remove your evaluation for{' '}
+              <strong className="text-foreground">{ratingToDelete.store?.name || 'this store'}</strong>?
+              This will update the store's average rating and cannot be undone.
+            </p>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setRatingToDelete(null)}
+                disabled={isDeletingReview}
+                className="px-3 py-1.5 text-xs font-mono uppercase font-bold text-muted hover:text-foreground border border-border"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteReview}
+                disabled={isDeletingReview}
+                className="px-4 py-1.5 bg-red-600 text-white text-xs font-mono uppercase font-bold border border-red-600 hover:bg-red-700 transition-colors flex items-center gap-1.5"
+              >
+                {isDeletingReview ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Confirm Delete</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 max-w-sm bg-foreground text-background p-4 border border-foreground z-50 flex items-start gap-3">
-          <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+          <CheckCircle2 className="w-5 h-5 text-amber-400 dark:text-amber-600 shrink-0 mt-0.5" />
           <div className="flex-1">
             <h5 className="text-xs font-mono uppercase font-bold tracking-wider">{toastMessage.title}</h5>
             <p className="text-xs text-background/70 mt-0.5">{toastMessage.body}</p>
@@ -573,7 +680,7 @@ export default function UserDashboardPage() {
           <button
             type="button"
             onClick={() => setToastMessage(null)}
-            className="text-muted hover:text-background"
+            className="text-background/60 hover:text-background"
           >
             <X className="w-3.5 h-3.5" />
           </button>

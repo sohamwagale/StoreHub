@@ -483,7 +483,7 @@ export default function RegisterPage() {
                   ) : (
                     <>
                       <span>Create Account</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 text-amber-400 dark:text-amber-600" />
                     </>
                   )}
                 </button>

@@ -49,6 +49,51 @@ export class User {
   })
   bookmarks: string[];
 
+  @Prop({
+    type: String,
+    maxlength: 300,
+    trim: true,
+    default: '',
+  })
+  bio?: string;
+
+  @Prop({
+    type: String,
+    maxlength: 20,
+    trim: true,
+    default: '',
+  })
+  phone?: string;
+
+  @Prop({
+    type: String,
+    maxlength: 100,
+    trim: true,
+    default: '',
+  })
+  city?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  avatarUrl?: string;
+
+  @Prop({
+    type: String,
+    default: null,
+    select: false,
+  })
+  resetPasswordToken?: string | null;
+
+  @Prop({
+    type: Date,
+    default: null,
+    select: false,
+  })
+  resetPasswordExpires?: Date | null;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

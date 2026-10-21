@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -10,6 +11,8 @@ import { User, UserDocument } from './schemas/user.schema.js';
 import { Store, StoreDocument } from '../stores/schemas/store.schema.js';
 import { Rating, RatingDocument } from '../ratings/schemas/rating.schema.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { ChangePasswordDto } from './dto/change-password.dto.js';
 import { UserRole } from '../common/interfaces/user-role.enum.js';
 
 @Injectable()
@@ -243,5 +246,83 @@ export class UsersService {
 
   async count(): Promise<number> {
     return this.userModel.countDocuments().exec();
+  }
+
+  async updateProfile(userId: string, dto: UpdateProfileDto) {
+    const user = await this.userModel.findById(userId).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (dto.name !== undefined && dto.name.trim()) user.name = dto.name.trim();
+    if (dto.address !== undefined) user.address = dto.address.trim();
+    if (dto.bio !== undefined) user.bio = dto.bio.trim();
+    if (dto.phone !== undefined) user.phone = dto.phone.trim();
+    if (dto.city !== undefined) user.city = dto.city.trim();
+    if (dto.avatarUrl !== undefined) user.avatarUrl = dto.avatarUrl.trim();
+
+    const saved = await user.save();
+    const userObj = saved.toObject();
+    delete (userObj as any).passwordHash;
+    delete (userObj as any).resetPasswordToken;
+    delete (userObj as any).resetPasswordExpires;
+    return userObj;
+  }
+
+  async changePassword(userId: string, dto: ChangePasswordDto) {
+    const user = await this.userModel.findById(userId).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(dto.currentPassword, user.passwordHash);
+    if (!isMatch) {
+      throw new BadRequestException('Current password does not match.');
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.passwordHash = await bcrypt.hash(dto.newPassword, salt);
+    await user.save();
+
+    return { success: true, message: 'Password changed successfully.' };
+  }
+
+  async deleteAccount(userId: string) {
+    const userObjId = new Types.ObjectId(userId);
+    // Delete user's ratings across stores
+    await this.ratingModel.deleteMany({ userId: userObjId });
+    // Delete the user record
+    const res = await this.userModel.deleteOne({ _id: userObjId });
+    if (res.deletedCount === 0) {
+      throw new NotFoundException('User not found');
+    }
+    return { success: true, message: 'Account and associated ratings deleted successfully.' };
+  }
+
+  async setResetPasswordToken(email: string, hashedToken: string, expires: Date) {
+    return this.userModel.findOneAndUpdate(
+      { email: email.toLowerCase().trim() },
+      { resetPasswordToken: hashedToken, resetPasswordExpires: expires },
+      { new: true },
+    ).exec();
+  }
+
+  async findByResetToken(hashedToken: string) {
+    return this.userModel.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() },
+    }).select('+passwordHash +resetPasswordToken +resetPasswordExpires').exec();
+  }
+
+  async updatePassword(userId: string, newPasswordHash: string) {
+    return this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        passwordHash: newPasswordHash,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      },
+      { new: true },
+    ).exec();
   }
 }

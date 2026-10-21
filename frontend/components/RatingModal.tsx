@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Store } from '@/types';
 import StarRating from './StarRating';
-import { X, CheckCircle, AlertCircle, Loader2, Camera, Upload, Trash2, Plus } from 'lucide-react';
+import { X, CheckCircle, CheckCircle2, AlertCircle, Loader2, Camera, Upload, Trash2, Plus } from 'lucide-react';
 import { api } from '@/lib/api';
 
 interface RatingModalProps {
@@ -287,27 +287,30 @@ export default function RatingModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-200 dark:border-zinc-800">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting || isUploading}
-              className="px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-muted border border-border hover:bg-muted-fill transition-colors"
+              className="px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-background bg-foreground hover:bg-accent-hover border border-foreground transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white bg-zinc-950 dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white transition-colors disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400 dark:text-amber-600" />
                   <span>Saving...</span>
                 </>
               ) : (
-                <span>{isUpdating ? 'Update Rating' : 'Submit Rating'}</span>
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+                  <span>{isUpdating ? 'Update Rating' : 'Submit Rating'}</span>
+                </>
               )}
             </button>
           </div>

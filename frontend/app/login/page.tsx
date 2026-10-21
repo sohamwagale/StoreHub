@@ -103,7 +103,7 @@ export default function LoginPage() {
           <div className="space-y-2.5 max-w-lg">
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
               <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <Check className="w-3.5 h-3.5" />
+                <Check className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 100% verified in-store visits and genuine rating verification
@@ -112,7 +112,7 @@ export default function LoginPage() {
 
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
               <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <Shield className="w-3.5 h-3.5" />
+                <Shield className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 Honest ratings protected by strict fraud prevention rules
@@ -121,7 +121,7 @@ export default function LoginPage() {
 
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
               <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <StorefrontIcon className="w-3.5 h-3.5" />
+                <StorefrontIcon className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 Direct community interaction with verified store owners
@@ -339,13 +339,12 @@ export default function LoginPage() {
                 </span>
               </label>
 
-              <button
-                type="button"
-                onClick={() => setForgotToast(true)}
+              <Link
+                href="/forgot-password"
                 className="text-xs font-mono text-muted hover:text-foreground underline hover:no-underline"
               >
                 Forgot password?
-              </button>
+              </Link>
             </div>
 
             {forgotToast && (
@@ -372,7 +371,7 @@ export default function LoginPage() {
                 ) : (
                   <>
                     <span>Log In</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 text-amber-400 dark:text-amber-600" />
                   </>
                 )}
               </button>

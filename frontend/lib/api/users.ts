@@ -20,4 +20,31 @@ export class UsersApi {
       { method: 'POST' },
     );
   };
+
+  updateProfile = (payload: {
+    name?: string;
+    address?: string;
+    bio?: string;
+    phone?: string;
+    city?: string;
+    avatarUrl?: string;
+  }) => {
+    return this.client.request('/users/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  };
+
+  changePassword = (payload: { currentPassword: string; newPassword: string }) => {
+    return this.client.request<{ success: boolean; message: string }>('/users/change-password', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  };
+
+  deleteAccount = () => {
+    return this.client.request<{ success: boolean; message: string }>('/users/me', {
+      method: 'DELETE',
+    });
+  };
 }

@@ -8,6 +8,10 @@ export interface User {
   address: string;
   role: UserRole;
   bookmarks?: string[];
+  bio?: string;
+  phone?: string;
+  city?: string;
+  avatarUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -71,7 +71,7 @@ export class RatingsController {
 
   @Get('ratings/my-ratings')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.USER)
+  @Roles(UserRole.USER, UserRole.OWNER)
   async getMyRatings(@CurrentUser('id') userId: string) {
     return this.ratingsService.getMyRatings(userId);
   }
