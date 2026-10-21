@@ -31,6 +31,8 @@ export default function RatingModal({
   useEffect(() => {
     if (store && isOpen) {
       setSelectedRating(store.userRating || 5);
+      setReviewText(store.userReview || '');
+      setPhotos(store.userPhotos || []);
       setError(null);
       setSuccessMessage(null);
       setPhotoUrlInput('');
@@ -42,14 +44,16 @@ export default function RatingModal({
           if (data) {
             setReviewText(data.review || '');
             setPhotos(data.photos || []);
-          } else {
+          } else if (!store.userReview && (!store.userPhotos || store.userPhotos.length === 0)) {
             setReviewText('');
             setPhotos([]);
           }
         })
         .catch(() => {
-          setReviewText('');
-          setPhotos([]);
+          if (!store.userReview && (!store.userPhotos || store.userPhotos.length === 0)) {
+            setReviewText('');
+            setPhotos([]);
+          }
         });
     }
   }, [store, isOpen]);

@@ -118,6 +118,25 @@ export class RatingsService {
     };
   }
 
+  async delete(storeId: string, userId: string) {
+    if (!Types.ObjectId.isValid(storeId)) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const existing = await this.ratingModel.findOne({
+      storeId: new Types.ObjectId(storeId),
+      userId: new Types.ObjectId(userId),
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Rating not found for this store.');
+    }
+
+    await this.ratingModel.deleteOne({ _id: existing._id });
+
+    return { success: true, message: 'Rating deleted successfully' };
+  }
+
   async getStoreReviews(storeId: string, currentUserId?: string) {
     if (!Types.ObjectId.isValid(storeId)) {
       throw new NotFoundException('Store not found');
@@ -260,6 +279,8 @@ export class RatingsService {
       rating: r.rating,
       review: r.review || '',
       photos: r.photos || [],
+      likesCount: Array.isArray(r.likes) ? r.likes.length : 0,
+      dislikesCount: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       store: r.storeId
@@ -272,6 +293,47 @@ export class RatingsService {
           }
         : null,
     }));
+  }
+
+  async reportReview(ratingId: string, userId: string, reason?: string) {
+    if (!Types.ObjectId.isValid(ratingId)) {
+      throw new NotFoundException('Review not found');
+    }
+
+    const rating = await this.ratingModel.findById(ratingId).exec();
+    if (!rating) {
+      throw new NotFoundException('Review not found');
+    }
+
+    if (!rating.reports) {
+      rating.reports = [];
+    }
+
+    const alreadyReported = rating.reports.some(
+      (rep) => rep.userId && rep.userId.toString() === userId,
+    );
+
+    if (alreadyReported) {
+      return {
+        success: true,
+        message: 'You have already reported this review. Our moderation team is reviewing it.',
+        reported: true,
+      };
+    }
+
+    rating.reports.push({
+      userId: new Types.ObjectId(userId),
+      reason: reason ? reason.trim() : 'Inappropriate or fake review',
+      createdAt: new Date(),
+    });
+
+    await rating.save();
+
+    return {
+      success: true,
+      message: 'Review reported successfully. Our moderation team reviews flagged content within 24 hours.',
+      reported: true,
+    };
   }
 
   async count(): Promise<number> {

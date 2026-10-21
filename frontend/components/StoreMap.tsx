@@ -18,6 +18,8 @@ import {
 interface StoreMapProps {
   stores: Store[];
   selectedStoreId?: string | null;
+  centerCoordinates?: [number, number] | number[];
+  zoomLevel?: number;
   onSelectStore?: (store: Store) => void;
   onOpenRating?: (store: Store) => void;
   onOpenReviews?: (store: Store) => void;
@@ -61,6 +63,8 @@ function getCategoryTheme(category?: string) {
 export default function StoreMap({
   stores,
   selectedStoreId,
+  centerCoordinates,
+  zoomLevel,
   onSelectStore,
   onOpenRating,
   onOpenReviews,
@@ -80,15 +84,15 @@ export default function StoreMap({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Center around average coordinates of stores or default San Francisco
+    // Center around specified coordinates or average of stores or default San Francisco
     const validStores = stores.filter(
       (s) => typeof s.latitude === 'number' && typeof s.longitude === 'number' && (s.latitude !== 0 || s.longitude !== 0),
     );
 
-    let initialLat = 37.7885;
-    let initialLng = -122.4042;
+    let initialLat = centerCoordinates?.[1] ?? 37.7885;
+    let initialLng = centerCoordinates?.[0] ?? -122.4042;
 
-    if (validStores.length > 0) {
+    if (!centerCoordinates && validStores.length > 0) {
       initialLat = validStores.reduce((acc, s) => acc + (s.latitude || 0), 0) / validStores.length;
       initialLng = validStores.reduce((acc, s) => acc + (s.longitude || 0), 0) / validStores.length;
     }
@@ -118,7 +122,7 @@ export default function StoreMap({
         ],
       },
       center: [initialLng, initialLat],
-      zoom: 12.5,
+      zoom: zoomLevel ?? 12.5,
     });
 
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');

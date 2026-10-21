@@ -1,42 +1,80 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Store, User as UserIcon, LogOut, LogIn, UserPlus, Shield, LayoutDashboard, Compass } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
+import {
+  Store,
+  User as UserIcon,
+  LogOut,
+  LogIn,
+  UserPlus,
+  Shield,
+  LayoutDashboard,
+  Compass,
+  Search,
+  Bell,
+} from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [navSearch, setNavSearch] = useState('');
+
+  const handleNavSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (navSearch.trim()) {
+      router.push(`/stores?search=${encodeURIComponent(navSearch.trim())}`);
+    } else {
+      router.push('/stores');
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 transition-colors">
+    <header className="sticky top-0 z-50 bg-[#fffde7] dark:bg-zinc-950 border-b border-zinc-300 dark:border-zinc-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo & Brand */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-900 dark:border-white">
-              <Store className="w-4 h-4" />
-            </div>
-            <div className="flex items-center">
-              <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white">
-                StoreRank
-              </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] font-mono uppercase font-bold px-1.5 py-0.5 border border-amber-500/80 text-amber-600 dark:text-amber-400">
-                PRO
-              </span>
-            </div>
-          </Link>
+        <div className="flex items-center justify-between h-16 gap-3">
+          {/* Left: Brand & Search Bar */}
+          <div className="flex items-center gap-3 sm:gap-6">
+            <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+              <div className="w-8 h-8 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center border border-zinc-950 dark:border-white">
+                <Store className="w-4 h-4" />
+              </div>
+              <div className="flex items-center">
+                <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white">
+                  StoreRank
+                </span>
+                <span className="hidden sm:inline-block ml-2 text-[10px] font-mono uppercase font-bold px-1.5 py-0.5 border border-amber-500/80 text-amber-600 dark:text-amber-400">
+                  PRO
+                </span>
+              </div>
+            </Link>
 
-          {/* Navigation Links */}
+            {/* Quick Search Form (Stitch feature) */}
+            <form onSubmit={handleNavSearch} className="hidden md:flex items-center relative w-48 lg:w-72">
+              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 pointer-events-none" />
+              <input
+                type="text"
+                value={navSearch}
+                onChange={(e) => setNavSearch(e.target.value)}
+                placeholder="Search stores, brands, tech..."
+                className="w-full pl-8 pr-3 py-1.5 text-xs font-mono bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+              />
+            </form>
+          </div>
+
+          {/* Right: Navigation Links & Actions */}
           <nav className="flex items-center gap-1 sm:gap-2">
             <Link
               href="/stores"
               className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors flex items-center gap-1.5 border ${
                 pathname.startsWith('/stores')
-                  ? 'border-zinc-900 dark:border-white bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
-                  : 'border-transparent text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-200 dark:hover:border-zinc-800'
+                  ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                  : 'border-transparent text-zinc-700 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-800'
               }`}
             >
               <Compass className="w-3.5 h-3.5 text-amber-500" />
@@ -48,8 +86,8 @@ export default function Navbar() {
                 href="/dashboard"
                 className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors flex items-center gap-1.5 border ${
                   pathname === '/dashboard'
-                    ? 'border-zinc-900 dark:border-white bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
-                    : 'border-transparent text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-200 dark:hover:border-zinc-800'
+                    ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                    : 'border-transparent text-zinc-700 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-800'
                 }`}
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
@@ -63,8 +101,8 @@ export default function Navbar() {
                 href="/owner"
                 className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors flex items-center gap-1.5 border ${
                   pathname === '/owner'
-                    ? 'border-zinc-900 dark:border-white bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
-                    : 'border-transparent text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-200 dark:hover:border-zinc-800'
+                    ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                    : 'border-transparent text-zinc-700 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-800'
                 }`}
               >
                 <Shield className="w-3.5 h-3.5 text-amber-500" />
@@ -72,45 +110,53 @@ export default function Navbar() {
               </Link>
             )}
 
+            {/* Theme Toggle (Light / Dark) */}
+            <div className="flex items-center pl-1.5 sm:pl-2 ml-1 border-l border-zinc-300 dark:border-zinc-800">
+              <ThemeToggle />
+            </div>
+
             {/* Auth Actions */}
             {user ? (
-              <div className="flex items-center gap-2 pl-3 ml-2 border-l border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-2 pl-2 sm:pl-3 ml-1 sm:ml-2 border-l border-zinc-300 dark:border-zinc-800">
                 <Link
                   href="/profile"
                   className={`flex items-center gap-2 px-2.5 py-1 text-xs border transition-colors ${
                     pathname === '/profile'
-                      ? 'border-zinc-900 dark:border-white bg-zinc-100 dark:bg-zinc-900 text-zinc-950 dark:text-white'
-                      : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'
+                      ? 'border-zinc-950 dark:border-white bg-zinc-200 dark:bg-zinc-900 text-zinc-950 dark:text-white font-bold'
+                      : 'border-zinc-300 dark:border-zinc-800 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'
                   }`}
                   title="View your profile"
                 >
-                  <div className="w-5 h-5 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white flex items-center justify-center shrink-0 font-mono font-bold text-[11px]">
-                    {user.name ? user.name[0].toUpperCase() : <UserIcon className="w-3 h-3" />}
+                  <div className="relative">
+                    <div className="w-5 h-5 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white flex items-center justify-center shrink-0 font-mono font-bold text-[11px]">
+                      {user.name ? user.name[0].toUpperCase() : <UserIcon className="w-3 h-3" />}
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-500" />
                   </div>
                   <div className="hidden sm:flex flex-col text-left">
-                    <span className="text-xs font-semibold text-zinc-900 dark:text-white truncate max-w-[120px]">
+                    <span className="text-xs font-semibold text-zinc-950 dark:text-white truncate max-w-[120px]">
                       {user.name}
                     </span>
                     <span className="text-[9px] font-mono text-zinc-500 uppercase">
-                      {user.role}
+                      {user.role === 'OWNER' ? 'Store Owner' : 'Verified Reviewer'}
                     </span>
                   </div>
                 </Link>
 
                 <button
                   onClick={logout}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border border-zinc-300 dark:border-zinc-800 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 transition-colors"
                   title="Logout"
                 >
-                  <LogOut className="w-3 h-3 text-zinc-400" />
+                  <LogOut className="w-3 h-3 text-zinc-500" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 pl-3 ml-2 border-l border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-2 pl-2 sm:pl-3 ml-1 sm:ml-2 border-l border-zinc-300 dark:border-zinc-800">
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 transition-colors"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Log in</span>

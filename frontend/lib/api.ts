@@ -7,6 +7,7 @@ import {
   StoreReview,
   OwnerDashboardResponse,
   StoreGallery,
+  DashboardStats,
   ApiError,
 } from '@/types';
 
@@ -189,6 +190,12 @@ class ApiClient {
       });
     },
 
+    delete: (storeId: string): Promise<{ success: boolean; message: string }> => {
+      return this.request<{ success: boolean; message: string }>(`/stores/${storeId}/ratings`, {
+        method: 'DELETE',
+      });
+    },
+
     getMyRatingForStore: (
       storeId: string,
     ): Promise<{ rating: number | null; review?: string; photos?: string[] }> => {
@@ -222,6 +229,39 @@ class ApiClient {
 
     dislike: (ratingId: string): Promise<any> => {
       return this.request(`/ratings/${ratingId}/dislike`, { method: 'POST' });
+    },
+
+    report: (
+      ratingId: string,
+      reason?: string,
+    ): Promise<{ success: boolean; message: string; reported: boolean }> => {
+      return this.request<{ success: boolean; message: string; reported: boolean }>(
+        `/ratings/${ratingId}/report`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ reason }),
+        },
+      );
+    },
+  };
+
+  // User & Bookmarks Endpoints
+  users = {
+    getDashboardStats: (): Promise<DashboardStats> => {
+      return this.request<DashboardStats>('/users/dashboard-stats');
+    },
+
+    getBookmarks: (): Promise<Store[]> => {
+      return this.request<Store[]>('/users/bookmarks');
+    },
+
+    toggleBookmark: (
+      storeId: string,
+    ): Promise<{ isBookmarked: boolean; bookmarks: string[]; storeId: string }> => {
+      return this.request<{ isBookmarked: boolean; bookmarks: string[]; storeId: string }>(
+        `/users/bookmarks/${storeId}`,
+        { method: 'POST' },
+      );
     },
   };
 

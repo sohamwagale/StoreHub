@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Patch,
+  Delete,
   Get,
   Param,
   Body,
@@ -46,6 +47,17 @@ export class RatingsController {
     @Body() updateRatingDto: UpdateRatingDto,
   ) {
     return this.ratingsService.update(storeId, userId, updateRatingDto);
+  }
+
+  @Delete('stores/:storeId/ratings')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
+  @HttpCode(HttpStatus.OK)
+  async deleteRating(
+    @Param('storeId') storeId: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.ratingsService.delete(storeId, userId);
   }
 
   @Get('stores/:storeId/ratings/me')
@@ -105,5 +117,16 @@ export class RatingsController {
     @CurrentUser('id') userId: string,
   ) {
     return this.ratingsService.vote(ratingId, userId, 'DISLIKE');
+  }
+
+  @Post('ratings/:id/report')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async reportRating(
+    @Param('id') ratingId: string,
+    @CurrentUser('id') userId: string,
+    @Body('reason') reason?: string,
+  ) {
+    return this.ratingsService.reportReview(ratingId, userId, reason);
   }
 }

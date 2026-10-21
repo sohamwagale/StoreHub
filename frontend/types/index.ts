@@ -7,6 +7,7 @@ export interface User {
   email: string;
   address: string;
   role: UserRole;
+  bookmarks?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -20,10 +21,17 @@ export interface Store {
   latitude?: number;
   longitude?: number;
   photos?: string[];
+  description?: string;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
   ownerId: string;
   averageRating: number | null;
   totalRatings: number;
   userRating?: number | null;
+  userReview?: string;
+  userPhotos?: string[];
+  isBookmarked?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -46,6 +54,8 @@ export interface MyRating {
   rating: number;
   review?: string;
   photos?: string[];
+  likesCount?: number;
+  dislikesCount?: number;
   createdAt: string;
   updatedAt: string;
   store: {
@@ -55,6 +65,26 @@ export interface MyRating {
     category?: string;
     photos?: string[];
   } | null;
+}
+
+export interface DashboardStats {
+  totalRatings: number;
+  totalHelpfulVotes: number;
+  totalBookmarks: number;
+  bookmarkedCount: number;
+  averageRatingGiven: number;
+  reviewerRank: string;
+  reputationScore: number;
+  user: {
+    id: string;
+    _id?: string;
+    name: string;
+    email: string;
+    address: string;
+    role: UserRole;
+    bookmarks: string[];
+    createdAt?: string;
+  };
 }
 
 export interface StoreReview {

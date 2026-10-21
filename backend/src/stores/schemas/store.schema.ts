@@ -54,6 +54,34 @@ export class Store {
   })
   photos: string[];
 
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  description?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  phone?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  website?: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+    default: '',
+  })
+  openingHours?: string;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

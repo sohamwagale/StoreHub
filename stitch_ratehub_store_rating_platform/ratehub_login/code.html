@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Log In — RateHub</title>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#0f0069",
+            "tertiary-container": "#586076",
+            "on-surface-variant": "#464555",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "surface-variant": "#d3e4fe",
+            "surface-container-low": "#eff4ff",
+            "tertiary-fixed-dim": "#bec6e0",
+            "outline": "#777587",
+            "on-tertiary-fixed-variant": "#3f465c",
+            "primary-fixed": "#e2dfff",
+            "on-secondary-fixed": "#2a1700",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "primary-container": "#4f46e5",
+            "on-tertiary-container": "#d4dbf5",
+            "secondary": "#855300",
+            "on-primary-container": "#dad7ff",
+            "outline-variant": "#c7c4d8",
+            "surface-container": "#e5eeff",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "surface": "#f8f9ff",
+            "surface-container-high": "#dce9ff",
+            "inverse-primary": "#c3c0ff",
+            "on-secondary": "#ffffff",
+            "tertiary": "#41485e",
+            "on-secondary-fixed-variant": "#653e00",
+            "surface-tint": "#4d44e3",
+            "secondary-fixed": "#ffddb8",
+            "secondary-container": "#fea619",
+            "primary": "#3525cd",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed": "#131b2e",
+            "on-primary-fixed-variant": "#3323cc",
+            "on-surface": "#0b1c30",
+            "on-secondary-container": "#684000",
+            "secondary-fixed-dim": "#ffb95f",
+            "tertiary-fixed": "#dae2fd",
+            "primary-fixed-dim": "#c3c0ff",
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "3rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-sm": "1rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="h-full bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary">
+<div class="min-h-screen w-full flex flex-col lg:flex-row">
+<!-- LEFT COLUMN: Brand & Value Proposition Showcase (45%) -->
+<div class="relative w-full lg:w-[45%] bg-surface-container-low border-b lg:border-b-0 lg:border-r border-outline-variant flex flex-col justify-between p-space-lg sm:p-margin lg:p-margin-lg overflow-hidden">
+<!-- Subtle Decorative Geometric Background Grid / Glow -->
+<div class="absolute inset-0 pointer-events-none opacity-40">
+<div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-surface-container-high blur-3xl"></div>
+<div class="absolute bottom-10 right-0 w-80 h-80 rounded-full bg-surface-variant blur-2xl"></div>
+<div class="w-full h-full" style="background-image: radial-gradient(rgba(79, 70, 229, 0.08) 1px, transparent 1px); background-size: 24px 24px;"></div>
+</div>
+<!-- Top Section: Brand Identity -->
+<div class="relative z-10">
+<a class="inline-flex items-center gap-space-sm group focus:outline-none focus:ring-2 focus:ring-primary rounded-lg p-space-xs transition duration-150" href="#">
+<img alt="RateHub Brand Logo" class="h-10 w-10 object-contain rounded-lg border border-outline-variant bg-surface-container-lowest p-1 shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1Xqs82PiF69vsuRC9QtsDoHkrzJW4al8Y7MJ1sRkG1fZW0X-TkPrPyzqscS64TvXK-etSCfG94Ilp77-OiZkncoSYB7OJbHytBMcphoMgNgOl9qEI-GyOZtpFNJXvZfd-kD-F2pS3wLYumzEu0KqTIsQQ0GRBOZO88SpVShQEGJuFfPdM9eGX7fATFFZaNaLPHu3P5h3xh2TGRQ1s3c4hlcjYqZcSqkVkoQA4_fNsdg-D0Hk_fGgAcCNqA"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">RateHub</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Discover. Rate. Review.</span>
+</div>
+</a>
+</div>
+<!-- Middle Section: Hero Copy & Trust Anchor Elements -->
+<div class="relative z-10 py-space-xl sm:py-margin-lg">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-lowest border border-outline-variant mb-space-md shadow-sm">
+<span class="flex h-2 w-2 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-primary">Community-Powered Retail Intelligence</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight max-w-xl">
+          Transparent ratings from real shoppers in your city.
+        </h1>
+<p class="mt-space-md font-body-lg text-body-lg text-on-surface-variant max-w-lg leading-relaxed">
+          Join over 180,000 community members discovering the best local businesses, sharing verified feedback, and supporting trustworthy retailers.
+        </p>
+<!-- Feature Points -->
+<div class="mt-space-lg space-y-space-sm max-w-lg">
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-lowest/80 border border-outline-variant backdrop-blur-sm">
+<div class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-container text-on-primary flex-shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">100% Verified in-store visits and purchase verification</span>
+</div>
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-lowest/80 border border-outline-variant backdrop-blur-sm">
+<div class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-container text-on-primary flex-shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="shield">shield</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Honest ratings with fraud prevention algorithms</span>
+</div>
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-lowest/80 border border-outline-variant backdrop-blur-sm">
+<div class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-container text-on-primary flex-shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="storefront">storefront</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Direct interaction with verified store owners</span>
+</div>
+</div>
+<!-- Mini Review Highlight Card -->
+<div class="mt-space-lg p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm max-w-lg">
+<div class="flex items-center gap-space-xs text-secondary-container mb-space-xs">
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="ml-space-xs font-label-sm text-label-sm text-on-surface-variant">Verified Member</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic">
+            "RateHub helped our neighborhood find reliable repair shops and organic grocers without wading through fake ratings."
+          </p>
+<div class="mt-space-sm flex items-center justify-between text-on-surface-variant border-t border-outline-variant/50 pt-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold">— Anita Desai, Kolhapur</span>
+<span class="font-body-sm text-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="verified">verified</span> Verified Reviewer
+            </span>
+</div>
+</div>
+</div>
+<!-- Bottom Branding Footer -->
+<div class="relative z-10 pt-space-md border-t border-outline-variant">
+<p class="font-body-sm text-body-sm text-outline">
+          © 2025 RateHub Inc. Trusted by over 12,000 businesses.
+        </p>
+</div>
+</div>
+<!-- RIGHT COLUMN: Login Card & Form Canvas (55%) -->
+<div class="w-full lg:w-[55%] bg-surface flex flex-col justify-center items-center p-space-md sm:p-margin lg:p-margin-lg min-h-screen">
+<!-- Main Login Container (max-w-md w-full) -->
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl border border-outline-variant p-space-lg sm:p-margin shadow-sm transition duration-150">
+<!-- Header -->
+<div class="mb-space-lg text-center sm:text-left">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+            Welcome back
+          </h2>
+<p class="mt-1 font-body-md text-body-md text-on-surface-variant">
+            Enter your credentials to access your RateHub account
+          </p>
+</div>
+<!-- Inline Error Alert State Showcase -->
+<div class="mb-space-md p-space-sm rounded-lg bg-error-container/40 border border-error/30 text-on-error-container flex items-start gap-space-sm" id="error-alert">
+<span class="material-symbols-outlined text-error flex-shrink-0 mt-0.5" data-icon="error">error</span>
+<div class="flex-1 font-body-sm text-body-sm text-on-error-container">
+<span class="font-semibold block mb-0.5">Authentication failed</span>
+            Invalid credentials. Please verify your email and password, or use "Forgot password?" to reset.
+          </div>
+<button aria-label="Dismiss error" class="text-on-error-container hover:text-error transition p-0.5 rounded focus:outline-none" onclick="document.getElementById('error-alert').classList.add('hidden')" type="button">
+<span class="material-symbols-outlined text-base" data-icon="close">close</span>
+</button>
+</div>
+<!-- Social Login Option -->
+<button class="w-full h-10 px-space-md rounded-lg border border-outline-variant hover:border-outline bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-space-sm transition duration-150 active:scale-95 shadow-sm" type="button">
+<!-- Google SVG Monogram -->
+<svg class="w-4 h-4" viewbox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+</svg>
+          Continue with Google
+        </button>
+<!-- Divider with Text -->
+<div class="relative my-space-md">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<div class="relative flex justify-center text-xs">
+<span class="bg-surface-container-lowest px-space-sm font-label-sm text-label-sm text-outline">
+              or continue with email
+            </span>
+</div>
+</div>
+<!-- Login Form -->
+<form class="space-y-space-md" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="email">
+              Email
+            </label>
+<div class="relative rounded-lg shadow-sm">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-space-sm text-outline">
+<span class="material-symbols-outlined text-lg" data-icon="mail">mail</span>
+</div>
+<input class="block w-full h-10 rounded-lg border border-outline-variant pl-9 pr-space-md text-on-surface font-body-md text-body-md placeholder:text-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition duration-150" id="email" name="email" placeholder="alex.carter@example.com" required="" type="email" value="alex.carter@example.com"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="block font-label-md text-label-md text-on-surface" for="password">
+                Password
+              </label>
+</div>
+<div class="relative rounded-lg shadow-sm">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-space-sm text-outline">
+<span class="material-symbols-outlined text-lg" data-icon="lock">lock</span>
+</div>
+<input class="block w-full h-10 rounded-lg border border-outline-variant pl-9 pr-10 text-on-surface font-body-md text-body-md placeholder:text-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition duration-150 tracking-wider" id="password" name="password" placeholder="••••••••••••" required="" type="password" value="secretPassword123"/>
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 flex items-center pr-space-sm text-outline hover:text-on-surface focus:outline-none transition" id="toggle-password" onclick="const p = document.getElementById('password'); const icon = document.getElementById('pwd-icon'); if(p.type==='password'){p.type='text'; icon.textContent='visibility_off';}else{p.type='password'; icon.textContent='visibility';}" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="visibility" id="pwd-icon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me & Forgot Password -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center">
+<input checked="" class="h-4 w-4 rounded border-outline-variant text-primary-container focus:ring-primary-container/20 focus:ring-2" id="remember-me" name="remember-me" type="checkbox"/>
+<label class="ml-2 block font-body-sm text-body-sm text-on-surface-variant cursor-pointer select-none" for="remember-me">
+                Remember this device for 30 days
+              </label>
+</div>
+<div class="text-right">
+<a class="font-label-md text-label-md text-primary hover:text-primary-container hover:underline transition" href="#">
+                Forgot password?
+              </a>
+</div>
+</div>
+<!-- Primary Submit CTA Button -->
+<div class="pt-space-xs">
+<button class="w-full h-10 px-space-md rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-space-sm shadow-sm transition duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-container focus:ring-offset-2" type="submit">
+<span>Log In</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer / Registration prompt -->
+<div class="mt-space-lg text-center pt-space-md border-t border-outline-variant">
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Don't have an account? 
+            <a class="font-label-lg text-label-lg text-primary hover:text-primary-container hover:underline transition font-semibold" href="#">
+              Sign up
+            </a>
+</p>
+</div>
+</div>
+<!-- Security Trust Footer Below Card -->
+<div class="mt-space-md text-center flex items-center justify-center gap-space-xs text-outline">
+<span class="material-symbols-outlined text-base text-primary" data-icon="lock">lock</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Protected by RateHub Shield &amp; 256-bit SSL encryption</span>
+</div>
+</div>
+</div>
+</body></html>

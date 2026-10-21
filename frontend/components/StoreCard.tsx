@@ -112,8 +112,9 @@ export default function StoreCard({
         <div>
           {/* Store Name linking to dedicated store page */}
           <Link href={`/stores/${store.id}`} className="block group/link">
-            <h3 className="text-base font-bold text-zinc-950 dark:text-white group-hover/link:underline transition-all line-clamp-1 mb-1">
-              {store.name}
+            <h3 className="text-base font-bold text-zinc-950 dark:text-white group-hover/link:underline transition-all line-clamp-1 mb-1 flex items-center gap-1.5">
+              <span className="truncate">{store.name}</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-amber-500 shrink-0" />
             </h3>
           </Link>
 

@@ -43,6 +43,12 @@ export class User {
   })
   role: UserRole;
 
+  @Prop({
+    type: [{ type: String }],
+    default: [],
+  })
+  bookmarks: string[];
+
   createdAt?: Date;
   updatedAt?: Date;
 }

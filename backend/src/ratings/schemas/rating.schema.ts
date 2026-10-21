@@ -58,6 +58,22 @@ export class Rating {
   })
   dislikes: Types.ObjectId[];
 
+  @Prop({
+    type: [
+      {
+        userId: { type: Types.ObjectId, ref: 'User', required: true },
+        reason: { type: String, default: 'Inappropriate or fake review' },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+    default: [],
+  })
+  reports: Array<{
+    userId: Types.ObjectId;
+    reason: string;
+    createdAt: Date;
+  }>;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

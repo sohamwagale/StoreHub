@@ -49,10 +49,10 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col w-full bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+    <div className="flex-1 flex flex-col w-full bg-[#fefce8] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       {/* 1. Hero Section - Only visible when logged out */}
       {!isAuthenticated ? (
-        <section className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 py-16 sm:py-24">
+        <section className="border-b border-zinc-200 dark:border-zinc-800 bg-[#fefce8] dark:bg-zinc-950 py-16 sm:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Minimal Monochromatic Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 text-[11px] font-mono uppercase font-bold tracking-widest mb-6">

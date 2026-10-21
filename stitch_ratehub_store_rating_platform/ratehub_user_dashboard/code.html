@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RateHub - User Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#0f0069",
+            "tertiary-container": "#586076",
+            "on-surface-variant": "#464555",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "surface-variant": "#d3e4fe",
+            "surface-container-low": "#eff4ff",
+            "tertiary-fixed-dim": "#bec6e0",
+            "outline": "#777587",
+            "on-tertiary-fixed-variant": "#3f465c",
+            "primary-fixed": "#e2dfff",
+            "on-secondary-fixed": "#2a1700",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "primary-container": "#4f46e5",
+            "on-tertiary-container": "#d4dbf5",
+            "secondary": "#855300",
+            "on-primary-container": "#dad7ff",
+            "outline-variant": "#c7c4d8",
+            "surface-container": "#e5eeff",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "surface": "#f8f9ff",
+            "surface-container-high": "#dce9ff",
+            "inverse-primary": "#c3c0ff",
+            "on-secondary": "#ffffff",
+            "tertiary": "#41485e",
+            "on-secondary-fixed-variant": "#653e00",
+            "surface-tint": "#4d44e3",
+            "secondary-fixed": "#ffddb8",
+            "secondary-container": "#fea619",
+            "primary": "#3525cd",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed": "#131b2e",
+            "on-primary-fixed-variant": "#3323cc",
+            "on-surface": "#0b1c30",
+            "on-secondary-container": "#684000",
+            "secondary-fixed-dim": "#ffb95f",
+            "tertiary-fixed": "#dae2fd",
+            "primary-fixed-dim": "#c3c0ff",
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "3rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-sm": "1rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full bg-background text-on-surface antialiased font-body-md text-body-md flex overflow-hidden">
+<!-- SIDEBAR NAVIGATION (Width: 260px) -->
+<aside class="w-[260px] h-screen bg-surface-container-lowest border-r border-outline-variant flex flex-col justify-between shrink-0 select-none z-30">
+<!-- Top Section -->
+<div class="p-space-md flex flex-col">
+<!-- Brand Header -->
+<div class="flex items-center gap-space-sm px-space-xs pb-space-lg mb-space-sm border-b border-surface-container">
+<img alt="RateHub Brand Logo" class="w-9 h-9 rounded-lg object-contain shrink-0 shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1Xqs82PiF69vsuRC9QtsDoHkrzJW4al8Y7MJ1sRkG1fZW0X-TkPrPyzqscS64TvXK-etSCfG94Ilp77-OiZkncoSYB7OJbHytBMcphoMgNgOl9qEI-GyOZtpFNJXvZfd-kD-F2pS3wLYumzEu0KqTIsQQ0GRBOZO88SpVShQEGJuFfPdM9eGX7fATFFZaNaLPHu3P5h3xh2TGRQ1s3c4hlcjYqZcSqkVkoQA4_fNsdg-D0Hk_fGgAcCNqA"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight leading-none">RateHub</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">Discover. Rate. Review.</span>
+</div>
+</div>
+<!-- Main Navigation -->
+<nav aria-label="Main Navigation" class="flex flex-col gap-1.5">
+<!-- Dashboard (Active) -->
+<a class="flex items-center justify-between px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary font-label-md text-label-md font-semibold transition duration-150" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</a>
+<!-- Discover Stores -->
+<a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+<span>Discover Stores</span>
+</div>
+</a>
+<!-- My Ratings -->
+<a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="hotel_class">hotel_class</span>
+<span>My Ratings</span>
+</div>
+<span class="px-1.5 py-0.5 text-[11px] font-bold rounded-full bg-surface-container text-on-surface-variant">28</span>
+</a>
+<!-- Favorites -->
+<a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
+<span>Favorites</span>
+</div>
+<span class="px-1.5 py-0.5 text-[11px] font-bold rounded-full bg-surface-container text-on-surface-variant">14</span>
+</a>
+<!-- Profile -->
+<a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span>Profile</span>
+</div>
+</a>
+</nav>
+<!-- Section Divider -->
+<div class="my-space-md border-t border-outline-variant/60"></div>
+<!-- Secondary Navigation -->
+<nav aria-label="Secondary Navigation" class="flex flex-col gap-1.5">
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="help">help</span>
+<span>Help &amp; Support</span>
+</a>
+</nav>
+</div>
+<!-- Bottom User Profile Pill -->
+<div class="p-space-md border-t border-outline-variant bg-surface-container-low/40">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<img alt="Alex Carter" class="w-9 h-9 rounded-full object-cover border border-outline-variant shrink-0" data-alt="Close-up portrait of Alex Carter, a verified reviewer wearing a minimal slate gray collar shirt against a bright modern studio backdrop with soft warm lighting and professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP_4QJjC-Ib_8_Ev2zqfw7usIsIxqEjfCy3fbPIz8CXuL_5dBJNIPR_6yi0a31kiIQCcheE4SJkoy8ljqs-8f37_2KvBWo4f3JocBQcGfkqttuvzukjzn7VZ5qM0fEe8nFmud2Unq8O4u_tbjmjLPKXdaKdtCma6n2iq0Cbe_6mBAFXDK2zpxRqVnEvRxAHlTSk-9OWY1mTlTGokEOWvfqg8Z3kJbMLdO-N28zID5oAowHKN_qqs2u"/>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate leading-tight">Alex Carter</span>
+<span class="text-[10px] text-primary font-bold tracking-tight uppercase truncate">Level 3 Critic</span>
+<span class="text-[11px] text-on-surface-variant truncate font-body-sm">alex.carter@domain.com</span>
+</div>
+</div>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/40 rounded-lg transition-colors ml-1 shrink-0" title="Log Out" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN CANVAS -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto bg-background">
+<!-- TOP HEADER -->
+<header class="sticky top-0 z-20 bg-surface-container-lowest/90 backdrop-blur-md px-margin-lg py-space-md border-b border-outline-variant flex items-center justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Overview</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight mt-0.5 flex items-center gap-2">
+          Welcome back, Alex <span class="text-xl">👋</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Here is your reviewer activity and store recommendations across Kolhapur.</p>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-space-md">
+<!-- Search bar -->
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-3 text-body-sm font-body-sm bg-surface-container-low border border-outline-variant rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all" placeholder="Search your ratings or stores..." type="text"/>
+</div>
+<!-- Write Review CTA -->
+<button class="h-10 px-4 bg-primary text-on-primary rounded-lg font-label-md text-label-md font-semibold flex items-center gap-1.5 shadow-sm hover:bg-primary-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Write a Review</span>
+</button>
+<!-- Notification Bell -->
+<div class="relative">
+<button class="w-10 h-10 rounded-lg border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low text-on-surface flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-error text-on-error rounded-full text-[10px] font-bold flex items-center justify-center">3</span>
+</div>
+</div>
+</header>
+<!-- CONTENT BODY -->
+<div class="p-margin-lg space-y-gutter-lg max-w-[1400px]">
+<!-- 1. QUICK METRICS CARDS (4 COLUMNS) -->
+<section aria-label="Reviewer Metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm hover:border-outline transition-colors flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Total Ratings Given</span>
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-2">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">28</span>
+<span class="font-label-md text-label-md text-secondary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> +3 this mo
+            </span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm hover:border-outline transition-colors flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Helpful Votes Received</span>
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="thumb_up">thumb_up</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-2">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">142</span>
+<span class="font-label-md text-label-md text-secondary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> +18 wk
+            </span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm hover:border-outline transition-colors flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Bookmarked Stores</span>
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="bookmark">bookmark</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-2">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">14</span>
+<span class="font-label-md text-label-md text-primary font-semibold">2 with offers</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm hover:border-outline transition-colors flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Reviewer Rank</span>
+<div class="w-9 h-9 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="military_tech">military_tech</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight">Top 5%</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">Kolhapur</span>
+</div>
+</div>
+</section>
+<!-- 2. TWO-COLUMN LAYOUT (8 cols / 4 cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg">
+<!-- LEFT COLUMN (8 cols) -->
+<div class="lg:col-span-8 space-y-gutter-lg">
+<!-- Recent Ratings & Reviews List Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<!-- Header & Filters -->
+<div class="p-space-lg border-b border-outline-variant flex flex-col sm:flex-row sm:items-center sm:justify-between gap-space-md">
+<div>
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Recent Ratings &amp; Reviews</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manage your published opinions and feedback</p>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- Filter Tabs -->
+<div class="inline-flex p-1 bg-surface-container-low rounded-lg border border-outline-variant">
+<button class="px-3 py-1 text-label-md font-label-md font-semibold rounded bg-surface-container-lowest text-primary shadow-xs" type="button">All</button>
+<button class="px-3 py-1 text-label-md font-label-md text-on-surface-variant hover:text-on-surface" type="button">Verified Visits</button>
+<button class="px-3 py-1 text-label-md font-label-md text-on-surface-variant hover:text-on-surface" type="button">Drafts</button>
+</div>
+<a class="font-label-md text-label-md font-semibold text-primary hover:underline" href="#">View All (28)</a>
+</div>
+</div>
+<!-- Review Items List -->
+<div class="divide-y divide-outline-variant/60">
+<!-- Item 1 -->
+<article class="p-space-lg hover:bg-surface-bright transition-colors flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center font-bold text-primary text-base shrink-0">
+                      AE
+                    </div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md font-bold text-on-surface">ABC Electronics</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm">Electronics</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Kolhapur · Rajarampuri 4th Lane</span>
+</div>
+</div>
+<!-- Stars & Date -->
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface text-label-lg font-label-lg ml-1">5.0</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Reviewed Oct 14, 2024</span>
+</div>
+</div>
+<!-- Review Snippet -->
+<p class="font-body-md text-body-md text-on-surface mt-1">
+                  "Got my MacBook Air M3 here. Staff explained warranty thoroughly and helped transfer all my personal cloud data seamlessly before leaving."
+                </p>
+<!-- Footer & Actions -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">thumb_up</span>
+<span>18 helpful votes</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Edit Review</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Share</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-primary bg-surface-container-low rounded-lg hover:bg-surface-container transition-colors" type="button">View Store</button>
+</div>
+</div>
+</article>
+<!-- Item 2 -->
+<article class="p-space-lg hover:bg-surface-bright transition-colors flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center font-bold text-primary text-base shrink-0">
+                      AB
+                    </div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Artisan Brew Roastery &amp; Cafe</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm">Cafes &amp; Dining</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Kolhapur · Tarabai Park</span>
+</div>
+</div>
+<!-- Stars & Date -->
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface text-label-lg font-label-lg ml-1">5.0</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Reviewed Sep 28, 2024</span>
+</div>
+</div>
+<!-- Review Snippet -->
+<p class="font-body-md text-body-md text-on-surface mt-1">
+                  "Best pour-over in town. Quiet space for remote work and great beans sourced directly from Chikmagalur estates."
+                </p>
+<!-- Footer & Actions -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">thumb_up</span>
+<span>24 helpful votes</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Edit Review</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Share</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-primary bg-surface-container-low rounded-lg hover:bg-surface-container transition-colors" type="button">View Store</button>
+</div>
+</div>
+</article>
+<!-- Item 3 -->
+<article class="p-space-lg hover:bg-surface-bright transition-colors flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center font-bold text-primary text-base shrink-0">
+                      AS
+                    </div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Apex Supermarket &amp; Organic</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm">Groceries</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Kolhapur · Shahupuri</span>
+</div>
+</div>
+<!-- Stars & Date -->
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px] text-outline-variant" data-icon="star">star</span>
+<span class="font-bold text-on-surface text-label-lg font-label-lg ml-1">4.0</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Reviewed Sep 12, 2024</span>
+</div>
+</div>
+<!-- Review Snippet -->
+<p class="font-body-md text-body-md text-on-surface mt-1">
+                  "Good organic produce section, checkout was fast during weekday mornings. Dairy section always has local artisanal cheeses stocked."
+                </p>
+<!-- Footer & Actions -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">thumb_up</span>
+<span>9 helpful votes</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Edit Review</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors" type="button">Share</button>
+<button class="px-3 py-1.5 text-label-md font-label-md font-semibold text-primary bg-surface-container-low rounded-lg hover:bg-surface-container transition-colors" type="button">View Store</button>
+</div>
+</div>
+</article>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (4 cols) -->
+<div class="lg:col-span-4 space-y-gutter-lg">
+<!-- b. Favorite Stores Mini Cards -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-md">
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Quick Access Favorites</h2>
+<a class="font-label-md text-label-md font-semibold text-primary hover:underline" href="#">Manage (14)</a>
+</div>
+<div class="space-y-3">
+<!-- Mini Card 1 -->
+<div class="p-3 rounded-lg border border-outline-variant bg-surface-container-lowest hover:border-outline transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface truncate">Modern Heritage Books</h4>
+<div class="flex items-center gap-1 text-secondary text-label-sm font-label-sm font-bold shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    4.9
+                  </div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="text-xs font-semibold text-emerald-600 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Open now
+                  </span>
+<span class="text-[11px] px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-semibold">15% off sale</span>
+</div>
+</div>
+<!-- Mini Card 2 -->
+<div class="p-3 rounded-lg border border-outline-variant bg-surface-container-lowest hover:border-outline transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface truncate">Nova Fitness Gear</h4>
+<div class="flex items-center gap-1 text-secondary text-label-sm font-label-sm font-bold shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    4.4
+                  </div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="text-xs text-on-surface-variant">Closes 8:00 PM</span>
+<span class="text-[11px] text-on-surface-variant">Nagala Park</span>
+</div>
+</div>
+<!-- Mini Card 3 -->
+<div class="p-3 rounded-lg border border-outline-variant bg-surface-container-lowest hover:border-outline transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface truncate">Elegance Fashion Studio</h4>
+<div class="flex items-center gap-1 text-secondary text-label-sm font-label-sm font-bold shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    4.7
+                  </div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="text-xs font-semibold text-emerald-600 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Open now
+                  </span>
+<span class="text-[11px] text-on-surface-variant">Station Road</span>
+</div>
+</div>
+</div>
+</div>
+<!-- c. Reviewer Badge Progress Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">Reputation Status</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mt-0.5">Level 3 Trusted Critic</h3>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<!-- Progress Meter -->
+<div class="space-y-1.5">
+<div class="flex justify-between font-label-md text-label-md">
+<span class="text-on-surface font-semibold">72% to Level 4 Master Reviewer</span>
+<span class="text-on-surface-variant">28 / 35 reviews</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 72%;"></div>
+</div>
+</div>
+<!-- Next Unlock -->
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">lock_open</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong>Next unlock:</strong> Verified Community Badge &amp; Early Access to Store Promotions
+              </p>
+</div>
+</div>
+<!-- d. Switch to Store Owner View Banner -->
+<div class="bg-gradient-to-br from-inverse-surface to-on-background text-inverse-on-surface rounded-xl p-space-lg shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center gap-2 text-inverse-primary">
+<span class="material-symbols-outlined text-[20px]">store</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Business Portal</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">Own a store in Kolhapur?</h4>
+<p class="font-body-sm text-body-sm text-inverse-on-surface/80">
+              Claim your business profile to view customer sentiment, track footfall impressions, and respond officially to reviews.
+            </p>
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-white hover:text-inverse-primary pt-2 transition-colors" href="#">
+<span>Open Store Owner Portal</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
