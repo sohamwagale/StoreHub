@@ -110,8 +110,8 @@ export default function StoreSidebarInfo({
 
       {/* 3. VERIFIED MERCHANT BADGE */}
       <div className="p-5 bg-muted-fill border border-border flex items-start gap-4">
-        <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center shrink-0 border border-foreground">
-          <Shield className="w-5 h-5 text-accent" />
+        <div className="w-10 h-10 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+          <Shield className="w-5 h-5 text-amber-500" />
         </div>
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase text-foreground">

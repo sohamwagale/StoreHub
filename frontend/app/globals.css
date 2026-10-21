@@ -50,6 +50,12 @@
   text-shadow: none !important;
 }
 
+/* Allow 4px container radius for icon containers while preserving zero-radius on other elements */
+.rounded-\[4px\],
+[class*="rounded-[4px]"] {
+  border-radius: 4px !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

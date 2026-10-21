@@ -40,8 +40,8 @@ export default function Navbar() {
           {/* Left: Brand & Search Bar */}
           <div className="flex items-center gap-3 sm:gap-6">
             <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Store className="w-4 h-4" />
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center">
+                <Store className="w-4 h-4 text-amber-500" />
               </div>
               <div className="flex items-center">
                 <span className="text-lg font-bold tracking-tight text-foreground">

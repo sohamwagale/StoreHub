@@ -249,7 +249,7 @@ export default function UserDashboardPage() {
           <div className="p-5 bg-surface border border-border flex flex-col justify-between">
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Ratings Given</span>
-              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
               </div>
             </div>
@@ -264,8 +264,8 @@ export default function UserDashboardPage() {
           <div className="p-5 bg-surface border border-border flex flex-col justify-between">
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Helpful Votes</span>
-              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <ThumbsUp className="w-4 h-4 text-amber-400 dark:text-amber-600" />
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center">
+                <ThumbsUp className="w-4 h-4 text-amber-500 dark:text-amber-400" />
               </div>
             </div>
             <div className="mt-2">
@@ -279,8 +279,8 @@ export default function UserDashboardPage() {
           <div className="p-5 bg-surface border border-border flex flex-col justify-between">
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Saved Stores</span>
-              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Bookmark className="w-4 h-4 text-amber-400 dark:text-amber-600 fill-current" />
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center">
+                <Bookmark className="w-4 h-4 text-amber-500 dark:text-amber-400 fill-current" />
               </div>
             </div>
             <div className="mt-2">
@@ -294,8 +294,8 @@ export default function UserDashboardPage() {
           <div className="p-5 bg-surface border border-border flex flex-col justify-between">
             <div className="flex items-center justify-between text-muted mb-2">
               <span className="text-xs font-mono uppercase font-bold tracking-wider">Reviewer Tier</span>
-              <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground">
-                <Award className="w-4 h-4 text-amber-400 dark:text-amber-600" />
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center">
+                <Award className="w-4 h-4 text-amber-500 dark:text-amber-400" />
               </div>
             </div>
             <div className="mt-2">
@@ -561,8 +561,8 @@ export default function UserDashboardPage() {
                     {currentRank}
                   </h3>
                 </div>
-                <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
-                  <Award className="w-4 h-4 text-amber-400 dark:text-amber-600" />
+                <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+                  <Award className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                 </div>
               </div>
 

@@ -70,8 +70,8 @@ export default function LoginPage() {
         {/* Top Section: Brand Identity */}
         <div>
           <div className="inline-flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
-              <Store className="w-4 h-4" />
+            <div className="w-9 h-9 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+              <Store className="w-4 h-4 text-amber-500" />
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-lg tracking-tight text-foreground leading-none">
@@ -102,8 +102,8 @@ export default function LoginPage() {
           {/* Feature Points */}
           <div className="space-y-2.5 max-w-lg">
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
-              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <Check className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+              <div className="flex items-center justify-center w-5 h-5 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] shrink-0">
+                <Check className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 100% verified in-store visits and genuine rating verification
@@ -111,8 +111,8 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
-              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <Shield className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+              <div className="flex items-center justify-center w-5 h-5 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] shrink-0">
+                <Shield className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 Honest ratings protected by strict fraud prevention rules
@@ -120,8 +120,8 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center gap-3 p-3 bg-surface border border-border">
-              <div className="flex items-center justify-center w-5 h-5 bg-foreground text-background shrink-0">
-                <StorefrontIcon className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+              <div className="flex items-center justify-center w-5 h-5 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] shrink-0">
+                <StorefrontIcon className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               </div>
               <span className="text-xs font-medium text-foreground">
                 Direct community interaction with verified store owners

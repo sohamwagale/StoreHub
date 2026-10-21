@@ -112,8 +112,8 @@ export default function RegisterPage() {
         <div className="space-y-8">
           {/* Logo & Brand */}
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-foreground text-background flex items-center justify-center border border-foreground shrink-0">
-              <Store className="w-4 h-4" />
+            <div className="w-9 h-9 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+              <Store className="w-4 h-4 text-amber-500" />
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-lg tracking-tight text-foreground leading-none">
