@@ -4,14 +4,16 @@
 [![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://react.dev/)
 [![NestJS](https://img.shields.io/badge/NestJS-12-red?style=flat&logo=nestjs)](https://nestjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20%2F%20In--Memory-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
+[![Google OAuth](https://img.shields.io/badge/Google%20OAuth-2.0%20%26%20One--Tap-4285F4?style=flat&logo=google)](https://developers.google.com/identity)
+[![AWS S3](https://img.shields.io/badge/AWS%20S3-Cloud%20Storage-569A31?style=flat&logo=amazons3)](https://aws.amazon.com/s3/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
 [![MapLibre GL](https://img.shields.io/badge/MapLibre%20GL-v6.15-blueviolet?style=flat)](https://maplibre.org/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-facc15?style=flat&logo=vitest)](https://vitest.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A complete, production-ready, full-stack store discovery and community rating platform. Built with **Next.js 16 (App Router)**, **NestJS 12**, **MongoDB (Mongoose ODM)**, **Tailwind CSS v4**, and **MapLibre GL**.
+A complete, production-ready, full-stack store discovery and community rating platform. Built with **Next.js 16 (App Router)**, **NestJS 12**, **MongoDB (Mongoose ODM)**, **Google Identity Services (OAuth 2.0 & One-Tap)**, **AWS S3 Storage**, **Tailwind CSS v4**, and **MapLibre GL**.
 
-StoreRank delivers a transparent, secure ecosystem where shoppers can explore verified local stores via an interactive map, browse community reviews with customer photos, submit and update 1–5 star ratings, vote on review helpfulness, and bookmark favorite locations. Store owners have access to an isolated analytics and management portal to monitor store performance, track customer sentiment, upload high-resolution store imagery, and manage business details.
+StoreRank delivers a transparent, secure ecosystem where shoppers can explore verified local stores via an interactive OpenStreetMap canvas, browse community reviews with customer photos, submit and update 1–5 star ratings, vote on review helpfulness, and bookmark favorite locations. Store owners have access to an isolated analytics and management portal to monitor store performance, track customer sentiment, upload storefront imagery to AWS S3, and manage business details.
 
 ---
 
@@ -24,36 +26,40 @@ StoreRank delivers a transparent, secure ecosystem where shoppers can explore ve
 5. [Directory & File Structure](#5-directory--file-structure)
 6. [Database Schema & Indices](#6-database-schema--indices)
 7. [Comprehensive REST API Reference](#7-comprehensive-rest-api-reference)
-8. [Environment Configuration](#8-environment-configuration)
-9. [Installation & Local Setup](#9-installation--local-setup)
-10. [Demonstration Walkthrough & Test Credentials](#10-demonstration-walkthrough--test-credentials)
-11. [Automated Testing Suite](#11-automated-testing-suite)
-12. [Media Storage (AWS S3 & Local Fallback)](#12-media-storage-aws-s3--local-fallback)
-13. [Password Reset & Email Delivery](#13-password-reset--email-delivery)
-14. [Production Deployment Guide](#14-production-deployment-guide)
-15. [License](#15-license)
+8. [Google OAuth 2.0 & One-Tap Integration](#8-google-oauth-20--one-tap-integration)
+9. [Mobile Optimization & Design System](#9-mobile-optimization--design-system)
+10. [Environment Configuration](#10-environment-configuration)
+11. [Installation & Local Setup](#11-installation--local-setup)
+12. [Demonstration Walkthrough & Test Credentials](#12-demonstration-walkthrough--test-credentials)
+13. [Automated Testing Suite](#13-automated-testing-suite)
+14. [Media Storage (AWS S3 & Local Fallback)](#14-media-storage-aws-s3--local-fallback)
+15. [Password Reset & Email Delivery](#15-password-reset--email-delivery)
+16. [Production Deployment Guide](#16-production-deployment-guide)
+17. [License](#17-license)
 
 ---
 
 ## 1. Key Highlights & Architecture Overview
 
-- **Interactive Geospatial Map (MapLibre GL)**: Browse stores seamlessly on an interactive OpenStreetMap canvas with custom category markers, clustered zoom, popup preview cards, and one-click rating modals.
-- **Location Picker & Geocoding**: Store owners can visually place their shop on an interactive map or pick from preset metropolitan centers (San Francisco, New York, Seattle, Chicago, Los Angeles).
-- **Social Review System**: Includes photo uploads for reviews, community upvotes/downvotes (helpful votes), and report/moderation flags.
+- **Google OAuth 2.0 & One-Tap Sign-In**: Fully integrated with Google Identity Services (GSI). Return users receive the Google One-Tap prompt; new users can auto-provision a verified Shopper or Store Owner account with 1 click.
+- **Interactive Geospatial Map (MapLibre GL + OpenStreetMap)**: Default OpenStreetMap tiles with custom SVG category markers, coordinate clustering, interactive popup cards, and instant rating modals.
+- **Pin-Type Store Location Picker**: Store owners can place an interactive pin directly on the OpenStreetMap canvas or select from major US metropolitan presets, automatically resolving exact latitude and longitude.
+- **Full Mobile Responsiveness**: Complete mobile redesign for authentication, store exploration, dashboard management, and interactive maps with touch-optimized 44px hit targets and collapsible value proposition accordions.
+- **Social Review & Photo System**: Includes photo uploads for reviews, community upvotes/downvotes (helpful votes), and report/moderation flags.
 - **Strict Role-Based Access Control (RBAC)**: Enforces distinct authorization tiers (`USER` vs `OWNER`) with Passport JWT guards, rejecting privilege escalations.
 - **High-Performance MongoDB Aggregations**: Rating averages, distribution percentiles (5★ down to 1★), and owner analytics are calculated directly inside MongoDB pipelines (`$group`, `$avg`, `$lookup`).
-- **Zero-Config In-Memory Database Fallback**: Automatically spins up `mongodb-memory-server` if no external database URI is configured, allowing instant local demonstration out of the box.
-- **Dual-Mode Media Storage**: Seamlessly stores media locally (`/uploads`) with optional cloud migration to AWS S3 (`POST /uploads/migrate-to-s3` or `npm run migrate:s3`).
+- **AWS S3 Cloud Storage**: Direct integration with AWS S3 for store photos and customer review attachments, with automatic fallback to local disk storage (`/uploads`).
 - **Resilient Email Dispatch**: Implements password reset flows via Resend API, with an automatic console logger fallback for local offline testing.
-- **Theme Support & Contemporary UI**: Built with dark and light themes, monospace micro-typography, skeleton loaders, and responsive layouts for mobile, tablet, and desktop.
+- **Brutalist Design System**: Built with warm off-white/cream containers, subtle light-gray borders, 4px border radiuses, dark/light theme switching, and monospace micro-typography.
 
 ---
 
 ## 2. Complete Feature Matrix
 
 ### 👤 Shopper & Customer (`USER` Role)
+- **1-Click Google Sign-In & Registration**: Fast OAuth 2.0 authentication with Google Identity Services and One-Tap integration.
 - **Live Search & Category Filter**: Filter stores instantly across Grocery, Malls, Clothes, Electronics, and Bakery with real-time text debouncing.
-- **Triple View Switcher**: Toggle seamlessly between **Grid**, **List**, and **Map** layouts on `/stores`.
+- **Triple View Switcher**: Toggle seamlessly between **Grid**, **List**, and **Map** layouts on `/stores` (defaults to OpenStreetMap).
 - **Dedicated Store Details (`/stores/[id]`)**:
   - Full-width hero gallery with lightbox zoom.
   - Store hours schedule, parking info, website link, phone, and highlights.
@@ -62,7 +68,7 @@ StoreRank delivers a transparent, secure ecosystem where shoppers can explore ve
   - Similar store recommendations carousel.
 - **Interactive 1–5 Star Rating & Review**:
   - 1–5 star interactive selection with review text (up to 1,000 characters).
-  - Multiple customer photo uploads directly from the rating modal.
+  - Multiple customer photo uploads directly from the rating modal (uploaded to AWS S3).
   - Truthfulness certification checkbox.
   - Conflict prevention: Automatic enforcement of 1 rating per user per store.
   - Edit or delete previously submitted ratings at any time.
@@ -80,6 +86,7 @@ StoreRank delivers a transparent, secure ecosystem where shoppers can explore ve
   - Danger Zone: Self-service account deletion with confirmation safeguards.
 
 ### 🏪 Store Owner (`OWNER` Role)
+- **Google OAuth Onboarding**: Register directly with Google as a Store Owner and automatically route to `/owner/onboarding`.
 - **Isolated Owner Portal (`/owner`)**:
   - Multi-store switcher for owners with multiple commercial properties.
   - Aggregate statistics: Cumulative customer reviews, real-time average store rating, and engagement index.
@@ -88,12 +95,12 @@ StoreRank delivers a transparent, secure ecosystem where shoppers can explore ve
   - Direct links to view public store pages as seen by shoppers.
 - **Store Creation & Modification**:
   - Create new stores with address, category, contact info, business hours, and highlights.
-  - Visual coordinate placement using the interactive `LocationPickerMap`.
+  - Interactive pin-type location selector on OpenStreetMap with preset city quick-jump buttons.
 
 ### 🛡️ Authentication & Security
-- **Email & Password Authentication**: Validated with `class-validator`, bcrypt salt hashing (10 rounds), and JWT bearer tokens.
-- **Password Complexity**: Requires 8–16 characters, at least one uppercase letter, and at least one special character.
-- **Forgot & Reset Password**: Secure tokenized password recovery links with 15-minute expiration windows.
+- **Dual Authentication**: Choose between Google OAuth 2.0 (with token audience verification) or native Email & Password.
+- **Password Complexity**: Requires 8–16 characters, at least one uppercase letter, at least one number, and at least one special character.
+- **Forgot & Reset Password**: Secure tokenized password recovery links with account verification and 15-minute expiration windows.
 - **Route Protections**: Frontend middleware and route guards redirect unauthenticated users and guard owner-only features.
 
 ---
@@ -103,8 +110,9 @@ StoreRank delivers a transparent, secure ecosystem where shoppers can explore ve
 ### Frontend
 - **Framework**: [Next.js 16.4 (App Router)](https://nextjs.org/)
 - **Library**: [React 19](https://react.dev/)
+- **Authentication**: [Google Identity Services (GSI)](https://developers.google.com/identity/gsi/web) & JWT Context
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Maps**: [MapLibre GL v6.15](https://maplibre.org/)
+- **Maps**: [MapLibre GL v6.15](https://maplibre.org/) with OpenStreetMap raster tiles
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **HTTP Client**: Native fetch with typed API wrappers
 
@@ -160,7 +168,7 @@ shop-rating-platform/
 ├── backend/
 │   ├── src/
 │   │   ├── auth/                      # Authentication & Password Recovery
-│   │   │   ├── dto/                   # Register, Login, ForgotPassword, ResetPassword DTOs
+│   │   │   ├── dto/                   # Register, Login, GoogleLogin, ForgotPassword DTOs
 │   │   │   ├── guards/                # JwtAuthGuard, OptionalJwtAuthGuard
 │   │   │   ├── strategies/            # Passport JWT Strategy
 │   │   │   ├── auth.controller.ts     # /auth endpoints
@@ -230,6 +238,7 @@ shop-rating-platform/
     ├── components/
     │   ├── Navbar.tsx                 # Responsive header with theme toggle & user dropdown
     │   ├── ThemeToggle.tsx            # Dark/light mode switcher
+    │   ├── GoogleSignInButton.tsx     # Google Identity Services button with One-Tap
     │   ├── StarRating.tsx             # Interactive 1–5 star selection component
     │   ├── StoreCard.tsx              # Grid & list store preview card with badge tags
     │   ├── StoreFilters.tsx           # Live search bar, category pills & sort dropdown
@@ -272,13 +281,14 @@ shop-rating-platform/
   name: string,                 // 5–60 characters, trimmed
   email: string,                // Unique, lowercase, trimmed (Indexed)
   address: string,              // Max 400 characters, trimmed
-  passwordHash: string,         // Bcrypt hash (10 rounds)
+  passwordHash?: string,        // Bcrypt hash (Optional for Google OAuth users)
+  googleId?: string,            // Google OAuth 2.0 subject ID (Indexed, sparse)
   role: 'USER' | 'OWNER',       // Role enum, default: 'USER'
   bookmarks: string[],          // Array of store ObjectIds
   bio?: string,                 // Max 300 characters
   phone?: string,               // Max 20 characters
   city?: string,                // Max 100 characters
-  avatarUrl?: string,           // Image URL
+  avatarUrl?: string,           // Image URL (or Google profile picture)
   resetPasswordToken?: string,  // Select: false (Security token)
   resetPasswordExpires?: Date,  // Select: false (15-minute expiration)
   createdAt: Date,
@@ -351,10 +361,19 @@ All requests and responses use JSON format. Authenticated endpoints require the 
 |---|---|---|---|
 | `POST` | `/auth/register` | Register a new customer (`USER`) or store owner (`OWNER`) | No |
 | `POST` | `/auth/login` | Authenticate with email & password to receive a JWT | No |
+| `POST` | `/auth/google` | Authenticate using Google OAuth 2.0 credential / ID Token | No |
 | `POST` | `/auth/forgot-password` | Request a password reset link sent via email | No |
 | `POST` | `/auth/reset-password` | Reset password using a valid reset token | No |
 | `GET` | `/auth/me` | Fetch profile details of the authenticated user | Bearer Token |
 | `POST` | `/auth/logout` | Client session termination | Bearer Token |
+
+#### Google Login Payload Example (`POST /auth/google`)
+```json
+{
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...",
+  "role": "USER"
+}
+```
 
 #### Registration Payload Example (`POST /auth/register`)
 ```json
@@ -446,7 +465,89 @@ All requests and responses use JSON format. Authenticated endpoints require the 
 
 ---
 
-## 8. Environment Configuration
+## 8. Google OAuth 2.0 & One-Tap Integration
+
+StoreRank provides native, 1-click Google authentication powered by **Google Identity Services (GSI)** without heavy external third-party SDK dependencies.
+
+### How It Works
+
+```text
+┌─────────────────────────┐         ┌─────────────────────────┐         ┌─────────────────────────┐
+│     Next.js Frontend    │         │      Google OAuth       │         │      NestJS Backend     │
+│  (GoogleSignInButton)   │         │    Identity Services    │         │     (AuthService)       │
+└───────────┬─────────────┘         └───────────┬─────────────┘         └───────────┬─────────────┘
+            │                                   │                                   │
+            │ 1. Render Official Button / Prompt│                                   │
+            │──────────────────────────────────>│                                   │
+            │                                   │                                   │
+            │ 2. Return JWT ID Token Credential │                                   │
+            │<──────────────────────────────────│                                   │
+            │                                                                       │
+            │ 3. POST /auth/google { idToken, role }                                │
+            │──────────────────────────────────────────────────────────────────────>│
+            │                                                                       │
+            │                                   4. Verify via /tokeninfo?id_token   │
+            │                                   │<──────────────────────────────────│
+            │                                   │                                   │
+            │                                   │ 5. Returns sub, email, name, pic  │
+            │                                   │──────────────────────────────────>│
+            │                                                                       │
+            │                                   6. Verify aud & email_verified      │
+            │                                   7. findOrCreateGoogleUser()         │
+            │                                   8. Issue StoreRank JWT Session      │
+            │                                                                       │
+            │ 9. Return { access_token, user }                                      │
+            │<──────────────────────────────────────────────────────────────────────│
+```
+
+1. **Client-Side Initialization**: Loads `https://accounts.google.com/gsi/client` asynchronously.
+2. **Theme Awareness**: Matches the active StoreRank theme—rendering `filled_black` for dark mode and `outline` for light mode.
+3. **Google One-Tap**: Prompts users who have an active Google session for 1-click login without redirecting away from the page.
+4. **Backend Cryptographic Validation**: Validates the ID token directly with Google's official `oauth2.googleapis.com/tokeninfo` endpoint:
+   - Validates `email_verified === true`.
+   - Ensures the token audience (`aud`) matches `GOOGLE_CLIENT_ID`.
+5. **Account Provisioning & Linking**: Matches by `googleId` or existing verified `email`, linking Google profile photos and roles seamlessly.
+
+### Google Cloud Console Setup Steps
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create or select a project (e.g. `StoreRank`).
+3. Under **APIs & Services > OAuth consent screen**:
+   - Choose **External**, name the app `StoreRank`, and provide your contact email.
+   - Under **Test Users**, add your Google email address.
+4. Under **APIs & Services > Credentials**:
+   - Click **+ CREATE CREDENTIALS** > **OAuth client ID**.
+   - Select **Web application**.
+   - Under **Authorized JavaScript origins**, add:
+     - `http://localhost:3000`
+     - `http://127.0.0.1:3000`
+   - Under **Authorized redirect URIs**, add:
+     - `http://localhost:3000`
+5. Copy your **Client ID** into `.env`:
+   - Frontend (`frontend/.env.local`): `NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com`
+   - Backend (`backend/.env`): `GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com`
+
+---
+
+## 9. Mobile Optimization & Design System
+
+StoreRank is built with a refined, contemporary **brutalist aesthetic** engineered for seamless responsiveness across mobile, tablet, and desktop:
+
+- **Touch-First Hit Targets**: All primary interactive buttons, quick-fill chips, and tabs meet the minimum 44px touch target guidelines.
+- **Redesigned Mobile Authentication**:
+  - Desktop splits into a 45% / 55% trust sidebar and login card.
+  - On mobile screens (`< 1024px`), the sidebar folds into a non-intrusive, collapsible "Why StoreRank?" accordion.
+  - Email inputs use `text-base` (16px) on mobile viewports to prevent iOS Safari auto-zooming, scaling down to crisp `text-xs` on desktop.
+- **Micro-Typography & Containers**:
+  - Replaces harsh dark icon boxes with warm, subtle off-white/cream containers (`bg-amber-50/80` / `dark:bg-zinc-800/80`) featuring thin light-gray borders and 4px border radiuses.
+  - Preserves yellow/amber brand accents on icons while maintaining active black states for primary buttons.
+- **Interactive Map Mobile UX**:
+  - Full-screen gesture control on mobile with category quick-filter pills and popup cards.
+  - Pin-based coordinate picker allows easy drag-and-drop location selection without typing coordinates.
+
+---
+
+## 10. Environment Configuration
 
 ### Backend (`backend/.env`)
 
@@ -463,6 +564,9 @@ MONGODB_URI=mongodb://localhost:27017/shop-rating-platform
 # Authentication
 JWT_SECRET=super-secret-jwt-development-token-key-32-chars-min
 JWT_EXPIRES_IN=7d
+
+# Google OAuth 2.0 (Optional: required for Google Sign-In verification)
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 
 # Cloud Storage: AWS S3 (Optional: Uploads use local storage if omitted)
 AWS_ACCESS_KEY_ID=
@@ -484,11 +588,14 @@ Create `frontend/.env.local` (or copy from `frontend/.env.example`):
 ```bash
 # Backend REST API Endpoint
 NEXT_PUBLIC_API_URL=http://localhost:5000
+
+# Google OAuth 2.0 Web Client ID
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 ```
 
 ---
 
-## 9. Installation & Local Setup
+## 11. Installation & Local Setup
 
 ### Prerequisites
 - **Node.js**: v18.x, v20.x, or v22.x
@@ -529,7 +636,7 @@ The frontend application will be live at `http://localhost:3000`.
 
 ---
 
-## 10. Demonstration Walkthrough & Test Credentials
+## 12. Demonstration Walkthrough & Test Credentials
 
 The database automatically seeds test accounts and stores with realistic reviews and imagery.
 
@@ -550,14 +657,14 @@ The database automatically seeds test accounts and stores with realistic reviews
 ```mermaid
 flowchart TD
     A[Launch App: http://localhost:3000] --> B[Explore Stores & Interactive Map]
-    B --> C[Login as alice@example.com]
+    B --> C[Login as alice@example.com or with Google]
     C --> D[Submit 5-Star Rating & Photo on a Store]
     D --> E[Check /dashboard to Edit or Delete Review]
     E --> F[Toggle Dark/Light Mode & Bookmarks]
     F --> G[Logout & Login as owner@example.com]
     G --> H[Open /owner Dashboard]
     H --> I[Inspect Real-Time Store Ratings & Feedback Table]
-    I --> J[Upload New Storefront Photos]
+    I --> J[Upload New Storefront Photos to S3]
 ```
 
 1. **Guest Discovery**:
@@ -566,7 +673,7 @@ flowchart TD
    - Use the category bar to filter by **Grocery** or **Bakery**.
    - Try the interactive map: Click any store marker pin to open the preview modal.
 2. **Shopper Rating Experience**:
-   - Log in using `alice@example.com` / `Password@123`.
+   - Log in using `alice@example.com` / `Password@123` or click **Continue with Google**.
    - Click on **Sunrise Artisan Bakery & Cafe** (`/stores/[id]`).
    - View the star rating breakdown and community reviews.
    - Click **Rate Store** to open the modal, select 5 stars, write a comment, and attach a photo.
@@ -580,11 +687,11 @@ flowchart TD
    - Click **Owner Portal** in the navigation bar (`/owner`).
    - Switch between owned stores using the dropdown selector.
    - Inspect the feedback table containing customer names, emails, star scores, and review dates.
-   - Upload new photos directly to the store photo gallery.
+   - Upload new photos directly to the store photo gallery (stored on AWS S3).
 
 ---
 
-## 11. Automated Testing Suite
+## 13. Automated Testing Suite
 
 The backend includes a comprehensive test suite written in **Vitest** and **Supertest**, verifying all 24 acceptance criteria against an isolated in-memory MongoDB instance:
 
@@ -613,7 +720,7 @@ npm run test:cov
 
 ---
 
-## 12. Media Storage (AWS S3 & Local Fallback)
+## 14. Media Storage (AWS S3 & Local Fallback)
 
 StoreRank provides a plug-and-play storage architecture:
 
@@ -631,7 +738,7 @@ StoreRank provides a plug-and-play storage architecture:
 
 ---
 
-## 13. Password Reset & Email Delivery
+## 15. Password Reset & Email Delivery
 
 1. User requests a reset on `/forgot-password`.
 2. Backend generates a cryptographically secure random token with a 15-minute expiry.
@@ -648,7 +755,7 @@ StoreRank provides a plug-and-play storage architecture:
 
 ---
 
-## 14. Production Deployment Guide
+## 16. Production Deployment Guide
 
 ### Deploy Backend on [Render](https://render.com)
 1. Create a new **Web Service** on Render and link your GitHub repository.
@@ -662,6 +769,7 @@ StoreRank provides a plug-and-play storage architecture:
    - `JWT_SECRET`: `<generate-a-strong-random-secret>`
    - `JWT_EXPIRES_IN`: `7d`
    - `FRONTEND_URL`: `https://your-storerank-frontend.vercel.app`
+   - `GOOGLE_CLIENT_ID`: `your-client-id.apps.googleusercontent.com`
    - *(Optional)* `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_S3_BUCKET`, `AWS_REGION`
    - *(Optional)* `RESEND_API_KEY`, `EMAIL_FROM`
 
@@ -670,8 +778,9 @@ StoreRank provides a plug-and-play storage architecture:
 2. Set configuration:
    - **Root Directory**: `frontend`
    - **Framework Preset**: Next.js
-3. Add Environment Variable:
+3. Add Environment Variables:
    - `NEXT_PUBLIC_API_URL`: `https://your-backend-api.onrender.com`
+   - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: `your-client-id.apps.googleusercontent.com`
 4. Click **Deploy**.
 
 ### MongoDB Atlas Setup
@@ -682,6 +791,6 @@ StoreRank provides a plug-and-play storage architecture:
 
 ---
 
-## 15. License
+## 17. License
 
 Distributed under the MIT License. See `LICENSE` for more information.
