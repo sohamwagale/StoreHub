@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 import { UserRole } from '@/types';
 import { Loader2, AlertCircle, X, ExternalLink, HelpCircle } from 'lucide-react';
 
 interface GoogleSignInButtonProps {
   role?: UserRole;
   text?: 'signin_with' | 'signup_with' | 'continue_with';
-  onSuccess?: () => void;
+  onSuccess?: (user: any) => void;
   onError?: (error: string) => void;
   className?: string;
 }
@@ -38,6 +39,7 @@ export default function GoogleSignInButton({
   className = '',
 }: GoogleSignInButtonProps) {
   const { googleLogin } = useAuth();
+  const { theme } = useTheme();
   const router = useRouter();
   const buttonContainerRef = useRef<HTMLDivElement>(null);
 
@@ -50,30 +52,40 @@ export default function GoogleSignInButton({
     clientId && clientId.trim() !== '' && !clientId.includes('your_google_client_id_here'),
   );
 
-  const handleCredentialResponse = async (response: any) => {
-    if (!response?.credential) return;
-
-    setIsLoading(true);
-    try {
-      const user = await googleLogin(response.credential, role);
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        if (user.role === 'OWNER') {
-          router.push('/owner');
-        } else {
-          router.push('/dashboard');
-        }
-      }
-    } catch (err: any) {
-      const msg = err?.message || 'Google Sign-In failed. Please try again.';
-      if (onError) onError(msg);
-    } finally {
-      setIsLoading(false);
+  // Check if GSI is already present in window
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.google?.accounts?.id) {
+      setScriptLoaded(true);
     }
-  };
+  }, []);
 
-  const renderGoogleButton = () => {
+  const handleCredentialResponse = useCallback(
+    async (response: any) => {
+      if (!response?.credential) return;
+
+      setIsLoading(true);
+      try {
+        const user = await googleLogin(response.credential, role);
+        if (onSuccess) {
+          onSuccess(user);
+        } else {
+          if (user.role === 'OWNER') {
+            router.push('/owner');
+          } else {
+            router.push('/dashboard');
+          }
+        }
+      } catch (err: any) {
+        const msg = err?.message || 'Google Sign-In failed. Please try again.';
+        if (onError) onError(msg);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [googleLogin, role, onSuccess, onError, router],
+  );
+
+  const renderGoogleButton = useCallback(() => {
     if (typeof window === 'undefined' || !window.google?.accounts?.id || !isConfigured || !clientId) {
       return;
     }
@@ -88,26 +100,34 @@ export default function GoogleSignInButton({
 
       if (buttonContainerRef.current) {
         buttonContainerRef.current.innerHTML = '';
+        const measuredWidth = buttonContainerRef.current.offsetWidth || 340;
+        const targetWidth = Math.min(Math.max(measuredWidth, 240), 400);
+
         window.google.accounts.id.renderButton(buttonContainerRef.current, {
           type: 'standard',
-          theme: 'outline',
+          theme: theme === 'dark' ? 'filled_black' : 'outline',
           size: 'large',
           text,
           shape: 'rectangular',
           logo_alignment: 'left',
-          width: 320,
+          width: targetWidth,
         });
+      }
+
+      // Automatically present Google One-Tap for return users if on login page
+      if (text === 'continue_with' || text === 'signin_with') {
+        window.google.accounts.id.prompt();
       }
     } catch (err) {
       console.warn('Failed to render Google Sign-In button:', err);
     }
-  };
+  }, [clientId, handleCredentialResponse, isConfigured, text, theme]);
 
   useEffect(() => {
     if (scriptLoaded && isConfigured) {
       renderGoogleButton();
     }
-  }, [scriptLoaded, isConfigured, role, text]);
+  }, [scriptLoaded, isConfigured, role, text, theme, renderGoogleButton]);
 
   const handleCustomButtonClick = () => {
     if (!isConfigured) {
@@ -118,7 +138,6 @@ export default function GoogleSignInButton({
     if (window.google?.accounts?.id) {
       window.google.accounts.id.prompt((notification: any) => {
         if (notification?.isNotDisplayed?.() || notification?.isSkippedMoment?.()) {
-          // If prompt cannot be shown, attempt clicking the rendered button
           const btn = buttonContainerRef.current?.querySelector('div[role="button"]') as HTMLElement;
           if (btn) btn.click();
         }

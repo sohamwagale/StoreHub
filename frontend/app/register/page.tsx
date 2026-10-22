@@ -310,6 +310,13 @@ export default function RegisterPage() {
                 <GoogleSignInButton
                   role={role}
                   text="signup_with"
+                  onSuccess={(user) => {
+                    if (user.role === 'OWNER') {
+                      router.push('/owner/onboarding');
+                    } else {
+                      router.push('/dashboard');
+                    }
+                  }}
                   onError={(err) => setError(err)}
                 />
               </div>
