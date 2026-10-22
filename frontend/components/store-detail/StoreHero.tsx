@@ -106,11 +106,11 @@ export default function StoreHero({
           </div>
 
           {/* Right: Action Buttons Cluster */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 lg:pt-0">
+          <div className="flex flex-wrap items-center gap-2 pt-2 lg:pt-0 w-full lg:w-auto">
             <button
               type="button"
               onClick={onToggleBookmark}
-              className={`inline-flex items-center gap-1.5 px-3.5 h-10 border text-xs font-mono uppercase font-bold transition-colors ${
+              className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 h-11 sm:h-10 border text-xs font-mono uppercase font-bold transition-colors ${
                 isBookmarked
                   ? 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
                   : 'border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-950 dark:hover:border-white'
@@ -123,7 +123,7 @@ export default function StoreHero({
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex items-center gap-1.5 px-3.5 h-10 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-mono uppercase font-bold transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 h-11 sm:h-10 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-mono uppercase font-bold transition-colors"
             >
               <Share2 className="w-3.5 h-3.5 text-zinc-500" />
               <span>Share</span>
@@ -132,7 +132,7 @@ export default function StoreHero({
             <a
               href="#user-rating-section"
               onClick={onWriteReviewClick}
-              className="inline-flex items-center gap-1.5 px-4 h-10 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white text-xs font-mono uppercase font-bold transition-colors shadow-none"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 h-11 sm:h-10 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 border border-zinc-950 dark:border-white text-xs font-mono uppercase font-bold transition-colors shadow-none"
             >
               <Edit3 className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span>{userHasRated ? 'Update Rating' : 'Write a Review'}</span>

@@ -235,11 +235,11 @@ export default function StoresPage() {
           {viewMode === 'map' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between text-xs font-mono text-muted">
-                <span>Interactive map view • Click on any store marker for quick details</span>
+                <span>Interactive map view • Tap on any pin to view details</span>
               </div>
               <div
                 id="store-map-container"
-                className="w-full h-[640px] bg-surface border border-border overflow-hidden"
+                className="w-full h-[380px] sm:h-[520px] lg:h-[640px] bg-surface border border-border overflow-hidden"
               >
                 <StoreMap
                   stores={filteredAndSortedStores}
@@ -259,7 +259,24 @@ export default function StoresPage() {
           {/* 3. Split View */}
           {viewMode === 'split' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-              <div className="lg:col-span-5 space-y-4 max-h-[720px] overflow-y-auto pr-1">
+              <div
+                id="store-map-container"
+                className="lg:col-span-7 order-first lg:order-last h-[320px] sm:h-[460px] lg:h-[720px] lg:sticky lg:top-20 bg-surface border border-border overflow-hidden"
+              >
+                <StoreMap
+                  stores={filteredAndSortedStores}
+                  selectedStoreId={selectedMapStoreId || undefined}
+                  onSelectStore={(store) => {
+                    setSelectedMapStoreId(store.id);
+                  }}
+                  onOpenRating={handleOpenRating}
+                  onOpenReviews={handleOpenReviews}
+                  heightClass="h-full"
+                  className="h-full"
+                />
+              </div>
+
+              <div className="lg:col-span-5 order-last lg:order-first space-y-4 max-h-[720px] overflow-y-auto pr-1">
                 <div className="text-xs font-mono text-muted">
                   <span>{filteredAndSortedStores.length} stores nearby</span>
                 </div>
@@ -277,23 +294,6 @@ export default function StoresPage() {
                     />
                   ))}
                 </div>
-              </div>
-
-              <div
-                id="store-map-container"
-                className="lg:col-span-7 h-[720px] sticky top-20 bg-surface border border-border overflow-hidden"
-              >
-                <StoreMap
-                  stores={filteredAndSortedStores}
-                  selectedStoreId={selectedMapStoreId || undefined}
-                  onSelectStore={(store) => {
-                    setSelectedMapStoreId(store.id);
-                  }}
-                  onOpenRating={handleOpenRating}
-                  onOpenReviews={handleOpenReviews}
-                  heightClass="h-full"
-                  className="h-full"
-                />
               </div>
             </div>
           )}

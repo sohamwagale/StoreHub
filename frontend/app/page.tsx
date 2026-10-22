@@ -62,7 +62,7 @@ export default function LandingPage() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.08]">
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.08] break-words">
               REAL RATINGS.{' '}
               <span className="text-muted dark:text-muted">HONEST REVIEWS.</span>{' '}
               BETTER STORES.

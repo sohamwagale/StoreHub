@@ -24,6 +24,13 @@ export class AuthApi {
     });
   };
 
+  googleLogin = (payload: { idToken: string; role?: 'USER' | 'OWNER' }): Promise<AuthResponse> => {
+    return this.client.request<AuthResponse>('/auth/google', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  };
+
   getMe = (): Promise<User> => {
     return this.client.request<User>('/auth/me');
   };

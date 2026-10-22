@@ -52,6 +52,49 @@ export class UsersService {
     return this.userModel.findOne({ email: email.toLowerCase().trim() }).exec();
   }
 
+  async findOrCreateGoogleUser(params: {
+    googleId: string;
+    email: string;
+    name: string;
+    avatarUrl?: string;
+    role?: UserRole;
+  }): Promise<UserDocument> {
+    const cleanEmail = params.email.toLowerCase().trim();
+    let user = await this.userModel
+      .findOne({
+        $or: [{ googleId: params.googleId }, { email: cleanEmail }],
+      })
+      .exec();
+
+    if (user) {
+      let modified = false;
+      if (!user.googleId) {
+        user.googleId = params.googleId;
+        modified = true;
+      }
+      if (!user.avatarUrl && params.avatarUrl) {
+        user.avatarUrl = params.avatarUrl;
+        modified = true;
+      }
+      if (modified) {
+        await user.save();
+      }
+      return user;
+    }
+
+    const newUser = new this.userModel({
+      name: params.name?.trim() || cleanEmail.split('@')[0],
+      email: cleanEmail,
+      address: 'Google Verified Account',
+      role: params.role || UserRole.USER,
+      googleId: params.googleId,
+      avatarUrl: params.avatarUrl || '',
+      bookmarks: [],
+    });
+
+    return newUser.save();
+  }
+
   async findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();
   }
@@ -273,6 +316,12 @@ export class UsersService {
     const user = await this.userModel.findById(userId).exec();
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    if (!user.passwordHash) {
+      throw new BadRequestException(
+        'This account was created with Google and does not have a password set. Use "Forgot Password" to set a password.',
+      );
     }
 
     const isMatch = await bcrypt.compare(dto.currentPassword, user.passwordHash);

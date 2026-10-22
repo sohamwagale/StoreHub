@@ -134,7 +134,7 @@ export default function StoreCard({
             <button
               type="button"
               onClick={() => onViewReviews(store)}
-              className="flex-1 py-1.5 px-2 text-xs font-mono uppercase font-semibold bg-muted-fill hover:bg-muted-fill text-foreground border border-border flex items-center justify-center gap-1.5 transition-colors"
+              className="flex-1 h-9 px-2 text-xs font-mono uppercase font-semibold bg-muted-fill hover:bg-muted-fill text-foreground border border-border flex items-center justify-center gap-1.5 transition-colors"
               title="Read customer reviews"
             >
               <MessageSquare className="w-3 h-3 text-muted" />
@@ -143,13 +143,13 @@ export default function StoreCard({
           )}
 
           {currentUserRole === 'OWNER' ? (
-            <span className="text-[11px] font-mono uppercase tracking-wider text-muted dark:text-muted py-1.5 text-center flex-1">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-muted dark:text-muted h-9 flex items-center justify-center text-center flex-1">
               Owner view
             </span>
           ) : (
             <button
               onClick={handleActionClick}
-              className={`flex-1 py-1.5 px-2 text-xs font-mono uppercase font-semibold flex items-center justify-center gap-1.5 transition-colors border ${
+              className={`flex-1 h-9 px-2 text-xs font-mono uppercase font-semibold flex items-center justify-center gap-1.5 transition-colors border ${
                 userHasRated
                   ? 'border-amber-500/80 text-amber-700 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
                   : 'border-zinc-950 dark:border-white bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200'

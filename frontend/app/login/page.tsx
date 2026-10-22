@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 import {
   Store,
   Lock,
@@ -19,6 +20,9 @@ import {
   Star,
   CheckCircle2,
   X,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 export default function LoginPage() {
@@ -32,6 +36,8 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [forgotToast, setForgotToast] = useState(false);
+  const [activeAccountType, setActiveAccountType] = useState<'USER' | 'OWNER'>('USER');
+  const [mobilePerksOpen, setMobilePerksOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,24 +63,25 @@ export default function LoginPage() {
     }
   };
 
-  const handleFillDemo = (demoEmail: string) => {
+  const handleFillDemo = (demoEmail: string, role: 'USER' | 'OWNER') => {
     setEmail(demoEmail);
     setPassword('Password@123');
+    setActiveAccountType(role);
     setError(null);
   };
 
   return (
-    <div className="flex-1 min-h-[calc(100vh-4rem)] w-full flex flex-col lg:flex-row">
-      {/* LEFT COLUMN: Brand & Value Proposition Showcase (45%) */}
-      <div className="relative w-full lg:w-[45%] bg-surface border-b lg:border-b-0 lg:border-r border-border flex flex-col justify-between p-6 sm:p-10 lg:p-12">
-        {/* Top Section: Brand Identity */}
+    <div className="flex-1 min-h-[calc(100vh-4rem)] w-full flex flex-col lg:flex-row bg-background">
+      {/* DESKTOP ONLY (lg+) BRAND & TRUST SIDEBAR (45%) */}
+      <div className="hidden lg:flex lg:w-[45%] bg-surface border-r border-border flex-col justify-between p-8 xl:p-12">
+        {/* Brand Identity */}
         <div>
           <div className="inline-flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
-              <Store className="w-4 h-4 text-amber-500" />
+            <div className="w-10 h-10 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+              <Store className="w-5 h-5 text-amber-500" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight text-foreground leading-none">
+              <span className="font-extrabold text-xl tracking-tight text-foreground leading-none">
                 StoreRank
               </span>
               <span className="text-[10px] font-mono uppercase tracking-wider text-muted mt-1">
@@ -84,14 +91,14 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Middle Section: Hero Copy & Trust Anchor Elements */}
-        <div className="py-8 lg:py-12 space-y-6">
+        {/* Hero Pitch & Trust Proof */}
+        <div className="py-8 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border text-xs font-mono uppercase tracking-wider text-foreground">
             <span className="w-1.5 h-1.5 bg-accent inline-block shrink-0" />
             <span>Community-Powered Retail Intelligence</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
+          <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
             Transparent ratings from real shoppers in your city.
           </h1>
 
@@ -129,14 +136,12 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Mini Review Highlight Card */}
+          {/* Mini Review Testimonial */}
           <div className="p-4 bg-surface border border-border max-w-lg">
             <div className="flex items-center gap-1 text-rating mb-2">
-              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
-              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
-              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
-              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
-              <Star className="w-3.5 h-3.5 fill-rating text-rating" />
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-rating text-rating" />
+              ))}
               <span className="ml-2 text-[10px] font-mono uppercase text-muted font-bold">
                 Verified Member
               </span>
@@ -153,7 +158,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom Branding Footer */}
+        {/* Desktop Footer */}
         <div className="pt-4 border-t border-border">
           <p className="text-xs font-mono text-muted">
             © 2026 StoreRank Platform. Trusted by over 12,000 local businesses.
@@ -161,112 +166,164 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* RIGHT COLUMN: Login Card & Form Canvas (55%) */}
-      <div className="w-full lg:w-[55%] flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12">
-        <div className="w-full max-w-md bg-surface border border-border p-6 sm:p-8 space-y-6">
-          {/* Header */}
+      {/* RIGHT COLUMN (DESKTOP: 55%, MOBILE: 100% FULL-WIDTH) */}
+      <div className="w-full lg:w-[55%] flex flex-col justify-center items-center px-4 py-6 sm:px-8 sm:py-10 lg:p-12">
+        <div className="w-full max-w-md bg-surface border border-border p-5 sm:p-8 space-y-5">
+          {/* Mobile Compact Header Branding */}
+          <div className="flex items-center justify-between lg:hidden pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+                <Store className="w-4 h-4 text-amber-500" />
+              </div>
+              <div>
+                <span className="font-extrabold text-base tracking-tight text-foreground block leading-none">
+                  StoreRank
+                </span>
+                <span className="text-[9px] font-mono uppercase tracking-wider text-muted">
+                  Sign In Portal
+                </span>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono uppercase bg-muted-fill border border-border px-2 py-0.5 text-muted font-bold">
+              Secure 256-bit
+            </span>
+          </div>
+
+          {/* Form Header */}
           <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
               Welcome back
             </h2>
-            <p className="mt-1 text-xs text-muted">
+            <p className="mt-0.5 text-xs text-muted">
               Enter your credentials to access your StoreRank account
             </p>
+          </div>
+
+          {/* Account Role Selector Tab (Mobile Friendly) */}
+          <div className="grid grid-cols-2 p-1 bg-muted-fill border border-border text-xs font-mono">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveAccountType('USER');
+                handleFillDemo('alice@example.com', 'USER');
+              }}
+              className={`py-2 px-3 text-center transition-all font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 ${
+                activeAccountType === 'USER'
+                  ? 'bg-foreground text-background border border-foreground shadow-sm'
+                  : 'text-muted hover:text-foreground'
+              }`}
+            >
+              <span>👤 Shopper</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveAccountType('OWNER');
+                handleFillDemo('owner@example.com', 'OWNER');
+              }}
+              className={`py-2 px-3 text-center transition-all font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 ${
+                activeAccountType === 'OWNER'
+                  ? 'bg-foreground text-background border border-foreground shadow-sm'
+                  : 'text-muted hover:text-foreground'
+              }`}
+            >
+              <span>🏪 Store Owner</span>
+            </button>
           </div>
 
           {/* Inline Error Alert */}
           {error && (
             <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 flex items-start gap-2.5 text-xs font-mono">
               <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <span className="font-bold block">Authentication failed</span>
-                <span>{error}</span>
+                <span className="break-words">{error}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setError(null)}
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 p-1"
+                aria-label="Dismiss error"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
           )}
 
-          {/* Demo Quick-Login Pills */}
-          <div className="p-3 bg-muted-fill border border-border text-xs font-mono">
-            <p className="font-bold uppercase tracking-wider text-foreground mb-2 text-[10px]">
-              Quick Fill Demo Accounts:
-            </p>
-            <div className="flex flex-wrap gap-1.5">
+          {/* Demo Quick-Fill Accounts (Touch-Optimized Row) */}
+          <div className="p-3 bg-muted-fill border border-border">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-mono uppercase font-bold text-muted flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-accent" />
+                <span>One-Tap Demo Credentials</span>
+              </span>
+              <span className="text-[9px] font-mono text-muted">Click to fill</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
               <button
                 type="button"
-                onClick={() => handleFillDemo('alice@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors"
+                onClick={() => handleFillDemo('alice@example.com', 'USER')}
+                className={`p-2 text-left border transition-all text-xs font-mono ${
+                  email === 'alice@example.com'
+                    ? 'border-foreground bg-surface text-foreground font-bold shadow-sm'
+                    : 'border-border bg-surface/70 text-muted hover:border-foreground hover:text-foreground'
+                }`}
               >
-                Alice (Customer)
+                <div className="text-[10px] font-bold text-foreground truncate">Alice</div>
+                <div className="text-[9px] text-muted truncate">Customer</div>
               </button>
               <button
                 type="button"
-                onClick={() => handleFillDemo('bob@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors"
+                onClick={() => handleFillDemo('bob@example.com', 'USER')}
+                className={`p-2 text-left border transition-all text-xs font-mono ${
+                  email === 'bob@example.com'
+                    ? 'border-foreground bg-surface text-foreground font-bold shadow-sm'
+                    : 'border-border bg-surface/70 text-muted hover:border-foreground hover:text-foreground'
+                }`}
               >
-                Bob (Customer)
+                <div className="text-[10px] font-bold text-foreground truncate">Bob</div>
+                <div className="text-[9px] text-muted truncate">Reviewer</div>
               </button>
               <button
                 type="button"
-                onClick={() => handleFillDemo('owner@example.com')}
-                className="px-2.5 py-1 text-[11px] bg-surface text-foreground border border-border hover:border-foreground transition-colors font-bold"
+                onClick={() => handleFillDemo('owner@example.com', 'OWNER')}
+                className={`p-2 text-left border transition-all text-xs font-mono ${
+                  email === 'owner@example.com'
+                    ? 'border-amber-500 bg-surface text-foreground font-bold shadow-sm'
+                    : 'border-border bg-surface/70 text-muted hover:border-foreground hover:text-foreground'
+                }`}
               >
-                Owner (Business)
+                <div className="text-[10px] font-bold text-foreground truncate text-amber-600 dark:text-amber-400">David</div>
+                <div className="text-[9px] text-muted truncate">Owner</div>
               </button>
             </div>
           </div>
 
-          {/* Social Login Button */}
-          <button
-            type="button"
-            onClick={() => handleFillDemo('alice@example.com')}
-            className="w-full h-10 px-4 border border-border bg-surface hover:bg-muted-fill text-foreground text-xs font-mono uppercase font-bold flex items-center justify-center gap-2.5 transition-colors"
-          >
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-              <path
-                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"
-                fill="#4285F4"
-              />
-              <path
-                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"
-                fill="#34A853"
-              />
-              <path
-                d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                fill="#EA4335"
-              />
-            </svg>
-            <span>Continue with Google</span>
-          </button>
+          {/* Social Continue Button (Google) */}
+          <GoogleSignInButton
+            role={activeAccountType}
+            text="continue_with"
+            onError={(err) => setError(err)}
+          />
 
           {/* Divider */}
-          <div className="relative my-4">
+          <div className="relative my-3">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-surface px-3 font-mono text-[11px] uppercase tracking-wider text-muted">
-                or continue with email
+              <span className="bg-surface px-3 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-muted">
+                or sign in with email
               </span>
             </div>
           </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email Field */}
+            {/* Email Field - text-base on mobile prevents iOS auto-zoom, sm:text-xs on desktop */}
             <div>
               <label
-                className="block text-xs font-mono uppercase font-bold text-foreground mb-1"
+                className="block text-xs font-mono uppercase font-bold text-foreground mb-1.5"
                 htmlFor="email"
               >
                 Email Address
@@ -279,18 +336,20 @@ export default function LoginPage() {
                   id="email"
                   name="email"
                   type="email"
+                  inputMode="email"
+                  autoComplete="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex.carter@example.com"
-                  className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                  className="w-full h-11 sm:h-10 pl-9 pr-3 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
             </div>
 
-            {/* Password Field with Eye Toggle */}
+            {/* Password Field */}
             <div>
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-1.5">
                 <label
                   className="block text-xs font-mono uppercase font-bold text-foreground"
                   htmlFor="password"
@@ -306,17 +365,18 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full h-10 pl-9 pr-10 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
+                  className="w-full h-11 sm:h-10 pl-9 pr-12 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                 />
                 <button
                   type="button"
                   aria-label="Toggle password visibility"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted hover:text-foreground focus:outline-none transition-colors"
+                  className="absolute inset-y-0 right-0 flex items-center px-3.5 text-muted hover:text-foreground focus:outline-none transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -324,8 +384,8 @@ export default function LoginPage() {
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
+            <div className="flex items-center justify-between pt-0.5">
+              <label className="flex items-center gap-2 cursor-pointer select-none py-1">
                 <input
                   type="checkbox"
                   id="remember-me"
@@ -341,7 +401,7 @@ export default function LoginPage() {
 
               <Link
                 href="/forgot-password"
-                className="text-xs font-mono text-muted hover:text-foreground underline hover:no-underline"
+                className="text-xs font-mono text-muted hover:text-foreground underline hover:no-underline py-1"
               >
                 Forgot password?
               </Link>
@@ -361,17 +421,17 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-10 px-4 bg-foreground text-background hover:bg-accent-hover font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-foreground transition-colors disabled:opacity-50"
+                className="w-full h-11 sm:h-10 px-4 bg-foreground text-background hover:bg-accent-hover font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 border border-foreground transition-colors disabled:opacity-50 active:scale-[0.99]"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     <span>Signing In...</span>
                   </>
                 ) : (
                   <>
-                    <span>Log In</span>
-                    <ArrowRight className="w-4 h-4 text-amber-400 dark:text-amber-600" />
+                    <span>Log In to Account</span>
+                    <ArrowRight className="w-4 h-4 text-amber-400 dark:text-amber-500" />
                   </>
                 )}
               </button>
@@ -386,10 +446,42 @@ export default function LoginPage() {
                 href="/register"
                 className="font-bold text-foreground underline hover:no-underline font-mono uppercase tracking-wider ml-1"
               >
-                Sign up
+                Sign up free
               </Link>
             </p>
           </div>
+        </div>
+
+        {/* Mobile Why StoreRank Accordion (Non-intrusive value propositions on mobile) */}
+        <div className="w-full max-w-md mt-4 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMobilePerksOpen(!mobilePerksOpen)}
+            className="w-full py-2.5 px-3 bg-surface border border-border text-xs font-mono uppercase font-bold text-muted hover:text-foreground flex items-center justify-between transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="w-3.5 h-3.5 text-accent" />
+              <span>Why choose StoreRank?</span>
+            </div>
+            {mobilePerksOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+
+          {mobilePerksOpen && (
+            <div className="p-4 bg-surface border-x border-b border-border space-y-2.5 text-xs text-muted">
+              <div className="flex items-start gap-2">
+                <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                <span>100% verified in-store visits and genuine shopper ratings.</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                <span>Fraud protection prevents sponsored or manipulated ratings.</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                <span>Direct community interaction with verified store owners.</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Security Trust Footer */}

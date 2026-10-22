@@ -31,9 +31,18 @@ export class User {
   address: string;
 
   @Prop({
-    required: true,
+    required: false,
+    default: null,
   })
-  passwordHash: string;
+  passwordHash?: string;
+
+  @Prop({
+    type: String,
+    default: null,
+    sparse: true,
+    index: true,
+  })
+  googleId?: string | null;
 
   @Prop({
     type: String,

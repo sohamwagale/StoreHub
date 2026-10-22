@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 import {
   Store,
   User as UserIcon,
@@ -106,9 +107,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex-1 min-h-[calc(100vh-4rem)] w-full grid grid-cols-1 lg:grid-cols-12">
-      {/* LEFT COLUMN: Brand, Onboarding & Trust Canvas (5 Cols) */}
-      <section className="lg:col-span-5 bg-surface border-b lg:border-b-0 lg:border-r border-border p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+    <div className="flex-1 min-h-[calc(100vh-4rem)] w-full grid grid-cols-1 lg:grid-cols-12 bg-background">
+      {/* LEFT COLUMN: Brand, Onboarding & Trust Canvas (Desktop only) */}
+      <section className="hidden lg:flex lg:col-span-5 bg-surface border-b lg:border-b-0 lg:border-r border-border p-6 sm:p-10 lg:p-12 flex-col justify-between">
         <div className="space-y-8">
           {/* Logo & Brand */}
           <div className="flex items-center gap-2.5">
@@ -214,13 +215,36 @@ export default function RegisterPage() {
         </div>
       </section>
 
-      {/* RIGHT COLUMN: Clean Registration Card (7 Cols) */}
-      <section className="lg:col-span-7 flex items-center justify-center p-6 sm:p-10 lg:p-12 overflow-y-auto">
+      {/* RIGHT COLUMN: Clean Registration Card (Desktop: 7 Cols, Mobile: 100%) */}
+      <section className="col-span-1 lg:col-span-7 flex items-center justify-center p-4 sm:p-8 lg:p-12 overflow-y-auto">
         <div className="w-full max-w-lg my-auto">
-          <div className="bg-surface border border-border p-6 sm:p-8 space-y-6">
+          <div className="bg-surface border border-border p-5 sm:p-8 space-y-6">
+            {/* Mobile Compact Header Branding */}
+            <div className="flex items-center justify-between lg:hidden pb-3 border-b border-border">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-amber-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-[4px] flex items-center justify-center shrink-0">
+                  <Store className="w-4 h-4 text-amber-500" />
+                </div>
+                <div>
+                  <span className="font-extrabold text-base tracking-tight text-foreground block leading-none">
+                    StoreRank
+                  </span>
+                  <span className="text-[9px] font-mono uppercase tracking-wider text-muted">
+                    New Member Registration
+                  </span>
+                </div>
+              </div>
+              <Link
+                href="/login"
+                className="text-xs font-mono uppercase font-bold text-foreground underline"
+              >
+                Sign In
+              </Link>
+            </div>
+
             {/* Card Header */}
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
                 Create your account
               </h2>
               <p className="mt-1 text-xs text-muted">
@@ -281,6 +305,27 @@ export default function RegisterPage() {
                 </div>
               </div>
 
+              {/* Social Continue Button (Google) */}
+              <div className="pt-1">
+                <GoogleSignInButton
+                  role={role}
+                  text="signup_with"
+                  onError={(err) => setError(err)}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="relative my-2">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-border" />
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="bg-surface px-3 font-mono text-[10px] uppercase tracking-wider text-muted">
+                    or register with email
+                  </span>
+                </div>
+              </div>
+
               {/* Full Name */}
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -301,7 +346,7 @@ export default function RegisterPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Alex Carter"
-                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                    className="w-full h-11 sm:h-10 pl-9 pr-3 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
               </div>
@@ -319,11 +364,13 @@ export default function RegisterPage() {
                     id="email"
                     name="email"
                     type="email"
+                    inputMode="email"
+                    autoComplete="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex.carter@example.com"
-                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                    className="w-full h-11 sm:h-10 pl-9 pr-3 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
               </div>
@@ -348,7 +395,7 @@ export default function RegisterPage() {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Station Road, Kolhapur, Maharashtra"
-                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                    className="w-full h-11 sm:h-10 pl-9 pr-3 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
                 <p className="text-[11px] font-mono text-muted flex items-center gap-1 mt-1">
@@ -370,11 +417,12 @@ export default function RegisterPage() {
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-10 pl-9 pr-10 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
+                    className="w-full h-11 sm:h-10 pl-9 pr-12 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                   />
                   <button
                     type="button"
@@ -444,11 +492,12 @@ export default function RegisterPage() {
                     id="confirm_password"
                     name="confirm_password"
                     type="password"
+                    autoComplete="new-password"
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-10 pl-9 pr-3 bg-surface border border-border text-xs sm:text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
+                    className="w-full h-11 sm:h-10 pl-9 pr-3 bg-surface border border-border text-base sm:text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors tracking-wider"
                   />
                 </div>
               </div>

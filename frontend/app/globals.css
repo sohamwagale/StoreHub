@@ -106,3 +106,15 @@ input, textarea, select {
   border: 1px solid var(--border) !important;
   background-color: var(--surface) !important;
 }
+
+/* Mobile Touch & Viewport Polish */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+

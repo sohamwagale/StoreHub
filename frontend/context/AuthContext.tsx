@@ -10,6 +10,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<User>;
+  googleLogin: (idToken: string, role?: UserRole) => Promise<User>;
   register: (payload: {
     name: string;
     email: string;
@@ -66,6 +67,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return res.user;
   };
 
+  const googleLogin = async (idToken: string, role?: UserRole): Promise<User> => {
+    const res = await api.auth.googleLogin({ idToken, role });
+    localStorage.setItem('token', res.access_token);
+    localStorage.setItem('user', JSON.stringify(res.user));
+    setToken(res.access_token);
+    setUser(res.user);
+    return res.user;
+  };
+
   const register = async (payload: {
     name: string;
     email: string;
@@ -97,6 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         token,
         isLoading,
         login,
+        googleLogin,
         register,
         logout,
         refreshUser,

@@ -250,11 +250,11 @@ export default function ProfilePage() {
       {/* Tabs Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Navigation Sidebar */}
-        <nav className="space-y-1">
+        <nav className="flex flex-row md:flex-col gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
           <button
             type="button"
             onClick={() => { setActiveTab('info'); setErrorMessage(null); setSaveSuccess(null); }}
-            className={`w-full flex items-center gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
+            className={`flex-1 sm:flex-initial md:w-full shrink-0 whitespace-nowrap flex items-center justify-center md:justify-start gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
               activeTab === 'info'
                 ? 'bg-foreground text-background border-foreground'
                 : 'bg-surface text-foreground border-border hover:bg-muted-fill'
@@ -267,20 +267,20 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={() => { setActiveTab('security'); setErrorMessage(null); setSaveSuccess(null); }}
-            className={`w-full flex items-center gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
+            className={`flex-1 sm:flex-initial md:w-full shrink-0 whitespace-nowrap flex items-center justify-center md:justify-start gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
               activeTab === 'security'
                 ? 'bg-foreground text-background border-foreground'
                 : 'bg-surface text-foreground border-border hover:bg-muted-fill'
             }`}
           >
             <Key className={`w-3.5 h-3.5 ${activeTab === 'security' ? 'text-amber-400 dark:text-amber-600' : 'text-muted'}`} />
-            <span>Change Password</span>
+            <span>Password</span>
           </button>
 
           <button
             type="button"
             onClick={() => { setActiveTab('danger'); setErrorMessage(null); setSaveSuccess(null); }}
-            className={`w-full flex items-center gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
+            className={`flex-1 sm:flex-initial md:w-full shrink-0 whitespace-nowrap flex items-center justify-center md:justify-start gap-2 px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-left transition-colors border ${
               activeTab === 'danger'
                 ? 'bg-red-600 text-white border-red-600'
                 : 'bg-surface text-red-600 dark:text-red-400 border-border hover:bg-red-50 dark:hover:bg-red-950/20'

@@ -153,12 +153,12 @@ export default function ReviewsModal({
   const totalPhotos = gallery ? gallery.totalPhotos : (store.photos ? store.photos.length : 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
-      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-surface border border-border overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 overflow-y-auto">
+      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-surface border border-border overflow-hidden my-auto">
         {/* Modal Header */}
-        <div className="p-5 border-b border-border flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
+        <div className="p-4 sm:p-5 border-b border-border flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
               <span className="text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.5 bg-muted-fill text-foreground border border-border">
                 {store.category || 'Store'}
               </span>
@@ -169,7 +169,7 @@ export default function ReviewsModal({
                 <span className="text-muted font-normal">({store.totalRatings} ratings)</span>
               </div>
             </div>
-            <h2 className="text-lg font-bold text-foreground line-clamp-1">
+            <h2 className="text-base sm:text-lg font-bold text-foreground truncate">
               {store.name}
             </h2>
             <p className="text-xs text-muted truncate">
@@ -186,11 +186,11 @@ export default function ReviewsModal({
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1 px-5 py-2 border-b border-border bg-muted-fill">
+        <div className="flex items-center gap-1.5 px-3 sm:px-5 py-2 border-b border-border bg-muted-fill overflow-x-auto scrollbar-none">
           <button
             type="button"
             onClick={() => setActiveTab('reviews')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border shrink-0 transition-colors ${
               activeTab === 'reviews'
                 ? 'bg-foreground text-background border-foreground'
                 : 'text-muted hover:text-foreground border-transparent hover:border-border'
@@ -203,7 +203,7 @@ export default function ReviewsModal({
           <button
             type="button"
             onClick={() => setActiveTab('photos')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border shrink-0 transition-colors ${
               activeTab === 'photos'
                 ? 'bg-foreground text-background border-foreground'
                 : 'text-muted hover:text-foreground border-transparent hover:border-border'
